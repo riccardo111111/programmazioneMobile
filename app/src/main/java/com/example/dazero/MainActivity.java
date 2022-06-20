@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dazero.SingIn.SingInActivity;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
