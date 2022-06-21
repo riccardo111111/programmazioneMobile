@@ -21,6 +21,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.dazero.MainActivity2;
 import com.example.dazero.R;
 import com.example.dazero.adapters.ItemViewModel;
 import com.example.dazero.ml.ModelTFLITE;
@@ -70,10 +71,12 @@ public class HomePageFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void dispatchTakePictureIntent() {
+        Intent intent=new Intent(getActivity(), MainActivity2.class);
+        getActivity().startActivity(intent);
+  /*
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, 1);
 
-/*
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, 1);
@@ -85,7 +88,6 @@ public class HomePageFragment extends Fragment {
  */
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -95,6 +97,12 @@ public class HomePageFragment extends Fragment {
             imageView.setImageBitmap(bitmap);
             bitmap = Bitmap.createScaledBitmap(bitmap,imageSize,imageSize,false);
             classifyImage(bitmap);
+/*
+            Intent intent=new Intent(HomePageFragment.this, Elaborazione.class);
+            intent.putExtra("resId", bitmap);
+            startActivity(intent);
+ */
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
