@@ -1,5 +1,7 @@
 package com.example.dazero;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,6 +23,7 @@ public class AdapterForTabs extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
+        Log.i("position", String.valueOf(position));
         return fragmentList.get(position);
     }
 

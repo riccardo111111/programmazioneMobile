@@ -30,5 +30,6 @@ public class Tabs extends AppCompatActivity {
         adapterForTabs.addFragment(new ProfileFragment(), "PROFILE");
 
         viewPager.setAdapter(adapterForTabs);
+
     }
 }

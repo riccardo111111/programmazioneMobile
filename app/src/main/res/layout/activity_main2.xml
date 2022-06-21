@@ -17,7 +17,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="69dp"
+        android:layout_marginBottom="63dp"
         android:text="Take Picture"
         android:textAllCaps="false"
         android:textSize="21sp"
@@ -74,10 +74,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/result"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30sp"
+        android:layout_marginTop="4dp"
         android:text="Confidences:"
         android:textSize="20sp"
         android:textStyle="bold" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

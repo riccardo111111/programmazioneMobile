@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.dazero.HomePage.HomePageFragment;
 import com.example.dazero.ml.ModelTFLITE;
 
 import org.tensorflow.lite.DataType;
@@ -45,7 +44,7 @@ public class MainActivity2 extends AppCompatActivity {
         confidence = findViewById(R.id.confidence);
         imageView = findViewById(R.id.imageView);
         picture = findViewById(R.id.button);
-        home=findViewById(R.id.button4);
+        home = findViewById(R.id.button4);
 
 
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -78,11 +77,12 @@ public class MainActivity2 extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(this, HomePageFragment.class);
+                Intent intent = new Intent(MainActivity2.this, Tabs.class);
                 startActivity(intent);
+                finish();
             }
-    });
-
+        });
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {

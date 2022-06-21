@@ -84,7 +84,6 @@ public class HomePageFragment extends Fragment {
             //Request camera permission if we don't have it.
             requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
         }
-
  */
     }
 
