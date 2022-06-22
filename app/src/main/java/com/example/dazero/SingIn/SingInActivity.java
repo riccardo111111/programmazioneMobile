@@ -56,11 +56,12 @@ public class SingInActivity extends AppCompatActivity {
                     User user = db.userDao().findProfile(binding.editTextEmail.getText().toString(),
                             binding.editTextPassword.getText().toString());
                         Log.i("non presente", String.valueOf(user!=null));
-                    if (user!=null) {
+                    if (user==null) {
+                        dialog.dismiss();
                         Toast.makeText(SingInActivity.this, "account insesistente",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        Log.i("profilo", user.email);
+                       // Log.i("profilo", user.email);
                         Intent i = new Intent(SingInActivity.this, Tabs.class);
                         startActivity(i);
                         finish();
