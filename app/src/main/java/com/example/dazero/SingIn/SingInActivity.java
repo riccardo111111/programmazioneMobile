@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.dazero.SingUp.SingUpActivity;
 import com.example.dazero.Tabs;
 import com.example.dazero.databinding.ActivitySingInBinding;
+import com.example.dazero.db.AppDatabase;
+import com.example.dazero.db.User;
 
 
 public class SingInActivity extends AppCompatActivity {
@@ -46,11 +48,23 @@ public class SingInActivity extends AppCompatActivity {
                 String password = binding.editTextPassword.getText().toString();
                 if (email.isEmpty() || password.isEmpty()) {
                     dialog.dismiss();
-                    Toast.makeText(SingInActivity.this, "Please fill up the fields", Toast.LENGTH_SHORT).show();
-                }else{
-                    Intent i = new Intent(SingInActivity.this, Tabs.class);
-                    startActivity(i);
-                    finish();
+                    Toast.makeText(SingInActivity.this, "Please fill up the fields",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    AppDatabase db = AppDatabase.getDbInstance(SingInActivity.this);
+
+                    User user = db.userDao().findProfile(binding.editTextEmail.getText().toString(),
+                            binding.editTextPassword.getText().toString());
+                        Log.i("non presente", String.valueOf(user!=null));
+                    if (user!=null) {
+                        Toast.makeText(SingInActivity.this, "account insesistente",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.i("profilo", user.email);
+                        Intent i = new Intent(SingInActivity.this, Tabs.class);
+                        startActivity(i);
+                        finish();
+                    }
                 }
             }
         });
@@ -61,6 +75,5 @@ public class SingInActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 }
