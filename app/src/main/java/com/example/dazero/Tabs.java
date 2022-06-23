@@ -25,7 +25,7 @@ public class Tabs extends AppCompatActivity {
 
         AdapterForTabs adapterForTabs = new AdapterForTabs(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
-        adapterForTabs.addFragment(new SearchFragment(), "SEARCH");
+        //adapterForTabs.addFragment(new SearchFragment(), "SEARCH");
         adapterForTabs.addFragment(new HomePageFragment(), "HOME");
         adapterForTabs.addFragment(new ProfileFragment(), "PROFILE");
 

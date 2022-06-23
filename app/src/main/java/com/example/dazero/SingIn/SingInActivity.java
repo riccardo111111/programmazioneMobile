@@ -51,6 +51,7 @@ public class SingInActivity extends AppCompatActivity {
                     Toast.makeText(SingInActivity.this, "Please fill up the fields",
                             Toast.LENGTH_SHORT).show();
                 } else {
+
                     AppDatabase db = AppDatabase.getDbInstance(SingInActivity.this);
 
                     User user = db.userDao().findProfile(binding.editTextEmail.getText().toString(),
@@ -63,6 +64,10 @@ public class SingInActivity extends AppCompatActivity {
                     } else {
                        // Log.i("profilo", user.email);
                         Intent i = new Intent(SingInActivity.this, Tabs.class);
+                        i.putExtra("name", user.name);
+                        i.putExtra("surname", user.surname);
+                        i.putExtra("email", user.email);
+                        i.putExtra("password", user.password);
                         startActivity(i);
                         finish();
                     }
