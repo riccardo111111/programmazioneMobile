@@ -3,19 +3,14 @@ package com.example.dazero.SingIn;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.example.dazero.SingUp.SingUpActivity;
 import com.example.dazero.Tabs;
 import com.example.dazero.databinding.ActivitySingInBinding;
@@ -52,7 +47,8 @@ public class SingInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 UserServices userServices= new UserServices(getApplicationContext());
                 userServices.createUser("test","test","test","tes");
-
+                //Toast.makeText(getApplicationContext(),userServices.getUserByMail("enzo").getName(),Toast.LENGTH_LONG).show();
+                //userServices.deleteUserByID(11);
                 Log.i(TAG1, "MyClass.getView() — get item number ");
                 dialog.show();
                 String email = binding.editTextEmail.getText().toString();

@@ -4,11 +4,10 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.StrictMode;
+
 import android.util.Log;
 
 
-import com.android.volley.RequestQueue;
 import com.example.dazero.models.User;
 
 import org.json.JSONArray;
@@ -30,15 +29,19 @@ import okhttp3.Response;
 public class UserServices extends Service {
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
+
+    OkHttpClient client ;
     String host ="10.0.2.2";
     String port ="8080";
     String getAllUsers = "http://"+host+":"+port+"/serverMobile/rest/users/all";
     String getUserById = "http://"+host+":"+port+"/serverMobile/rest/users/";
     String createUser = "http://"+host+":"+port+"/serverMobile/rest/users/create";
+    String getUserByMail = "http://"+host+":"+port+"/serverMobile/rest/users/mail/";
+    String deleteUserById = "http://"+host+":"+port+"/serverMobile/rest/users/delete/";
 
     public UserServices(Context context) {
         ServiceManagerSingleton.getInstance(context).getSecutityPolicy();
-
+        client=ServiceManagerSingleton.getInstance(context).getHttpClient();
     }
 
     public ArrayList<User> getGetAllUsers(){
@@ -69,6 +72,38 @@ public class UserServices extends Service {
         }
     }
 
+    public void deleteUserByID(int id){
+
+        try {
+            Log.d("delete",createDelete(deleteUserById+id));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    public String createDelete(String url) throws IOException {
+        Request request = new Request.Builder().url(url).delete().build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
+
+    public User getUserByMail(String mail){
+        String result="ciao";
+
+        try {
+            result=run(getUserByMail +mail);
+            Log.d("userbyId",result);
+            return convertResultToUserList(result).get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void createUser(String name,String surname,String password,String mail){
         OkHttpClient client = new OkHttpClient();
 
@@ -87,17 +122,7 @@ public class UserServices extends Service {
 
 
         RequestBody formBody = RequestBody.create(jsonUser.toString(),JSON);
-        /*
-        RequestBody formBody = new MultipartBody.Builder(JSON)
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("id","")
-                .addFormDataPart("name",name)
-                .addFormDataPart("surname",surname)
-                .addFormDataPart("password",password)
-                .addFormDataPart("mail",mail)
-                .build();
 
-         */
         Request request = new Request.Builder()
                 .url(createUser)
                 .post(formBody)

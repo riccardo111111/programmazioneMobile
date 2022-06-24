@@ -7,11 +7,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import okhttp3.OkHttpClient;
+
 public class ServiceManagerSingleton {
     private static ServiceManagerSingleton mInstance;
     private RequestQueue mRequestQueue;
     private StrictMode.ThreadPolicy policy;
     private static Context mCtx;
+    private OkHttpClient client;
 
     private ServiceManagerSingleton(Context context) {
         mCtx = context;
@@ -34,6 +37,15 @@ public class ServiceManagerSingleton {
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
         return mRequestQueue;
+    }
+
+    public OkHttpClient getHttpClient() {
+        if (client == null) {
+            // getApplicationContext() is key, it keeps you from leaking the
+            // Activity or BroadcastReceiver if someone passes one in.
+            client = new OkHttpClient();
+        }
+        return client;
     }
 
     public StrictMode.ThreadPolicy getSecutityPolicy(){
