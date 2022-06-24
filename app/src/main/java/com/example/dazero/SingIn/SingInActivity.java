@@ -9,6 +9,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.dazero.SingUp.SingUpActivity;
 import com.example.dazero.Tabs;
 import com.example.dazero.databinding.ActivitySingInBinding;
@@ -41,6 +47,28 @@ public class SingInActivity extends AppCompatActivity {
         binding.signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String url = "https://www.google.com";
+
+
+            // Instantiate the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(SingInActivity.this);
+            // Request a string response from the provided URL.
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // Display the first 500 characters of the response string.
+                                Toast.makeText(SingInActivity.this, response, Toast.LENGTH_LONG).show();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(SingInActivity.this, "error"+ error, Toast.LENGTH_LONG).show();
+                    }
+                });
+// Add the request to the RequestQueue.
+                queue.add(stringRequest);
+
 
                 Log.i(TAG1, "MyClass.getView() — get item number ");
                 dialog.show();
@@ -56,13 +84,13 @@ public class SingInActivity extends AppCompatActivity {
 
                     User user = db.userDao().findProfile(binding.editTextEmail.getText().toString(),
                             binding.editTextPassword.getText().toString());
-                        Log.i("non presente", String.valueOf(user!=null));
-                    if (user==null) {
+                    Log.i("non presente", String.valueOf(user != null));
+                    if (user == null) {
                         dialog.dismiss();
                         Toast.makeText(SingInActivity.this, "account insesistente",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                       // Log.i("profilo", user.email);
+                        // Log.i("profilo", user.email);
                         Intent i = new Intent(SingInActivity.this, Tabs.class);
                         i.putExtra("name", user.name);
                         i.putExtra("surname", user.surname);

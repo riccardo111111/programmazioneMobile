@@ -9,6 +9,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.dazero.SingIn.SingInActivity;
 import com.example.dazero.databinding.ActivitySignUpBinding;
 import com.example.dazero.db.AppDatabase;
@@ -45,11 +51,14 @@ public class SingUpActivity extends AppCompatActivity {
     saveNewUser(binding.editTextName.getText().toString(), binding.editTextEmail.getText().toString(),
             binding.editTextSurname.getText().toString(),
             binding.editTextPassword.getText().toString());
+
         }else {
             Toast.makeText(SingUpActivity.this,
                     "Please fill up the fields", Toast.LENGTH_SHORT).show();
         }
     }
+
+
     private void saveNewUser(String firstName, String email, String surname, String password) {
         AppDatabase db  = AppDatabase.getDbInstance(this.getApplicationContext());
 
