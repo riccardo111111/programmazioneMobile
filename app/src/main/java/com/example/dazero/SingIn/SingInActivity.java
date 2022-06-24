@@ -3,6 +3,7 @@ package com.example.dazero.SingIn;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.example.dazero.Tabs;
 import com.example.dazero.databinding.ActivitySingInBinding;
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
+import com.example.dazero.services.UserServices;
 
 
 public class SingInActivity extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class SingInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         binding = ActivitySingInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -47,28 +50,8 @@ public class SingInActivity extends AppCompatActivity {
         binding.signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "https://www.google.com";
-
-
-            // Instantiate the RequestQueue.
-                RequestQueue queue = Volley.newRequestQueue(SingInActivity.this);
-            // Request a string response from the provided URL.
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                // Display the first 500 characters of the response string.
-                                Toast.makeText(SingInActivity.this, response, Toast.LENGTH_LONG).show();
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(SingInActivity.this, "error"+ error, Toast.LENGTH_LONG).show();
-                    }
-                });
-// Add the request to the RequestQueue.
-                queue.add(stringRequest);
-
+                UserServices userServices= new UserServices(getApplicationContext());
+                userServices.createUser("test","test","test","tes");
 
                 Log.i(TAG1, "MyClass.getView() — get item number ");
                 dialog.show();
