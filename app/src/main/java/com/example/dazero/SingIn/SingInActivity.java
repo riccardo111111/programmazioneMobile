@@ -62,10 +62,7 @@ public class SingInActivity extends AppCompatActivity {
 
                     User user =userServices.getUserByMailAndPassword(binding.editTextEmail.getText().toString(),
                             binding.editTextPassword.getText().toString());
-                    Log.i(TAG1, user.toString());
-                    Toast.makeText(SingInActivity.this, binding.editTextEmail.getText().toString() +
-                            "   "+ binding.editTextPassword.getText().toString(),
-                            Toast.LENGTH_SHORT).show();
+
 
 /*
                     AppDatabase db = AppDatabase.getDbInstance(getApplicationContext());
@@ -78,6 +75,10 @@ public class SingInActivity extends AppCompatActivity {
                         Toast.makeText(SingInActivity.this, "account insesistente",
                                 Toast.LENGTH_SHORT).show();
                     } else {
+                        Log.i(TAG1, user.toString());
+                        Toast.makeText(SingInActivity.this, binding.editTextEmail.getText().toString() +
+                                        "   "+ binding.editTextPassword.getText().toString(),
+                                Toast.LENGTH_SHORT).show();
                         AppDatabase db = ServiceManagerSingleton.getInstance(getApplicationContext()).db;
                         /*if ( db.userDao().findProfileById(user.uid) == null){
                            // db.userDao().insertUser(user);
