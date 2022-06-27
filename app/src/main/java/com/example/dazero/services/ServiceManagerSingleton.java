@@ -7,7 +7,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.dazero.db.AppDatabase;
+import com.example.dazero.db.Result;
 import com.example.dazero.db.User;
+
+import java.sql.Blob;
 
 import okhttp3.OkHttpClient;
 
@@ -53,6 +56,21 @@ public class ServiceManagerSingleton {
             db.userDao().insertUser(user);
         }
         return user;
+    }
+
+    public Result saveNewResult(int idResult, int idUser, String date, byte[] bytes, String label, String photo ) {
+
+        Result result = new Result();
+        result.idResult=idResult;
+        result.idUser= idUser;
+        result.date=date;
+        result.bytes=bytes;
+        result.labels=label;
+        result.photo=photo;
+        if (db.resultDao().findResultById(result.idResult)== null) {
+           db.resultDao().insertResult(result);
+        }
+        return result;
     }
 
     public OkHttpClient getHttpClient() {

@@ -1,6 +1,10 @@
 package com.example.dazero.Profile;
 
+import static android.content.Intent.getIntent;
+
+import android.content.ClipDescription;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +17,11 @@ import com.example.dazero.R;
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
 import com.example.dazero.services.ServiceManagerSingleton;
+import com.example.dazero.services.UserServices;
 
 
 public class ProfileFragment extends Fragment {
-
+    
     private User user;
     private TextView mail;
     private TextView password;
@@ -26,31 +31,36 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_profile, container, false);
+
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstaceState) {
-        Toast.makeText(getActivity(), getActivity().getIntent().getStringExtra("id"),
-                Toast.LENGTH_LONG).show();
+    public void onViewCreated(View view,Bundle savedInstaceState){
+        String id =getActivity().getIntent().getStringExtra("id");
+        Log.d("profile frag",id);
+        //Toast.makeText(getActivity(),,Toast.LENGTH_LONG).show();
         AppDatabase db = ServiceManagerSingleton.getInstance(getContext()).db;
-        int id = Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
 
-        this.user = db.userDao().findProfileById(id);
+        //this.user=db.userDao().findProfileById(getActivity().getIntent().getExtras().getInt("id"));
 
-        if (user == null) {
+        if(user==null){
             displayFragment(view);
-        } else {
+        }else{
             displayFragment(view);
-            Toast.makeText(getActivity(), this.user.name, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),this.user.name,Toast.LENGTH_LONG).show();
             mail.setText(this.user.email);
             password.setText(this.user.password);
         }
+
+
         // Inflate the layout for this fragment
     }
 
-    public void displayFragment(View view) {
-        mail = view.findViewById(R.id.mail);
-        password = view.findViewById(R.id.password);
+    public void displayFragment(View view){
+        mail= view.findViewById(R.id.mail);
+        password= view.findViewById(R.id.password);
     }
+
 }
