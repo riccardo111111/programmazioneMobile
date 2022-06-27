@@ -44,10 +44,6 @@ public class SingInActivity extends AppCompatActivity {
         binding.signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //userServices.createUser("test","test","test","tes");
-                //Toast.makeText(getApplicationContext(),userServices.getUserByMail("enzo").getName(),Toast.LENGTH_LONG).show();
-                //userServices.deleteUserByID(11);
-                // Toast.makeText(getApplicationContext(),userServices.getUserByMailAndPassword("enzo","pircio").getSurname(), Toast.LENGTH_LONG).show();
                 Log.i(TAG1, "MyClass.getView() — get item number ");
                 dialog.show();
                 String email = binding.editTextEmail.getText().toString();
@@ -65,26 +61,17 @@ public class SingInActivity extends AppCompatActivity {
                     Toast.makeText(SingInActivity.this, binding.editTextEmail.getText().toString() +
                                     "   " + binding.editTextPassword.getText().toString(),
                             Toast.LENGTH_SHORT).show();
-
-/*
-                    User user = db.userDao().findProfile(binding.editTextEmail.getText().toString(),
-                            binding.editTextPassword.getText().toString());
- */
                     Log.i("non presente", String.valueOf(user != null));
                     if (user == null) {
                         dialog.dismiss();
                         Toast.makeText(SingInActivity.this, "account insesistente",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-
                         AppDatabase db = ServiceManagerSingleton.getInstance(getApplicationContext()).db;
                         if (db.userDao().findProfileById(user.uid) == null) {
                             db.userDao().insertUser(user);
                         }
-
-
-                        // Log.i("profilo", user.email);
-
+                        Log.i("profilo", user.email);
                         Intent i = new Intent(SingInActivity.this, Tabs.class);
                         i.putExtra("id", user.uid);
                         startActivity(i);
