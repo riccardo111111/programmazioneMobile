@@ -65,7 +65,11 @@ public class UserServices extends Service {
         try {
             result=run(getUserById +id);
             Log.d("userbyId",result);
-            return convertResultToUserList(result).get(0);
+
+            if(convertResultToUserList(result).size()==0)
+                return null;
+            else
+                return convertResultToUserList(result).get(0);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

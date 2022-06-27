@@ -25,21 +25,30 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     @Override
     public void onViewCreated(View view,Bundle savedInstaceState){
         UserServices userService= new UserServices(getActivity());
-        this.user=userService.getUserByID(16);
+        this.user=userService.getUserByID(21);
+
+        if(user==null){
+            displayFragment(view);
+        }else{
+            displayFragment(view);
+            Toast.makeText(getActivity(),this.user.getName(),Toast.LENGTH_LONG).show();
+            mail.setText(this.user.getMail());
+            password.setText(this.user.getPassword());
+        }
+
+
+        // Inflate the layout for this fragment
+    }
+
+    public void displayFragment(View view){
         mail= view.findViewById(R.id.mail);
         password= view.findViewById(R.id.password);
-        Toast.makeText(getActivity(),this.user.getName(),Toast.LENGTH_LONG).show();
-        mail.setText(this.user.getMail());
-        password.setText(this.user.getPassword());
-        // Inflate the layout for this fragment
     }
 
 }

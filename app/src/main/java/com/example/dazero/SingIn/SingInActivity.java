@@ -46,7 +46,7 @@ public class SingInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 UserServices userServices= new UserServices(getApplicationContext());
-                userServices.createUser("test","test","test","tes");
+                //userServices.createUser("test","test","test","tes");
                 //Toast.makeText(getApplicationContext(),userServices.getUserByMail("enzo").getName(),Toast.LENGTH_LONG).show();
                 //userServices.deleteUserByID(11);
                 Log.i(TAG1, "MyClass.getView() — get item number ");
