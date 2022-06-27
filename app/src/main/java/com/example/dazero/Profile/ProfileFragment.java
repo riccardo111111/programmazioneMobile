@@ -4,6 +4,7 @@ import static android.content.Intent.getIntent;
 
 import android.content.ClipDescription;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,9 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view,Bundle savedInstaceState){
-        Toast.makeText(getActivity(),getActivity().getIntent().getStringExtra("id"),Toast.LENGTH_LONG).show();
+        String id =getActivity().getIntent().getStringExtra("id");
+        Log.d("profile frag",id);
+        //Toast.makeText(getActivity(),,Toast.LENGTH_LONG).show();
         AppDatabase db = ServiceManagerSingleton.getInstance(getContext()).db;
 
         //this.user=db.userDao().findProfileById(getActivity().getIntent().getExtras().getInt("id"));
