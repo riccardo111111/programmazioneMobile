@@ -30,6 +30,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_profile, container, false);
 
     }
@@ -38,7 +39,8 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view,Bundle savedInstaceState){
 
         AppDatabase db = ServiceManagerSingleton.getInstance(getContext()).db;
-        this.user=db.userDao().findProfileById(savedInstaceState.getIntent().getExtras());
+
+        //this.user=db.userDao().findProfileById(getActivity().getIntent().getExtras().getInt("id"));
 
         if(user==null){
             displayFragment(view);
