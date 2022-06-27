@@ -3,19 +3,18 @@ package com.example.dazero.SingIn;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.example.dazero.SingUp.SingUpActivity;
 import com.example.dazero.Tabs;
 import com.example.dazero.databinding.ActivitySingInBinding;
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
+import com.example.dazero.services.ServiceManagerSingleton;
 import com.example.dazero.services.UserServices;
 
 
@@ -46,11 +45,10 @@ public class SingInActivity extends AppCompatActivity {
         binding.signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserServices userServices= new UserServices(getApplicationContext());
                 //userServices.createUser("test","test","test","tes");
                 //Toast.makeText(getApplicationContext(),userServices.getUserByMail("enzo").getName(),Toast.LENGTH_LONG).show();
                 //userServices.deleteUserByID(11);
-                Toast.makeText(getApplicationContext(),userServices.getUserByMailAndPassword("enzo","pircio").getSurname(), Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(),userServices.getUserByMailAndPassword("enzo","pircio").getSurname(), Toast.LENGTH_LONG).show();
                 Log.i(TAG1, "MyClass.getView() — get item number ");
                 dialog.show();
                 String email = binding.editTextEmail.getText().toString();
@@ -60,23 +58,38 @@ public class SingInActivity extends AppCompatActivity {
                     Toast.makeText(SingInActivity.this, "Please fill up the fields",
                             Toast.LENGTH_SHORT).show();
                 } else {
+                    UserServices userServices= new UserServices(getApplicationContext());
 
-                    AppDatabase db = AppDatabase.getDbInstance(SingInActivity.this);
+                    User user =userServices.getUserByMailAndPassword(binding.editTextEmail.getText().toString(),
+                            binding.editTextPassword.getText().toString());
+                    Log.i(TAG1, user.toString());
+                    Toast.makeText(SingInActivity.this, binding.editTextEmail.getText().toString() +
+                            "   "+ binding.editTextPassword.getText().toString(),
+                            Toast.LENGTH_SHORT).show();
 
+/*
+                    AppDatabase db = AppDatabase.getDbInstance(getApplicationContext());
                     User user = db.userDao().findProfile(binding.editTextEmail.getText().toString(),
                             binding.editTextPassword.getText().toString());
+ */
                     Log.i("non presente", String.valueOf(user != null));
                     if (user == null) {
                         dialog.dismiss();
                         Toast.makeText(SingInActivity.this, "account insesistente",
                                 Toast.LENGTH_SHORT).show();
                     } else {
+                        AppDatabase db = ServiceManagerSingleton.getInstance(getApplicationContext()).db;
+                        /*if ( db.userDao().findProfileById(user.uid) == null){
+                           // db.userDao().insertUser(user);
+                        }
+
+                         */
+
+
                         // Log.i("profilo", user.email);
+
                         Intent i = new Intent(SingInActivity.this, Tabs.class);
-                        i.putExtra("name", user.name);
-                        i.putExtra("surname", user.surname);
-                        i.putExtra("email", user.email);
-                        i.putExtra("password", user.password);
+                        i.putExtra("id", user.uid);
                         startActivity(i);
                         finish();
                     }

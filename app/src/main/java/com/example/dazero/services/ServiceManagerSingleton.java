@@ -6,6 +6,8 @@ import android.os.StrictMode;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.dazero.db.AppDatabase;
+import com.example.dazero.db.User;
 
 import okhttp3.OkHttpClient;
 
@@ -16,11 +18,12 @@ public class ServiceManagerSingleton {
     private static Context mCtx;
     private OkHttpClient client;
 
+    public static AppDatabase db;
+
     private ServiceManagerSingleton(Context context) {
         mCtx = context;
         mRequestQueue = getRequestQueue();
-
-
+        db = AppDatabase.getDbInstance(context);
     }
 
     public static synchronized ServiceManagerSingleton getInstance(Context context) {
@@ -37,6 +40,17 @@ public class ServiceManagerSingleton {
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
         return mRequestQueue;
+    }
+
+    public User saveNewUser(int id, String firstName, String email, String surname, String password) {
+        User user = new User();
+        user.uid=id;
+        user.name = firstName;
+        user.surname=surname;
+        user.email = email;
+        user.password=password;
+        db.userDao().insertUser(user);
+        return user;
     }
 
     public OkHttpClient getHttpClient() {

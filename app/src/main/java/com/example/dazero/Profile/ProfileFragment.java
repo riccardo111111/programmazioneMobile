@@ -1,7 +1,6 @@
 package com.example.dazero.Profile;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.dazero.R;
-import com.example.dazero.SingIn.SingInActivity;
-import com.example.dazero.models.User;
+import com.example.dazero.db.User;
 import com.example.dazero.services.UserServices;
 
 
@@ -37,9 +35,9 @@ public class ProfileFragment extends Fragment {
             displayFragment(view);
         }else{
             displayFragment(view);
-            Toast.makeText(getActivity(),this.user.getName(),Toast.LENGTH_LONG).show();
-            mail.setText(this.user.getMail());
-            password.setText(this.user.getPassword());
+            Toast.makeText(getActivity(),this.user.name,Toast.LENGTH_LONG).show();
+            mail.setText(this.user.email);
+            password.setText(this.user.password);
         }
 
 

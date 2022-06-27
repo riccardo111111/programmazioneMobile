@@ -17,6 +17,9 @@ public interface UserDao {
             "password LIKE :password LIMIT 1")
     User findProfile(String email, String password);
 
+    @Query("SELECT * FROM user WHERE uid LIKE :id LIMIT 1")
+    User findProfileById(int id);
+
     @Insert
     void insertUser(User... users);
 
