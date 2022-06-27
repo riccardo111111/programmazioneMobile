@@ -19,6 +19,7 @@ import com.example.dazero.db.User;
 import com.example.dazero.services.UserServices;
 
 
+
 public class SingInActivity extends AppCompatActivity {
     private static final String TAG = "SignInActivity";
     private ActivitySingInBinding binding;
@@ -49,6 +50,7 @@ public class SingInActivity extends AppCompatActivity {
                 //userServices.createUser("test","test","test","tes");
                 //Toast.makeText(getApplicationContext(),userServices.getUserByMail("enzo").getName(),Toast.LENGTH_LONG).show();
                 //userServices.deleteUserByID(11);
+                Toast.makeText(getApplicationContext(),userServices.getUserByMailAndPassword("enzo","pircio").getSurname(), Toast.LENGTH_LONG).show();
                 Log.i(TAG1, "MyClass.getView() — get item number ");
                 dialog.show();
                 String email = binding.editTextEmail.getText().toString();

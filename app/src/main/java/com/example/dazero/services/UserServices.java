@@ -76,6 +76,24 @@ public class UserServices extends Service {
         }
     }
 
+
+    public User getUserByMailAndPassword(String mail, String password){
+        String result="ciao";
+
+        try {
+            result=run(getUserById +mail+"/"+password);
+            Log.d("userbyId",result);
+
+            if(convertResultToUserList(result).size()==0)
+                return null;
+            else
+                return convertResultToUserList(result).get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void deleteUserByID(int id){
 
         try {
