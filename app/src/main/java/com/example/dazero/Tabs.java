@@ -1,7 +1,6 @@
 package com.example.dazero;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -18,7 +17,7 @@ public class Tabs extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-      //  int id= getIntent().getExtras().getInt("id")
+      //int id= getIntent().getExtras().getInt("id")
         tab = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPage);
 

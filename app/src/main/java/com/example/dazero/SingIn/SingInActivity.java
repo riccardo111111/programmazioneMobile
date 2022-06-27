@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.dazero.Profile.ProfileFragment;
 import com.example.dazero.SingUp.SingUpActivity;
 import com.example.dazero.Tabs;
 import com.example.dazero.databinding.ActivitySingInBinding;
@@ -63,9 +62,6 @@ public class SingInActivity extends AppCompatActivity {
 
                     User user = userServices.getUserByMailAndPassword(binding.editTextEmail.getText().toString(),
                             binding.editTextPassword.getText().toString());
-
-
-
 /*
                     AppDatabase db = AppDatabase.getDbInstance(getApplicationContext());
                     User user = db.userDao().findProfile(binding.editTextEmail.getText().toString(),
@@ -87,9 +83,7 @@ public class SingInActivity extends AppCompatActivity {
                             db.userDao().insertUser(user);
                         }
 
-
                         // Log.i("profilo", user.email);
-
                         Intent i = new Intent(getApplicationContext(), Tabs.class);
                         i.putExtra("id", String.valueOf(user.uid));
                         startActivity(i);

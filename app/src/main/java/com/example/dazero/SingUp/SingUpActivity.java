@@ -1,20 +1,19 @@
 package com.example.dazero.SingUp;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.example.dazero.R;
 import com.example.dazero.SingIn.SingInActivity;
 import com.example.dazero.databinding.ActivitySignUpBinding;
 import com.example.dazero.db.AppDatabase;
@@ -25,6 +24,7 @@ public class SingUpActivity extends AppCompatActivity {
     private ActivitySignUpBinding binding;
     private ProgressDialog dialog;
     private static final int RC_SIGN_IN = 45;
+    private boolean is8char = false, hasUpper = false, hasnum = false, hasSpecialSymbol = false, isSignupClickable = false;
 
 
     @Override
@@ -32,47 +32,120 @@ public class SingUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
-        setContentView (binding.getRoot());
+        setContentView(binding.getRoot());
 
 
         dialog = new ProgressDialog(SingUpActivity.this);
         dialog.setTitle("Creating Account");
         dialog.setMessage("Creating your Account");
 
+        inputChanged();
 
     }
 
-    public void set(View v){
+    public void set(View v) {
         Log.i("testooo", binding.editTextEmail.getText().toString());
-        if (!"".equals(binding.editTextName.getText().toString())
-                && !"".equals(binding.editTextEmail.getText().toString()) &&
-                !"".equals(binding.editTextSurname.getText().toString())
-                && !"".equals(binding.editTextPassword.getText().toString())){
-    saveNewUser(binding.editTextName.getText().toString(), binding.editTextEmail.getText().toString(),
-            binding.editTextSurname.getText().toString(),
-            binding.editTextPassword.getText().toString());
-
-        }else {
-            Toast.makeText(SingUpActivity.this,
-                    "Please fill up the fields", Toast.LENGTH_SHORT).show();
+        if (is8char && hasnum && hasSpecialSymbol && hasUpper) {
+            saveNewUser(binding.editTextName.getText().toString(), binding.editTextEmail.getText().toString(),
+                binding.editTextSurname.getText().toString(),
+                binding.editTextPassword.getText().toString());
+            Intent intent=new Intent(this, SingInActivity.class);
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "la password non rispetta i requisiti di sicurezza",
+                    Toast.LENGTH_LONG).show();
         }
+
     }
 
 
     private void saveNewUser(String firstName, String email, String surname, String password) {
-        AppDatabase db  = AppDatabase.getDbInstance(this.getApplicationContext());
+        AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
 
         User user = new User();
         user.name = firstName;
-        user.surname=surname;
+        user.surname = surname;
 
         user.email = email;
-        user.password=password;
+        user.password = password;
         db.userDao().insertUser(user);
 
         finish();
-        Intent intent=new Intent(this, SingInActivity.class);
+        Intent intent = new Intent(this, SingInActivity.class);
         startActivity(intent);
 
+    }
+
+    @SuppressLint("ResourceType")
+    private void passwordValidate() {
+        String name = binding.editTextName.getText().toString();
+        String surname = binding.editTextSurname.getText().toString();
+        String email = binding.editTextEmail.getText().toString();
+        String password = binding.editTextPassword.getText().toString();
+        if (name.isEmpty()) {
+            if (name.isEmpty()) {
+                binding.editTextName.setError("Please Enter Full name ");
+            }
+            if (email.isEmpty()) {
+                binding.editTextEmail.setError("Please Enter Email ");
+            }
+            if (surname.isEmpty()) {
+                binding.editTextSurname.setError("Please Enter Surname ");
+            }
+            // 8 character
+            if (password.length() >= 8) {
+                is8char = true;
+                binding.card1.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+            } else {
+                is8char = false;
+                binding.card1.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
+            }
+            //number
+            if (password.matches("(.*[0-9].*)")) {
+                hasnum = true;
+                binding.card2.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+            } else {
+                hasUpper = false;
+                binding.card2.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
+            }
+            //upper case
+            if (password.matches("(.*[A-Z].*)")) {
+                hasUpper = true;
+                binding.card3.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+            } else {
+                hasUpper = false;
+                binding.card3.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
+            }
+            //symbol
+            if (password.matches("^(?=.*[_.()$&@]).*$")) {
+                hasSpecialSymbol = true;
+                binding.card4.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+            } else {
+                hasSpecialSymbol = false;
+                binding.card4.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
+            }
+//
+        }
+    }
+
+    private void inputChanged() {
+        binding.editTextPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @SuppressLint("ResourceType")
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                passwordValidate();
+                if (is8char && hasnum && hasSpecialSymbol && hasUpper) {
+                    binding.signUpButton.setBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 }
