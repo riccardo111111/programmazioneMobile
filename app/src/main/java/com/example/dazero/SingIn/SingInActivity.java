@@ -18,7 +18,6 @@ import com.example.dazero.services.ServiceManagerSingleton;
 import com.example.dazero.services.UserServices;
 
 
-
 public class SingInActivity extends AppCompatActivity {
     private static final String TAG = "SignInActivity";
     private ActivitySingInBinding binding;
@@ -48,7 +47,7 @@ public class SingInActivity extends AppCompatActivity {
                 //userServices.createUser("test","test","test","tes");
                 //Toast.makeText(getApplicationContext(),userServices.getUserByMail("enzo").getName(),Toast.LENGTH_LONG).show();
                 //userServices.deleteUserByID(11);
-               // Toast.makeText(getApplicationContext(),userServices.getUserByMailAndPassword("enzo","pircio").getSurname(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(),userServices.getUserByMailAndPassword("enzo","pircio").getSurname(), Toast.LENGTH_LONG).show();
                 Log.i(TAG1, "MyClass.getView() — get item number ");
                 dialog.show();
                 String email = binding.editTextEmail.getText().toString();
@@ -58,17 +57,16 @@ public class SingInActivity extends AppCompatActivity {
                     Toast.makeText(SingInActivity.this, "Please fill up the fields",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    UserServices userServices= new UserServices(getApplicationContext());
+                    UserServices userServices = new UserServices(getApplicationContext());
 
-                    User user =userServices.getUserByMailAndPassword(binding.editTextEmail.getText().toString(),
+                    User user = userServices.getUserByMailAndPassword(binding.editTextEmail.getText().toString(),
                             binding.editTextPassword.getText().toString());
                     Log.i(TAG1, user.toString());
                     Toast.makeText(SingInActivity.this, binding.editTextEmail.getText().toString() +
-                            "   "+ binding.editTextPassword.getText().toString(),
+                                    "   " + binding.editTextPassword.getText().toString(),
                             Toast.LENGTH_SHORT).show();
 
 /*
-                    AppDatabase db = AppDatabase.getDbInstance(getApplicationContext());
                     User user = db.userDao().findProfile(binding.editTextEmail.getText().toString(),
                             binding.editTextPassword.getText().toString());
  */
@@ -78,12 +76,11 @@ public class SingInActivity extends AppCompatActivity {
                         Toast.makeText(SingInActivity.this, "account insesistente",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        AppDatabase db = ServiceManagerSingleton.getInstance(getApplicationContext()).db;
-                        /*if ( db.userDao().findProfileById(user.uid) == null){
-                           // db.userDao().insertUser(user);
-                        }
 
-                         */
+                        AppDatabase db = ServiceManagerSingleton.getInstance(getApplicationContext()).db;
+                        if (db.userDao().findProfileById(user.uid) == null) {
+                            db.userDao().insertUser(user);
+                        }
 
 
                         // Log.i("profilo", user.email);
