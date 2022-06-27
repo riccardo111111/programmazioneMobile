@@ -58,11 +58,15 @@ public class SingInActivity extends AppCompatActivity {
                     Toast.makeText(SingInActivity.this, "Please fill up the fields",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    UserServices userServices= new UserServices(getApplicationContext());
+                    UserServices userServices = new UserServices(getApplicationContext());
 
-                    User user =userServices.getUserByMailAndPassword(binding.editTextEmail.getText().toString(),
+                    User user = userServices.getUserByMailAndPassword(binding.editTextEmail.getText().toString(),
                             binding.editTextPassword.getText().toString());
 
+                    Log.i(TAG1, user.toString());
+                    Toast.makeText(SingInActivity.this, binding.editTextEmail.getText().toString() +
+                                    "   " + binding.editTextPassword.getText().toString(),
+                            Toast.LENGTH_SHORT).show();
 
 /*
                     AppDatabase db = AppDatabase.getDbInstance(getApplicationContext());
@@ -79,12 +83,11 @@ public class SingInActivity extends AppCompatActivity {
                         Toast.makeText(SingInActivity.this, binding.editTextEmail.getText().toString() +
                                         "   "+ binding.editTextPassword.getText().toString(),
                                 Toast.LENGTH_SHORT).show();
-                        AppDatabase db = ServiceManagerSingleton.getInstance(getApplicationContext()).db;
-                        /*if ( db.userDao().findProfileById(user.uid) == null){
-                           // db.userDao().insertUser(user);
-                        }
 
-                         */
+                        AppDatabase db = ServiceManagerSingleton.getInstance(getApplicationContext()).db;
+                        if (db.userDao().findProfileById(user.uid) == null) {
+                            db.userDao().insertUser(user);
+                        }
 
 
                         // Log.i("profilo", user.email);

@@ -44,12 +44,14 @@ public class ServiceManagerSingleton {
 
     public User saveNewUser(int id, String firstName, String email, String surname, String password) {
         User user = new User();
-        user.uid=id;
+        user.uid = id;
         user.name = firstName;
-        user.surname=surname;
+        user.surname = surname;
         user.email = email;
-        user.password=password;
-        db.userDao().insertUser(user);
+        user.password = password;
+        if (db.userDao().findProfileById(user.uid) == null) {
+            db.userDao().insertUser(user);
+        }
         return user;
     }
 
@@ -62,11 +64,10 @@ public class ServiceManagerSingleton {
         return client;
     }
 
-    public StrictMode.ThreadPolicy getSecutityPolicy(){
+    public StrictMode.ThreadPolicy getSecutityPolicy() {
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
-            if(this.policy==null){
+        if (SDK_INT > 8) {
+            if (this.policy == null) {
                 this.policy = new StrictMode.ThreadPolicy.Builder()
                         .permitAll().build();
                 StrictMode.setThreadPolicy(policy);
