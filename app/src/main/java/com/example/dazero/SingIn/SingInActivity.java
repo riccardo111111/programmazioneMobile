@@ -91,7 +91,7 @@ public class SingInActivity extends AppCompatActivity {
                         // Log.i("profilo", user.email);
 
                         Intent i = new Intent(getApplicationContext(), Tabs.class);
-                        i.putExtra("cas", user.uid);
+                        i.putExtra("id", String.valueOf(user.uid));
                         startActivity(i);
                         finish();
                     }

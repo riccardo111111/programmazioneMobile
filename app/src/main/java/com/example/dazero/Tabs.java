@@ -18,8 +18,7 @@ public class Tabs extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-      //  int id= getIntent().getExtras().getInt("id");
-        Toast.makeText(getApplicationContext(),getIntent().getIntExtra("cas",0),Toast.LENGTH_LONG).show();
+      //  int id= getIntent().getExtras().getInt("id")
         tab = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPage);
 
