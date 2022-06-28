@@ -114,7 +114,7 @@ public class MainActivity2 extends AppCompatActivity {
                 int id = getIntent().getIntExtra("id",0);
                //Log.d("main2", BitMapToString(image));
                 BitmapConverter bitmap=new BitmapConverter();
-                String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
+                String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
 
                 resultService.createResult(0,
                         id,
