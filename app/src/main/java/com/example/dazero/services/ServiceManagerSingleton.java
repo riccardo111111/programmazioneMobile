@@ -2,6 +2,7 @@ package com.example.dazero.services;
 
 import android.content.Context;
 import android.os.StrictMode;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -9,8 +10,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.Result;
 import com.example.dazero.db.User;
-
-import java.sql.Blob;
 
 import okhttp3.OkHttpClient;
 
@@ -52,6 +51,8 @@ public class ServiceManagerSingleton {
         user.surname = surname;
         user.email = email;
         user.password = password;
+        Log.d("debuger", String.valueOf(db.userDao().findProfileById(user.uid)));
+
         if (db.userDao().findProfileById(user.uid) == null) {
             db.userDao().insertUser(user);
         }
