@@ -19,14 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DaZero"
         tools:targetApi="31">
-        <service
-            android:name=".ResultService"
-            android:enabled="true"
-            android:exported="true"></service>
-        <service
-            android:name=".UserServices"
-            android:enabled="true"
-            android:exported="true" />
 
         <activity
             android:name=".SingUp.SingUpActivity"

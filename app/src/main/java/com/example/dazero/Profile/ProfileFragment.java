@@ -43,7 +43,7 @@ public class ProfileFragment extends Fragment {
         //Toast.makeText(getActivity(),,Toast.LENGTH_LONG).show();
         AppDatabase db = ServiceManagerSingleton.getInstance(getContext()).db;
 
-        //this.user=db.userDao().findProfileById(getActivity().getIntent().getExtras().getInt("id"));
+        this.user=db.userDao().findProfileById(getActivity().getIntent().getExtras().getInt("id"));
 
         if(user==null){
             displayFragment(view);
