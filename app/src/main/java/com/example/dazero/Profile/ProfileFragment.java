@@ -1,8 +1,5 @@
 package com.example.dazero.Profile;
 
-import static android.content.Intent.getIntent;
-
-import android.content.ClipDescription;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +14,6 @@ import com.example.dazero.R;
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
 import com.example.dazero.services.ServiceManagerSingleton;
-import com.example.dazero.services.UserServices;
 
 
 public class ProfileFragment extends Fragment {
@@ -38,13 +34,10 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view,Bundle savedInstaceState){
-        String id =getActivity().getIntent().getStringExtra("id");
-        Log.d("profile frag",id);
-        //Toast.makeText(getActivity(),,Toast.LENGTH_LONG).show();
+        int id = Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
+        Log.d("profile frag", String.valueOf(id));
         AppDatabase db = ServiceManagerSingleton.getInstance(getContext()).db;
-
-        //this.user=db.userDao().findProfileById(getActivity().getIntent().getExtras().getInt("id"));
-
+        this.user=db.userDao().findProfileById(id);
         if(user==null){
             displayFragment(view);
         }else{
