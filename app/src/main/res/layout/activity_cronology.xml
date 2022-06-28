@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="#00FFFFFF"
+    tools:context=".conology.Cronology"
+    tools:ignore="MissingClass">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/uid"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="center"
+        android:layout_margin="12dp"
+        android:background="@android:color/darker_gray"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="10dp"
+            app:cardPreventCornerOverlap="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:padding="16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/uidNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="30dp"
+                    android:drawablePadding="10dp"
+                    android:fontFamily="@font/almendra"
+                    android:textColor="#000000"
+                    android:textSize="22dp" />
+
+                <ImageView
+                    android:id="@+id/arrowUID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/button_shape" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/whatIsUID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="60dp"
+                    android:fontFamily="@font/almendra"
+                    android:text="what"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="20dp"
+                    android:visibility="visible" />
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/whatIsUID"
+                    android:layout_marginTop="2dp"
+                    android:background="@android:color/darker_gray"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/copyUID"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/line"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/ic_register_hero"
+                    android:fontFamily="@font/almendra"
+                    android:padding="4dp"
+                    android:text="Copy UID"
+                    android:textSize="18dp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="376dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="15dp"
+        android:backgroundTint="#9264DD17"
+        android:padding="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="309dp"
+                android:layout_marginBottom="11dp"
+                android:background="#FFFFFF"
+                android:backgroundTint="#FFFFFF"
+                android:maxWidth="30dp"
+                app:srcCompat="@drawable/avatar" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="150dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="#0078DD34"
+                android:fontFamily="@font/almendra"
+                android:text="Apple Scab" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="39dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#8FF80707"
+                android:shadowRadius="25"
+                android:text="x"
+                android:textSize="25sp"
+                app:cornerRadius="25dp"
+                app:rippleColor="#F30808" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

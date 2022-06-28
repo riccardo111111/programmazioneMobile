@@ -15,9 +15,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.dazero.R;
 import com.example.dazero.db.AppDatabase;
+import com.example.dazero.db.Result;
 import com.example.dazero.db.User;
+import com.example.dazero.services.ResultService;
 import com.example.dazero.services.ServiceManagerSingleton;
 import com.example.dazero.services.UserServices;
+
+import java.util.ArrayList;
 
 
 public class ProfileFragment extends Fragment {
@@ -54,6 +58,17 @@ public class ProfileFragment extends Fragment {
             password.setText(this.user.password);
         }
 
+        ResultService resultService = new ResultService(getContext());
+        ArrayList<Result> results=resultService.getResultByID(Integer.parseInt(id));
+        if(results == null){
+            displayFragment(view);
+        }else{
+            displayFragment(view);
+            searches.setText(results.size()+" searches");
+        }
+
+
+
 
         // Inflate the layout for this fragment
     }
@@ -61,6 +76,7 @@ public class ProfileFragment extends Fragment {
     public void displayFragment(View view){
         mail= (TextView) view.findViewById(R.id.mail);
         password= (TextView) view.findViewById(R.id.password);
+        searches=(TextView) view.findViewById(R.id.search);
     }
 
 }

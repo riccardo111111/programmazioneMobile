@@ -117,7 +117,7 @@ S
                          */
 
                         // Log.i("profilo", user.email);
-
+                        dialog.dismiss();
                         Intent i = new Intent(getApplicationContext(), Tabs.class);
                         i.putExtra("id", String.valueOf(user.uid));
                         startActivity(i);

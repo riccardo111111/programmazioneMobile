@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.dazero.MainActivity2;
 import com.example.dazero.R;
 import com.example.dazero.adapters.ItemViewModel;
+import com.example.dazero.conology.Cronology;
 
 
 public class HomePageFragment extends Fragment {
@@ -52,6 +53,12 @@ public class HomePageFragment extends Fragment {
                     MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             final int ACTIVITY_SELECT_IMAGE = 1234;
             startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+        });
+
+        Button cronologyButton = (Button) view.findViewById(R.id.chronology);
+        cronologyButton.setOnClickListener(v ->{
+            Intent i = new Intent(getContext(), Cronology.class);
+            startActivity(i);
         });
     }
 
