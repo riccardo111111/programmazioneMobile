@@ -143,8 +143,7 @@
                         android:layout_height="20dp"
                         android:layout_gravity="center"
                         app:cardBackgroundColor="#dcdcdc"
-                        app:cardCornerRadius="10dp">
-                    </androidx.cardview.widget.CardView>
+                        app:cardCornerRadius="10dp"></androidx.cardview.widget.CardView>
 
                     <TextView
                         android:layout_width="match_parent"

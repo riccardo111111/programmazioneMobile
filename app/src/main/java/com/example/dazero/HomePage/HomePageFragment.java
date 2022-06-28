@@ -56,6 +56,8 @@ public class HomePageFragment extends Fragment {
 
     private void dispatchTakePictureIntent() {
         Intent intent=new Intent(getActivity(), MainActivity2.class);
+        int id = Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
+        intent.putExtra("id", id);
         getActivity().startActivity(intent);
     }
 
