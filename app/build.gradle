@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    compileSdk 24
+    compileSdk 32
 
     buildFeatures {
         mlModelBinding true
@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.dazero"
-        minSdk 24
+        minSdk 26
         targetSdk 32
         versionCode 1
         versionName "1.0"

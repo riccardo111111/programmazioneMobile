@@ -27,7 +27,7 @@ public class ResultService extends Service {
             = MediaType.parse("application/json; charset=utf-8");
 
     OkHttpClient client;
-    String host = "10.0.2.2";
+    String host = "192.168.1.5";
     String port = "8080";
     String getAllResults = "http://" + host + ":" + port + "/serverMobile/rest/results/all";
     String getResultById = "http://" + host + ":" + port + "/serverMobile/rest/results/";

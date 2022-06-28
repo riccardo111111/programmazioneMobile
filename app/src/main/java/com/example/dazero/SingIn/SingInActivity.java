@@ -14,6 +14,7 @@ import com.example.dazero.Tabs;
 import com.example.dazero.databinding.ActivitySingInBinding;
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
+import com.example.dazero.services.ResultService;
 import com.example.dazero.services.ServiceManagerSingleton;
 import com.example.dazero.services.UserServices;
 

@@ -59,8 +59,8 @@ public class ProfileFragment extends Fragment {
     }
 
     public void displayFragment(View view){
-        mail= view.findViewById(R.id.mail);
-        password= view.findViewById(R.id.password);
+        mail= (TextView) view.findViewById(R.id.mail);
+        password= (TextView) view.findViewById(R.id.password);
     }
 
 }

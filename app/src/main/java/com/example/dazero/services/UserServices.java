@@ -27,7 +27,7 @@ public class UserServices extends Service {
             = MediaType.parse("application/json; charset=utf-8");
 
     OkHttpClient client;
-    String host = "192.168.198.232";
+    String host = "192.168.1.5";
     //String host = "10.0.2.2";
     String port = "8080";
     String getAllUsers = "http://" + host + ":" + port + "/serverMobile/rest/users/all";
