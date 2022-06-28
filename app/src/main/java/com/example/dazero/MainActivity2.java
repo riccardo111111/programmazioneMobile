@@ -35,12 +35,13 @@ import java.nio.ByteOrder;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
-public class MainActivity2 extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity{
 
     TextView result, confidence;
     ImageView imageView;
     Button picture, home, save;
     int imageSize = 224;
+    String r;
     Bitmap image;
     BitmapConverter bitmapConverter;
     int[] lista=new int[3];
@@ -156,21 +157,6 @@ public class MainActivity2 extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void startBitMapConverter(Bitmap Image){
-
-        Intent i = new Intent(this, BitmapConverter.class);
-        i.putExtra("image",Image);
-        startService(i);  // For the service.
-
-
-
-    }
-
-    public void stopBitMapConverter(){
-
-
-    }
-
     private void classifyImage(Bitmap bitmap) {
         try {
             ModelTFLITE model = ModelTFLITE.newInstance(MainActivity2.this);
@@ -216,15 +202,14 @@ public class MainActivity2 extends AppCompatActivity {
                 }
             }
 
-
             result.setText(classes[maxPos]);
             String s = "";
-            this.lista[0] =maxPos;
-            this.lista[1] =second;
-            this.lista[2] =third;
+            int[] lista = {maxPos, second, third};
 
+            this.r+=classes[maxPos]+","+ confidences[maxPos] * 100;
             for (int i = 0; i < 3; i++) {
                 s += String.format("%s: %.1f%%\n", classes[lista[i]], confidences[lista[i]] * 100);
+              //  this.r+=(classes[lista[i]]+","+ confidences[lista[i]] * 100+".");
             }
 
 
