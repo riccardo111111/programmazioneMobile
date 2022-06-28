@@ -42,6 +42,7 @@ public class MainActivity2 extends AppCompatActivity {
     Button picture, home, save;
     int imageSize = 224;
     Bitmap image;
+    BitmapConverter bitmapConverter;
     int[] lista=new int[3];
     String[] classes = {"Apple___Apple_scab", "Apple___Black_rot", "Apple___Cedar_apple_rust",
             "Apple___healthy", "Blueberry___healthy", "Cherry_(including_sour)___Powdery_mildew",
@@ -110,18 +111,22 @@ public class MainActivity2 extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ResultService resultService= new ResultService(getApplicationContext());
-                int id = getIntent().getIntExtra("id",0);
-               //Log.d("main2", BitMapToString(image));
-                BitmapConverter bitmap=new BitmapConverter();
-                String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
+                new Thread(new Runnable() {
+                    public void run() {
+                        ResultService resultService= new ResultService(getApplicationContext());
+                        int id = getIntent().getIntExtra("id",0);
+                        BitmapConverter bitmap=new BitmapConverter(image);
+                        String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
 
-                resultService.createResult(0,
-                        id,
-                        timeStamp,
-                        bitmap.BitMapToString(image),
-                        String.valueOf(lista[0])
-                        ,null);
+                        resultService.createResult(0,
+                                id,
+                                timeStamp,
+                                bitmap.BitMapToString(),
+                                String.valueOf(lista[0])
+                                ,null);
+                    }
+                }).start();
+
 
 
             }
@@ -149,6 +154,21 @@ public class MainActivity2 extends AppCompatActivity {
 
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void startBitMapConverter(Bitmap Image){
+
+        Intent i = new Intent(this, BitmapConverter.class);
+        i.putExtra("image",Image);
+        startService(i);  // For the service.
+
+
+
+    }
+
+    public void stopBitMapConverter(){
+
+
     }
 
     private void classifyImage(Bitmap bitmap) {

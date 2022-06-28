@@ -1,27 +1,59 @@
 package com.example.dazero.services;
 
-import android.app.Service;
-import android.content.Intent;
+
+import android.content.Context;
+
 import android.graphics.Bitmap;
-import android.os.IBinder;
+import android.util.Log;
+
 
 import java.io.ByteArrayOutputStream;
 
-public class BitmapConverter extends Service {
-    public BitmapConverter() {
+public class BitmapConverter implements Runnable {
+     private volatile String imageCoverted;
+     private volatile Thread bitmapThread;
+     private volatile Bitmap image;
+     private volatile Context context;
+    public BitmapConverter(Bitmap image) {
+        setBitmap(image);
     }
 
-    public String BitMapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
 
-        String temp = "0x";
-        for(int i=0 ; i< b.length;i++){
-            temp+=byteToHex(b[i]);
+    public void sendPhoto(){
+
+    }
+    public String getImageCoverted(){
+        return this.imageCoverted;
+    }
+
+    public void setContext(Context context){
+        this.context=context;
+    }
+
+    public void setBitmap(Bitmap image){
+        this.image=image;
+    }
+
+
+    public String BitMapToString(){
+
+        if(this.image==null){
+            Log.d("image","nulllll");
+        }else{
+            Log.d("image","ci sta");
         }
 
-        return temp;
+            ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+            this.image.compress(Bitmap.CompressFormat.PNG,100, baos);
+            byte [] b=baos.toByteArray();
+
+            String temp = "0x";
+            for(int i=0 ; i< b.length;i++){
+                temp+=byteToHex(b[i]);
+            }
+
+            Log.d("image",temp);
+       return temp;
     }
 
     public String byteToHex(byte num) {
@@ -31,9 +63,9 @@ public class BitmapConverter extends Service {
         return new String(hexDigits);
     }
 
+
+
     @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void run() {
     }
 }
