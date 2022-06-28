@@ -195,9 +195,10 @@ public class MainActivity2 extends AppCompatActivity{
             String s = "";
             int[] lista = {maxPos, second, third};
 
+            this.r+=classes[maxPos]+","+ confidences[maxPos] * 100;
             for (int i = 0; i < 3; i++) {
                 s += String.format("%s: %.1f%%\n", classes[lista[i]], confidences[lista[i]] * 100);
-                this.r+=(classes[lista[i]]+","+ confidences[lista[i]] * 100+".");
+              //  this.r+=(classes[lista[i]]+","+ confidences[lista[i]] * 100+".");
             }
 
 
