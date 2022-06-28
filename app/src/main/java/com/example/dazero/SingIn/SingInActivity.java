@@ -104,7 +104,7 @@ public class SingInActivity extends AppCompatActivity {
                          */
 
 
-
+                        /*
                         ResultService resultService= new ResultService(getApplicationContext());
                         resultService.createResult(0,
                                 21,
@@ -113,6 +113,8 @@ public class SingInActivity extends AppCompatActivity {
                                 "eeeee",
                                 null);
 
+S
+                         */
 
                         // Log.i("profilo", user.email);
 

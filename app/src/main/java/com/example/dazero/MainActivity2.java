@@ -9,6 +9,8 @@ import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,14 +22,18 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dazero.ml.ModelTFLITE;
+import com.example.dazero.services.BitmapConverter;
 import com.example.dazero.services.ResultService;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -105,12 +111,25 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ResultService resultService= new ResultService(getApplicationContext());
-                int id = Integer.parseInt(getIntent().getStringExtra("id"));
-                resultService.createResult(0, id,  "2022-06-04", image.toString(),
-                        this.lista[0],);
+                int id = getIntent().getIntExtra("id",0);
+               //Log.d("main2", BitMapToString(image));
+                BitmapConverter bitmap=new BitmapConverter();
+                String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
+
+                resultService.createResult(0,
+                        id,
+                        timeStamp,
+                        bitmap.BitMapToString(image),
+                        String.valueOf(lista[0])
+                        ,null);
+
+
             }
         });
     }
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -140,7 +159,7 @@ public class MainActivity2 extends AppCompatActivity {
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(4 * imageSize * imageSize * 3);
-            byteBuffer.order(ByteOrder.nativeOrder());
+            //byteBuffer.order(ByteOrder.nativeOrder());
 
             int[] intValues = new int[imageSize * imageSize];
 
