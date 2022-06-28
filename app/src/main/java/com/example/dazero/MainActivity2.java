@@ -4,13 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,21 +25,18 @@ import com.example.dazero.services.ResultService;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 
-public class MainActivity2 extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity{
 
     TextView result, confidence;
     ImageView imageView;
     Button picture, home, save;
     int imageSize = 224;
+    String r;
     Bitmap image;
-    int[] lista=new int[3];
     String[] classes = {"Apple___Apple_scab", "Apple___Black_rot", "Apple___Cedar_apple_rust",
             "Apple___healthy", "Blueberry___healthy", "Cherry_(including_sour)___Powdery_mildew",
             "Cherry_(including_sour)___healthy", "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
@@ -116,18 +110,19 @@ public class MainActivity2 extends AppCompatActivity {
                 BitmapConverter bitmap=new BitmapConverter();
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
 
+                StringBuilder result= new StringBuilder();
+
                 resultService.createResult(0,
                         id,
                         timeStamp,
                         bitmap.BitMapToString(image),
-                        String.valueOf(lista[0])
+                        r
                         ,null);
 
 
             }
         });
     }
-
 
 
     @Override
@@ -196,15 +191,13 @@ public class MainActivity2 extends AppCompatActivity {
                 }
             }
 
-
             result.setText(classes[maxPos]);
             String s = "";
-            this.lista[0] =maxPos;
-            this.lista[1] =second;
-            this.lista[2] =third;
+            int[] lista = {maxPos, second, third};
 
             for (int i = 0; i < 3; i++) {
                 s += String.format("%s: %.1f%%\n", classes[lista[i]], confidences[lista[i]] * 100);
+                this.r+=(classes[lista[i]]+","+ confidences[lista[i]] * 100+".");
             }
 
 
