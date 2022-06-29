@@ -2,24 +2,19 @@ package com.example.dazero.conology;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.os.Bundle;
-import android.transition.TransitionManager;
-import android.util.Log;
-import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageSwitcher;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.dazero.R;
+import com.example.dazero.adapters.ListAdapter;
+
 import com.example.dazero.db.Result;
-import com.example.dazero.db.ResultDao;
 import com.example.dazero.services.ResultService;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -28,6 +23,8 @@ public class Cronology extends AppCompatActivity {
     TextInputLayout textInputLayout;
     AutoCompleteTextView autoCompleteTextView;
     ResultService resultService;
+    ListView listView;
+
     int idUser;
 
     @Override
@@ -39,6 +36,11 @@ public class Cronology extends AppCompatActivity {
         textInputLayout=findViewById(R.id.menu);
         autoCompleteTextView = findViewById(R.id.items);
         resultService=new ResultService(getApplicationContext());
+        listView= findViewById(R.id.list_of_chronology_card);
+        Button deleteAction =findViewById(R.id.delete_action);
+        Button viewAction =findViewById(R.id.view_button);
+
+
 
         String [] items ={ "Month","Week","All"};
         ArrayAdapter<String> itemAdapter= new ArrayAdapter<>(Cronology.this,R.layout.item,items);
@@ -49,10 +51,38 @@ public class Cronology extends AppCompatActivity {
         showResults();
     }
 
-    public void showResults(){
-        this.idUser= getIntent().getIntExtra("id",0);
-        ArrayList<Result> results= resultService.getResultByID(this.idUser);
-        Log.d("results",String.valueOf(results.size()));
 
+
+    public void showResults(){
+
+
+                if(showAllResults()==null){
+                    Toast.makeText(getApplicationContext(), " take some photo first", Toast.LENGTH_LONG).show();
+                }else{
+                    ListAdapter listAdapter = new ListAdapter(getApplicationContext(),showAllResults());
+                    listView.setAdapter(listAdapter);
+
+                }
+
+
+
+
+
+    }
+
+
+    public ArrayList<Result> showAllResults(){
+        idUser= getIntent().getIntExtra("id",0);
+        return  resultService.getResultByID(idUser);
+    }
+
+    public ArrayList<Result> showResultOfTheMonth(){
+        idUser= getIntent().getIntExtra("id",0);
+        return  resultService.getResultByID(idUser);
+    }
+
+    public ArrayList<Result> showResultOfTheWeek(){
+        idUser= getIntent().getIntExtra("id",0);
+        return  resultService.getResultByID(idUser);
     }
 }

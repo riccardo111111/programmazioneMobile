@@ -141,7 +141,7 @@ public class ResultService extends Service {
         String bytes = obj.getString("bytes");
         String label = obj.getString("label");
 
-        //Log.d("object Resutl", obj.toString());
+        Log.d("object Resutl", obj.toString());
         return ServiceManagerSingleton.getInstance(this.context).
                 saveNewResult(idResult, idUser, date, bytes.getBytes(), label,null);
 

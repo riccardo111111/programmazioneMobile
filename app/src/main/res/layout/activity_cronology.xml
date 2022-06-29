@@ -28,18 +28,19 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/list_of_chronology_card"
         android:layout_width="409dp"
         android:layout_height="674dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menu"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/menu"
+        tools:listitem="@layout/cronology_card" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
