@@ -63,7 +63,7 @@ public class ResultService extends Service {
 
         try {
             result = run(getResultById + id);
-            Log.d("userbyId", result);
+
 
             if (convertResultToUserList(result).size() == 0)
                 return null;
@@ -126,7 +126,7 @@ public class ResultService extends Service {
 
         try {
             Response response = client.newCall(request).execute();
-            Log.d("create user ", response.toString());
+            //Log.d("create user ", response.toString());
             // Do something with the response.
         } catch (IOException e) {
             e.printStackTrace();
@@ -141,7 +141,7 @@ public class ResultService extends Service {
         String bytes = obj.getString("bytes");
         String label = obj.getString("label");
 
-        Log.d("object Resutl", obj.toString());
+        //Log.d("object Resutl", obj.toString());
         return ServiceManagerSingleton.getInstance(this.context).
                 saveNewResult(idResult, idUser, date, bytes.getBytes(), label,null);
 
@@ -153,7 +153,7 @@ public class ResultService extends Service {
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
                 ResultList.add(convertJsonObjectToUser(jsonArray.getJSONObject(i)));
-                Log.d("parse json", i + " " + jsonArray.getJSONObject(i));
+                //Log.d("parse json", i + " " + jsonArray.getJSONObject(i));
             }
         } catch (JSONException e) {
             e.printStackTrace();

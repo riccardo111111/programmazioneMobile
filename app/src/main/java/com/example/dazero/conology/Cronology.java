@@ -6,70 +6,53 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageSwitcher;
+import android.widget.Toast;
 
 import com.example.dazero.R;
+import com.example.dazero.db.Result;
 import com.example.dazero.db.ResultDao;
 import com.example.dazero.services.ResultService;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
 
 public class Cronology extends AppCompatActivity {
-
-    MaterialCardView uid;
-    int click = 0;
+    TextInputLayout textInputLayout;
+    AutoCompleteTextView autoCompleteTextView;
+    ResultService resultService;
+    int idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cronology);
 
-        View whatIsUID=findViewById(R.id.whatIsUID);
-        View line= findViewById(R.id.line);
-        View copyUID= findViewById(R.id.copyUID);
-        ImageSwitcher arrowUID = new ImageSwitcher(getApplicationContext());
-        //....
-        uid = findViewById(R.id.uid);
-        uid.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                TransitionManager.beginDelayedTransition(uid);
 
+        textInputLayout=findViewById(R.id.menu);
+        autoCompleteTextView = findViewById(R.id.items);
+        resultService=new ResultService(getApplicationContext());
 
-                if (click % 2 == 0) {
-                    whatIsUID.animate()
-                            .alpha(1f)
-                            .setDuration(300)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    whatIsUID.setVisibility(View.VISIBLE);
+        String [] items ={ "Month","Week","All"};
+        ArrayAdapter<String> itemAdapter= new ArrayAdapter<>(Cronology.this,R.layout.item,items);
+        autoCompleteTextView.setAdapter(itemAdapter);
+        autoCompleteTextView.setOnItemClickListener(
 
-                                    line.setVisibility(View.VISIBLE);
+                (parent, view, position, id) -> Toast.makeText(getApplicationContext(),(String)parent.getItemAtPosition(position),Toast.LENGTH_LONG).show());
+        showResults();
+    }
 
-                                    copyUID.setVisibility(View.VISIBLE);
-                                    super.onAnimationEnd(animation);
-                                }
-                            });
-                    arrowUID.setImageResource(R.drawable.avatar);
-                } else {
-                    whatIsUID.animate()
-                            .alpha(0f)
-                            .setDuration(300)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    whatIsUID.setVisibility(View.GONE);
-                                    line.setVisibility(View.GONE);
-                                    copyUID.setVisibility(View.GONE);
-                                    super.onAnimationEnd(animation);
-                                }
-                            });
-                    arrowUID.setImageResource(R.drawable.about_us);
-                }
-                click++;
-            }
-        });
+    public void showResults(){
+        this.idUser= getIntent().getIntExtra("id",0);
+        ArrayList<Result> results= resultService.getResultByID(this.idUser);
+        Log.d("results",String.valueOf(results.size()));
 
-        //....
     }
 }

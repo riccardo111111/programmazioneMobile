@@ -58,6 +58,9 @@ public class HomePageFragment extends Fragment {
         Button cronologyButton = (Button) view.findViewById(R.id.chronology);
         cronologyButton.setOnClickListener(v ->{
             Intent i = new Intent(getContext(), Cronology.class);
+            int id = Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
+            Log.d("cronology",String.valueOf(id));
+            i.putExtra("id", id);
             startActivity(i);
         });
     }
@@ -65,7 +68,6 @@ public class HomePageFragment extends Fragment {
     private void dispatchTakePictureIntent() {
         Intent intent=new Intent(getActivity(), MainActivity2.class);
         int id = Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
-        Log.d("homepage",String.valueOf(id));
         intent.putExtra("id", id);
         startActivity(intent);
     }
