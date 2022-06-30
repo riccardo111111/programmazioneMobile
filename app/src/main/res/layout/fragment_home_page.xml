@@ -12,15 +12,17 @@
         android:id="@+id/materialToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="120dp"
         android:background="#CC689F38"
         android:minHeight="100dp"
         android:textAlignment="center"
         android:textDirection="inherit"
         android:theme="?attr/actionBarTheme"
         app:buttonGravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
@@ -37,26 +39,33 @@
         android:textDirection="inherit"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
-        android:layout_width="409dp"
-        android:layout_height="629dp"
-        android:layout_marginTop="101dp"
-
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/materialToolbar">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/log" />
 
         <Button
             android:id="@+id/takePhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="91dp"
-            android:layout_marginBottom="337dp"
-            android:backgroundTint="#CC689F38"
+            android:layout_gravity="center"
 
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#CC689F38"
             android:fontFamily="@font/news_cycle"
             android:text="Take Photo"
             android:textSize="20sp"
@@ -67,10 +76,8 @@
             android:id="@+id/searchPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="75dp"
-            android:layout_marginBottom="257dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:backgroundTint="#CC689F38"
             android:fontFamily="@font/news_cycle"
             android:text="Search Photo"
@@ -79,12 +86,10 @@
 
         <Button
             android:id="@+id/chronology"
-            android:layout_width="214dp"
-            android:layout_height="47dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="86dp"
-            android:layout_marginBottom="177dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:backgroundTint="#CC689F38"
             android:fontFamily="@font/news_cycle"
             android:text="Cronology"
@@ -92,17 +97,6 @@
             app:icon="@drawable/cronology"
             app:iconSize="30dp"
             tools:ignore="TouchTargetSizeCheck" />
-
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="309dp"
-            android:layout_height="511dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="35dp"
-            android:layout_marginBottom="331dp"
-            android:src="@drawable/flower_logo" />
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

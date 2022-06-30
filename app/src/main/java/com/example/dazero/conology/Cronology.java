@@ -2,25 +2,19 @@ package com.example.dazero.conology;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.example.dazero.R;
 import com.example.dazero.adapters.ListAdapter;
 
+import com.example.dazero.R;
+
 import com.example.dazero.db.Result;
-import com.example.dazero.services.BitmapConverter;
 import com.example.dazero.services.ResultService;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.type.DateTime;
 
 
 import java.text.ParseException;
@@ -34,8 +28,7 @@ public class Cronology extends AppCompatActivity {
     AutoCompleteTextView autoCompleteTextView;
     ResultService resultService;
     ListView listView;
-    Button deleteAction ;
-    Button viewAction ;
+
 
     int idUser;
 
@@ -49,18 +42,22 @@ public class Cronology extends AppCompatActivity {
         autoCompleteTextView =(AutoCompleteTextView) findViewById(R.id.items);
         resultService=new ResultService(getApplicationContext());
         listView= findViewById(R.id.list_of_chronology_card);
-        deleteAction =findViewById(R.id.delete_action);
-        viewAction =findViewById(R.id.view_button);
+
 
 
 
         String [] items ={ "Month","Week","All"};
         ArrayAdapter<String> itemAdapter= new ArrayAdapter<>(getApplicationContext(),R.layout.item,items);
         autoCompleteTextView.setAdapter(itemAdapter);
+        adatptList(showAllResults());
         Log.d("inside click","yeaasdasdasdasdaa before pos ");
-        adatptList(showResultOfTheWeek());
+        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+            listView.removeAllViewsInLayout();
+            showResults((String) parent.getItemAtPosition(position));
+        });
 
-       
+
+
 
     }
 
@@ -105,11 +102,10 @@ public class Cronology extends AppCompatActivity {
     }
 
     public void adatptList(ArrayList<Result> array){
-        new Thread(new Runnable() {
-            public void run() {
+
                 ListAdapter listAdapter = new ListAdapter(getApplicationContext(),array);
                 listView.setAdapter(listAdapter);
-        }}).start();
+
 
     }
 
@@ -192,12 +188,5 @@ public class Cronology extends AppCompatActivity {
         return !(testDate.before(startDate) || testDate.after(endDate));
     }
 
-    public void manageButtons(int i ,ArrayList<Result> array){
-        int finalI = i;
-        deleteAction.setOnClickListener(v ->
-                resultService.deleteResultByID(array.get(finalI).idResult));
-        viewAction.setOnClickListener(v ->{}
-                //resultService.deleteResultByID(array.get(finalI).idResult
-        );
-    }
+
 }
