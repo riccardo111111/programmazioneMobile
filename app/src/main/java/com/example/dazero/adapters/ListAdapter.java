@@ -39,7 +39,8 @@ public class ListAdapter extends ArrayAdapter<Result> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Result result = getItem(position);
+        Result result;
+        result=getItem(position);
 
         if(convertView==null){
             convertView= LayoutInflater.from(getContext()).inflate(R.layout.cronology_card,parent,false);
@@ -59,6 +60,7 @@ public class ListAdapter extends ArrayAdapter<Result> {
         title.setText(result.idResult+"");
         date.setText(result.date);
         description.setText(result.labels);
+        resultService = new ResultService(getContext());
         deleteAction.setOnClickListener(v -> { resultService.deleteResultByID(result.idResult);
             Toast.makeText(getContext(),"Search canceled id:"+result.idResult,Toast.LENGTH_LONG).show();
         });

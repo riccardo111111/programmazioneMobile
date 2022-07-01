@@ -16,5 +16,7 @@ public class Result {
     public String date;
     public byte[] bytes;
 
+    public Result(){}
+
 
 }
