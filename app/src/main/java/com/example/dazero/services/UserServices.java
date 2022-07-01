@@ -27,8 +27,8 @@ public class UserServices extends Service {
             = MediaType.parse("application/json; charset=utf-8");
 
     OkHttpClient client;
-    String host = "10.0.2.2";
-    //String host= "192.168.1.178";
+    //String host = "10.0.2.2";
+    String host= "192.168.1.178";
     String port = "8080";
     String getAllUsers = "http://" + host + ":" + port + "/serverMobile/rest/users/all";
     String getUserById = "http://" + host + ":" + port + "/serverMobile/rest/users/";
@@ -144,7 +144,7 @@ public class UserServices extends Service {
         }
         RequestBody formBody = RequestBody.create(jsonUser.toString(), JSON);
         Request request = new Request.Builder()
-                .url(createUser)
+                .url(updateUser)
                 .post(formBody)
                 .build();
         try {
@@ -156,17 +156,17 @@ public class UserServices extends Service {
         }
     }
 
-    public void createUser(String name, String surname, String password, String mail) {
+    public void createUser(User user) {
         OkHttpClient client = new OkHttpClient();
 
 
         JSONObject jsonUser = new JSONObject();
         try {
             jsonUser.put("id", 0);
-            jsonUser.put("name", name);
-            jsonUser.put("surname", surname);
-            jsonUser.put("password", password);
-            jsonUser.put("mail", mail);
+            jsonUser.put("name", user.name);
+            jsonUser.put("surname", user.surname);
+            jsonUser.put("password", user.password);
+            jsonUser.put("mail", user.email);
 
         } catch (JSONException e) {
             e.printStackTrace();

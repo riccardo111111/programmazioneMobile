@@ -67,6 +67,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextName"
+                        android:importantForAutofill="noExcludeDescendants"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Name"
@@ -83,6 +84,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextSurname"
+                        android:importantForAutofill="noExcludeDescendants"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/login_surname_hint"
@@ -99,6 +101,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextEmail"
+                        android:importantForAutofill="noExcludeDescendants"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/login_email_hint"
@@ -115,6 +118,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextPassword"
+                        android:importantForAutofill="noExcludeDescendants"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/login_password_hint"
@@ -262,6 +266,21 @@
                     android:paddingRight="70dp"
                     android:paddingBottom="10dp"
                     android:text="Sign Up"
+                    android:textAllCaps="false"
+                    app:backgroundTint="@color/red" />
+
+                <Button
+                    android:id="@+id/signUp_button2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_shape"
+                    android:paddingLeft="70dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="70dp"
+                    android:paddingBottom="10dp"
+                    android:text="delete account"
                     android:textAllCaps="false"
                     app:backgroundTint="@color/red" />
 

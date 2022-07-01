@@ -1,11 +1,13 @@
 package com.example.dazero.Profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dazero.SingIn.SingInActivity;
 import com.example.dazero.databinding.ActivityProfileSettingsBinding;
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
@@ -35,8 +37,20 @@ public class ProfileSettings extends AppCompatActivity {
 
         binding.signUpButton.setOnClickListener(
                 v -> {
+                    user.name = binding.editTextName.getText().toString();
+                    user.email = binding.editTextEmail.getText().toString();
+                    user.surname = binding.editTextSurname.getText().toString();
+                    user.password = binding.editTextPassword.getText().toString();
                     userServices.updateUser(user);
-                    Toast.makeText(userServices, "update User", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileSettings.this, "update User", Toast.LENGTH_SHORT).show();
                 });
+
+        binding.signUpButton2.setOnClickListener(
+                v -> {
+                    userServices.deleteUserByID(Integer.parseInt(id));
+                    Intent intent =new Intent(ProfileSettings.this, SingInActivity.class);
+                    startActivity(intent);
+                }
+        );
     }
 }

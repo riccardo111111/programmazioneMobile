@@ -18,6 +18,7 @@ import com.example.dazero.SingIn.SingInActivity;
 import com.example.dazero.databinding.ActivitySignUpBinding;
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
+import com.example.dazero.services.UserServices;
 
 public class SingUpActivity extends AppCompatActivity {
 
@@ -62,6 +63,7 @@ public class SingUpActivity extends AppCompatActivity {
 
     private void saveNewUser(String firstName, String email, String surname, String password) {
         AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
+        UserServices userServices = new UserServices(getApplicationContext());
 
         User user = new User();
         user.name = firstName;
@@ -70,6 +72,7 @@ public class SingUpActivity extends AppCompatActivity {
         user.email = email;
         user.password = password;
         db.userDao().insertUser(user);
+        userServices.createUser(user);
 
         finish();
         Intent intent = new Intent(this, SingInActivity.class);
