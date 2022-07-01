@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +24,8 @@ public class DetailedView extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_view);
         instantiateElements();
         placeData();
+        Log.d(" detailed", " onCreate");
+
 
     }
 
@@ -31,13 +34,17 @@ public class DetailedView extends AppCompatActivity {
         plantType.setText(i.getStringExtra("labels"));
         plantSickness.setText(i.getStringExtra("labels"));
         accuracy.setText("58.9%");
+        Log.d(" detailed", " placeData");
+
     }
 
     public void instantiateElements(){
          plantType = findViewById(R.id.plant_type);
          plantSickness = findViewById(R.id.sickness);
-         plantImage = findViewById(R.id.image);
+        // plantImage = (ImageView) findViewById(R.id.image);
          accuracy = findViewById(R.id.accuracy);
+        Log.d(" detailed", " instantiateElements");
+
 
     }
 }
