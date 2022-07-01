@@ -118,11 +118,10 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextPassword"
-                        android:importantForAutofill="noExcludeDescendants"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/login_password_hint"
-                        android:inputType="textPassword"
+                        android:importantForAutofill="noExcludeDescendants"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
