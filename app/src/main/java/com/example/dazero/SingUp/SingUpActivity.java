@@ -39,6 +39,7 @@ public class SingUpActivity extends AppCompatActivity {
         dialog.setTitle("Creating Account");
         dialog.setMessage("Creating your Account");
 
+        Log.d("Log", "SingUp1");
         inputChanged();
 
     }
@@ -47,11 +48,11 @@ public class SingUpActivity extends AppCompatActivity {
         Log.i("testooo", binding.editTextEmail.getText().toString());
         if (is8char && hasnum && hasSpecialSymbol && hasUpper) {
             saveNewUser(binding.editTextName.getText().toString(), binding.editTextEmail.getText().toString(),
-                binding.editTextSurname.getText().toString(),
-                binding.editTextPassword.getText().toString());
-            Intent intent=new Intent(this, SingInActivity.class);
+                    binding.editTextSurname.getText().toString(),
+                    binding.editTextPassword.getText().toString());
+            Intent intent = new Intent(this, SingInActivity.class);
             startActivity(intent);
-        }else{
+        } else {
             Toast.makeText(this, "la password non rispetta i requisiti di sicurezza",
                     Toast.LENGTH_LONG).show();
         }
@@ -82,54 +83,58 @@ public class SingUpActivity extends AppCompatActivity {
         String surname = binding.editTextSurname.getText().toString();
         String email = binding.editTextEmail.getText().toString();
         String password = binding.editTextPassword.getText().toString();
+
         if (name.isEmpty()) {
-            if (name.isEmpty()) {
-                binding.editTextName.setError("Please Enter Full name ");
-            }
-            if (email.isEmpty()) {
-                binding.editTextEmail.setError("Please Enter Email ");
-            }
-            if (surname.isEmpty()) {
-                binding.editTextSurname.setError("Please Enter Surname ");
-            }
-            // 8 character
-            if (password.length() >= 8) {
-                is8char = true;
-                binding.card1.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
-            } else {
-                is8char = false;
-                binding.card1.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
-            }
-            //number
-            if (password.matches("(.*[0-9].*)")) {
-                hasnum = true;
-                binding.card2.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
-            } else {
-                hasUpper = false;
-                binding.card2.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
-            }
-            //upper case
-            if (password.matches("(.*[A-Z].*)")) {
-                hasUpper = true;
-                binding.card3.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
-            } else {
-                hasUpper = false;
-                binding.card3.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
-            }
-            //symbol
-            if (password.matches("^(?=.*[_.()$&@]).*$")) {
-                hasSpecialSymbol = true;
-                binding.card4.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
-            } else {
-                hasSpecialSymbol = false;
-                binding.card4.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
-            }
-//
+            binding.editTextName.setError("Please Enter Full name ");
         }
+        if (email.isEmpty()) {
+            binding.editTextEmail.setError("Please Enter Email ");
+        }
+        if (surname.isEmpty()) {
+            binding.editTextSurname.setError("Please Enter Surname ");
+        }
+        // 8 character
+        if (password.length() >= 8) {
+            is8char = true;
+            binding.card1.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+            Log.d("Log", "SingUp5");
+
+        } else {
+            is8char = false;
+            binding.card1.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
+        }
+        //number
+        if (password.matches("(.*[0-9].*)")) {
+            hasnum = true;
+            binding.card2.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+        } else {
+            hasUpper = false;
+            binding.card2.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
+        }
+        //upper case
+        if (password.matches("(.*[A-Z].*)")) {
+            hasUpper = true;
+            binding.card3.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+        } else {
+            hasUpper = false;
+            binding.card3.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
+        }
+        //symbol
+        if (password.matches("^(?=.*[_.()$&@]).*$")) {
+            hasSpecialSymbol = true;
+            binding.card4.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+        } else {
+            hasSpecialSymbol = false;
+            binding.card4.setCardBackgroundColor(Color.parseColor(getString(R.color.colorGrey)));
+        }
+        Log.d("Log", "SingUp6");
     }
 
     private void inputChanged() {
+        Log.d("Log", "SingUp2");
+
         binding.editTextPassword.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -137,7 +142,11 @@ public class SingUpActivity extends AppCompatActivity {
             @SuppressLint("ResourceType")
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("Log", "SingUp3");
+
                 passwordValidate();
+                Log.d("Log", "SingUp4");
+
                 if (is8char && hasnum && hasSpecialSymbol && hasUpper) {
                     binding.signUpButton.setBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
                 }
