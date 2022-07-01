@@ -10,10 +10,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dazero.R;
+import com.example.dazero.adapters.ListAdapter;
 import com.example.dazero.db.Result;
 import com.example.dazero.services.ResultService;
 import com.google.android.material.textfield.TextInputLayout;
-import com.example.dazero.adapters.ListAdapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,7 +39,6 @@ public class Cronology extends AppCompatActivity {
         autoCompleteTextView =(AutoCompleteTextView) findViewById(R.id.items);
         resultService=new ResultService(getApplicationContext());
         listView= findViewById(R.id.list_of_chronology_card);
-
 
         String [] items ={ "Month","Week","All"};
         ArrayAdapter<String> itemAdapter= new ArrayAdapter<>(getApplicationContext(),R.layout.item,items);
@@ -86,6 +85,7 @@ public class Cronology extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"elements not present",Toast.LENGTH_LONG).show();
         }
     }
+
 
     public ArrayList<Result> showAllResults(){
         idUser= getIntent().getIntExtra("id",0);

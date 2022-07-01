@@ -87,7 +87,6 @@ public class ResultService extends Service {
             e.printStackTrace();
         }
 
-
     }
 
     public String createDelete(String url) throws IOException {
