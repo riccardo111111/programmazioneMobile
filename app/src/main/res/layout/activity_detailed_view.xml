@@ -48,7 +48,7 @@
                 android:layout_height="250dp"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="@string/detail"
-                app:srcCompat="@drawable/courses" />
+                app:srcCompat="@drawable/button_shape" />
 
             <TextView
                 android:id="@+id/textView2"

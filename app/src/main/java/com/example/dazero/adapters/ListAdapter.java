@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 
 public class ListAdapter extends ArrayAdapter<Result> {
     ResultService resultService;
+    String LOG= " debug";
 
     public ListAdapter(@NonNull Context context, ArrayList<Result> results) {
         super(context, R.layout.cronology_card,results);
@@ -66,19 +68,23 @@ public class ListAdapter extends ArrayAdapter<Result> {
         });
         viewAction.setOnClickListener(v -> {
             //resultService= new ResultService(getContext());
+            Log.d(this.LOG, " pulsante premuto");
             if(result.labels.length()==0)
                 result.labels="null";
+            Log.d(this.LOG, " pulsante premuto1");
 
             Intent i = new Intent(getContext(), DetailedView.class);
             i.putExtra("idResult", result.idResult);
             i.putExtra("labels", result.labels);
             i.putExtra("idUser", result.idUser);
             i.putExtra("date", result.date);
-            i.putExtra("image",convertStringToBitmap(result.bytes));
+         //   i.putExtra("image",convertStringToBitmap(result.bytes));
             getContext().startActivity(i);
+            Log.d(this.LOG, " pulsante premuto3");
 
         });
 
+        Log.d(this.LOG, " pulsante premuto4");
 
         return convertView;
     }
