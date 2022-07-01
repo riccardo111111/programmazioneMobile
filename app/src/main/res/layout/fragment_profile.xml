@@ -137,6 +137,12 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/button"
+            android:layout_width="143dp"
+            android:layout_height="51dp"
+            android:text="Button" />
+
+        <Button
             android:id="@+id/log_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

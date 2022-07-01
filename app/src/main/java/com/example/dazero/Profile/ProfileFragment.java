@@ -2,6 +2,7 @@ package com.example.dazero.Profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class ProfileFragment extends Fragment {
     private TextView password;
     private TextView searches;
     private Button logout;
+    private Button button;
 
 
     @Override
@@ -36,6 +38,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.fragment_profile, container, false);
+
 
     }
 
@@ -66,6 +69,15 @@ public class ProfileFragment extends Fragment {
             searches.setText(results.size() + " searches");
         }
 
+        button.setOnClickListener(l->{
+            Log.d("log id", "entratofdb");
+
+            Intent i = new Intent(getContext(), ProfileSettings.class);
+            i.putExtra("id", String.valueOf(this.user.uid));
+            Log.d("log id", String.valueOf(this.user.uid));
+            getContext().startActivity(i);
+        });
+
         logout.setOnClickListener( l ->{
             db.userDao().delete(this.user);
 
@@ -82,8 +94,9 @@ public class ProfileFragment extends Fragment {
         password = (TextView) view.findViewById(R.id.password);
         searches = (TextView) view.findViewById(R.id.search);
         logout = (Button) view.findViewById(R.id.log_out);
+        button=(Button) view.findViewById(R.id.button);
     }
 
 
-
 }
+

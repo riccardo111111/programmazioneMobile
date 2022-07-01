@@ -33,6 +33,7 @@ public class UserServices extends Service {
     String getAllUsers = "http://" + host + ":" + port + "/serverMobile/rest/users/all";
     String getUserById = "http://" + host + ":" + port + "/serverMobile/rest/users/";
     String createUser = "http://" + host + ":" + port + "/serverMobile/rest/users/create";
+    String updateUser = "http://" + host + ":" + port + "/serverMobile/rest/users/updateUser";
     String getUserByMail = "http://" + host + ":" + port + "/serverMobile/rest/users/mail/";
     String deleteUserById = "http://" + host + ":" + port + "/serverMobile/rest/users/delete/";
 
@@ -94,6 +95,7 @@ public class UserServices extends Service {
         }
     }
 
+
     public void deleteUserByID(int id) {
 
         try {
@@ -124,6 +126,33 @@ public class UserServices extends Service {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void updateUser(User user) {
+        OkHttpClient client = new OkHttpClient();
+        JSONObject jsonUser = new JSONObject();
+        try {
+            jsonUser.put("id", user.uid);
+            jsonUser.put("name", user.name);
+            jsonUser.put("surname", user.surname);
+            jsonUser.put("password", user.password);
+            jsonUser.put("mail", user.email);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody formBody = RequestBody.create(jsonUser.toString(), JSON);
+        Request request = new Request.Builder()
+                .url(createUser)
+                .post(formBody)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            Log.d("edit user ", response.toString());
+            // Do something with the response.
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
