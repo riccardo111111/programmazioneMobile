@@ -14,7 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +26,7 @@ import com.example.dazero.db.Result;
 import com.example.dazero.detailedView.DetailedView;
 import com.example.dazero.services.ResultService;
 
-import java.sql.Blob;
+
 import java.util.ArrayList;
 
 public class ListAdapter extends ArrayAdapter<Result> {
@@ -63,8 +63,12 @@ public class ListAdapter extends ArrayAdapter<Result> {
         date.setText(result.date);
         description.setText(result.labels);
         resultService = new ResultService(getContext());
-        deleteAction.setOnClickListener(v -> { resultService.deleteResultByID(result.idResult);
-            Toast.makeText(getContext(),"Search canceled id:"+result.idResult,Toast.LENGTH_LONG).show();
+
+        deleteAction.setOnClickListener(v -> {
+            resultService.deleteResultByID(result.idResult);
+            remove(result);
+            notifyDataSetChanged();
+            //Toast.makeText(getContext(),"Search canceled id:"+result.idResult,Toast.LENGTH_LONG).show();
         });
         viewAction.setOnClickListener(v -> {
             //resultService= new ResultService(getContext());
@@ -78,7 +82,7 @@ public class ListAdapter extends ArrayAdapter<Result> {
             i.putExtra("labels", result.labels);
             i.putExtra("idUser", result.idUser);
             i.putExtra("date", result.date);
-         //   i.putExtra("image",convertStringToBitmap(result.bytes));
+            i.putExtra("image",convertStringToBitmap(result.bytes));
             getContext().startActivity(i);
             Log.d(this.LOG, " pulsante premuto3");
 

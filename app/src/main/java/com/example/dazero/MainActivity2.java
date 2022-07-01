@@ -5,17 +5,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dazero.ml.ModelTFLITE;
@@ -33,13 +31,13 @@ public class MainActivity2 extends AppCompatActivity{
 
     TextView result, confidence;
     ImageView imageView;
-    Button picture, home, save;
+    Button picture, save;
     int imageSize = 224;
     String r;
     int id;
     Bitmap image;
-    BitmapConverter bitmapConverter;
-    int[] lista=new int[3];
+
+
     String[] classes = {"Apple___Apple_scab", "Apple___Black_rot", "Apple___Cedar_apple_rust",
             "Apple___healthy", "Blueberry___healthy", "Cherry_(including_sour)___Powdery_mildew",
             "Cherry_(including_sour)___healthy", "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
@@ -76,48 +74,39 @@ public class MainActivity2 extends AppCompatActivity{
             Toast.makeText(MainActivity2.this, "Not Permit", Toast.LENGTH_SHORT).show();
             requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
         }
-        picture.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View view) {
-                // Launch camera if we have permission
-                if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, 1);
+        picture.setOnClickListener(view -> {
+            // Launch camera if we have permission
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, 1);
 
-                } else {
-                    //Request camera permission if we don't have it.
-                    Toast.makeText(MainActivity2.this, "Not Permit", Toast.LENGTH_SHORT).show();
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
-                }
+            } else {
+                //Request camera permission if we don't have it.
+                Toast.makeText(MainActivity2.this, "Not Permit", Toast.LENGTH_SHORT).show();
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
             }
         });
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    public void run() {
-                        ResultService resultService= new ResultService(getApplicationContext());
-                        id = getIntent().getIntExtra("id",0);
-                        BitmapConverter bitmap=new BitmapConverter(image);
-                        String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
+        save.setOnClickListener(v -> {
+            new Thread(() -> {
+                ResultService resultService= new ResultService(getApplicationContext());
+                id = getIntent().getIntExtra("id",0);
+                BitmapConverter bitmap=new BitmapConverter(image);
+                String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
 
-                        resultService.createResult(0,
-                                id,
-                                timeStamp,
-                                bitmap.BitMapToString(),
-                                r,
-                                null);
-                    }
-                }).start();
-                    Intent intent = new Intent(MainActivity2.this, Tabs.class);
-                intent.putExtra("id", String.valueOf(id));
-                startActivity(intent);
-                    finish();
-                }
-        });
+                resultService.createResult(0,
+                        id,
+                        timeStamp,
+                        bitmap.BitMapToString(),
+                        r,
+                        null);
+            }).start();
+                Intent intent = new Intent(MainActivity2.this, Tabs.class);
+            intent.putExtra("id", String.valueOf(id));
+            startActivity(intent);
+                finish();
+            });
     }
 
 

@@ -11,15 +11,13 @@ import com.example.dazero.Profile.ProfileFragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class Tabs extends AppCompatActivity {
-    private TabLayout tab;
-    private ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
       //int id= getIntent().getExtras().getInt("id")
-        tab = findViewById(R.id.tabLayout);
-        viewPager = findViewById(R.id.viewPage);
+        TabLayout tab = findViewById(R.id.tabLayout);
+        ViewPager viewPager = findViewById(R.id.viewPage);
 
         tab.setupWithViewPager(viewPager);
 

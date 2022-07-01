@@ -3,20 +3,23 @@ package com.example.dazero.detailedView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.dazero.R;
+
+
 
 public class DetailedView extends AppCompatActivity {
 
     Button plantType;
-    Button plantSickness;
+    Button plantResults;
     ImageView plantImage;
     TextView accuracy;
 
@@ -33,16 +36,28 @@ public class DetailedView extends AppCompatActivity {
 
     public void placeData(){
         Intent i = getIntent();
-        plantType.setText(i.getStringExtra("labels"));
-        plantSickness.setText(i.getStringExtra("labels"));
-        accuracy.setText("58.9%");
+        String [] parts=i.getStringExtra("labels").split(",");
+        String [] numbers = i.getStringExtra("labels").split(";");
+
+        Log.d("string", parts[0].replace("_", " "));
+        plantType.setText(parts[0].replace("_", " ")
+                + "\n accuracy: "+numbers[0].replaceAll("[^0-9]", "").substring(0,2)+"%");
+        plantResults.setText(parts[1].replaceAll("[^A-z]", " ").replace("_"," ")
+                + "\n accuracy: "+numbers[1].replaceAll("[^0-9]", "").substring(0,2)+"% \n"
+                +parts[2].replaceAll("[^A-z]", " ").replace("_"," ")
+                        + "\n accuracy: "+numbers[2].replaceAll("[^0-9]", "").substring(0,2)+"%");
+        plantImage.setImageBitmap((Bitmap) i.getParcelableExtra("image"));
+        accuracy.setText(numbers[0].replaceAll("[^0-9]", "").substring(0,2)+"%");
 
     }
 
+
+
+
     public void instantiateElements(){
          plantType = findViewById(R.id.plant_type);
-         plantSickness = findViewById(R.id.sickness);
-        // plantImage = (ImageView) findViewById(R.id.image);
+         plantResults = findViewById(R.id.sickness);
+         plantImage = (ImageView) findViewById(R.id.image);
          accuracy = findViewById(R.id.accuracy);
 
 
@@ -54,8 +69,8 @@ public class DetailedView extends AppCompatActivity {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?&q=" + plantTypeText)));
         });
 
-        plantSickness.setOnClickListener(v -> {
-            String plantSicknessText = (String) plantSickness.getText();
+        plantResults.setOnClickListener(v -> {
+            String plantSicknessText = (String) plantResults.getText();
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?&q=" + plantSicknessText)));
         });
     }
