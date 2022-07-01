@@ -52,7 +52,7 @@ public class HomePageFragment extends Fragment {
             Intent i = new Intent(Intent.ACTION_PICK,
                     MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             final int ACTIVITY_SELECT_IMAGE = 1234;
-            startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+            startActivityForResult(i, 1);
         });
 
         Button cronologyButton = (Button) view.findViewById(R.id.chronology);

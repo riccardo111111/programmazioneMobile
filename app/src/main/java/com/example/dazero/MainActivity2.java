@@ -36,6 +36,7 @@ public class MainActivity2 extends AppCompatActivity{
     Button picture, home, save;
     int imageSize = 224;
     String r;
+    int id;
     Bitmap image;
     BitmapConverter bitmapConverter;
     int[] lista=new int[3];
@@ -63,7 +64,6 @@ public class MainActivity2 extends AppCompatActivity{
         confidence = findViewById(R.id.confidence);
         imageView = findViewById(R.id.image_view);
         picture = findViewById(R.id.take_picture);
-        home = findViewById(R.id.back_home);
         save = findViewById(R.id.save_button);
 
 
@@ -94,22 +94,13 @@ public class MainActivity2 extends AppCompatActivity{
             }
         });
 
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity2.this, Tabs.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Thread(new Runnable() {
                     public void run() {
                         ResultService resultService= new ResultService(getApplicationContext());
-                        int id = getIntent().getIntExtra("id",0);
+                        id = getIntent().getIntExtra("id",0);
                         BitmapConverter bitmap=new BitmapConverter(image);
                         String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
 
@@ -121,10 +112,11 @@ public class MainActivity2 extends AppCompatActivity{
                                 null);
                     }
                 }).start();
-
-
-
-            }
+                    Intent intent = new Intent(MainActivity2.this, Tabs.class);
+                intent.putExtra("id", String.valueOf(id));
+                startActivity(intent);
+                    finish();
+                }
         });
     }
 
@@ -133,9 +125,7 @@ public class MainActivity2 extends AppCompatActivity{
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
-
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-
             int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
 
             bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);

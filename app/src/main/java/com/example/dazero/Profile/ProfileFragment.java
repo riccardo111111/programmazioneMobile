@@ -1,10 +1,6 @@
 package com.example.dazero.Profile;
 
-import static android.content.Intent.getIntent;
-
-import android.content.ClipDescription;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +15,12 @@ import com.example.dazero.db.Result;
 import com.example.dazero.db.User;
 import com.example.dazero.services.ResultService;
 import com.example.dazero.services.ServiceManagerSingleton;
-import com.example.dazero.services.UserServices;
 
 import java.util.ArrayList;
 
 
 public class ProfileFragment extends Fragment {
-    
+
     private User user;
     private TextView mail;
     private TextView password;
@@ -41,42 +36,40 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view,Bundle savedInstaceState){
-        String id =getActivity().getIntent().getStringExtra("id");
-        Log.d("profile frag",id);
+    public void onViewCreated(View view, Bundle savedInstaceState) {
+        String id = getActivity().getIntent().getStringExtra("id");
+        // Log.d("profile frag",id);
         //Toast.makeText(getActivity(),,Toast.LENGTH_LONG).show();
         AppDatabase db = ServiceManagerSingleton.getInstance(getContext()).db;
-
-        this.user=db.userDao().findProfileById(Integer.parseInt(id));
-
-        if(user==null){
+        if (id != null) {
+            this.user = db.userDao().findProfileById(Integer.parseInt(id));
+        }
+        if (user == null) {
             displayFragment(view);
-        }else{
+        } else {
             displayFragment(view);
-            Toast.makeText(getActivity(),this.user.name,Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), this.user.name, Toast.LENGTH_LONG).show();
             mail.setText(this.user.email);
             password.setText(this.user.password);
         }
 
         ResultService resultService = new ResultService(getContext());
-        ArrayList<Result> results=resultService.getResultByID(Integer.parseInt(id));
-        if(results == null){
+        ArrayList<Result> results = resultService.getResultByID(Integer.parseInt(id));
+        if (results == null) {
             displayFragment(view);
-        }else{
+        } else {
             displayFragment(view);
-            searches.setText(results.size()+" searches");
+            searches.setText(results.size() + " searches");
         }
-
-
 
 
         // Inflate the layout for this fragment
     }
 
-    public void displayFragment(View view){
-        mail= (TextView) view.findViewById(R.id.mail);
-        password= (TextView) view.findViewById(R.id.password);
-        searches=(TextView) view.findViewById(R.id.search);
+    public void displayFragment(View view) {
+        mail = (TextView) view.findViewById(R.id.mail);
+        password = (TextView) view.findViewById(R.id.password);
+        searches = (TextView) view.findViewById(R.id.search);
     }
 
 }
