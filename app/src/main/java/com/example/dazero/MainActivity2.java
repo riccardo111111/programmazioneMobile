@@ -61,10 +61,10 @@ public class MainActivity2 extends AppCompatActivity{
 
         result = findViewById(R.id.result);
         confidence = findViewById(R.id.confidence);
-        imageView = findViewById(R.id.imageView);
-        picture = findViewById(R.id.button);
-        home = findViewById(R.id.button4);
-        save = findViewById(R.id.button5);
+        imageView = findViewById(R.id.image_view);
+        picture = findViewById(R.id.take_picture);
+        home = findViewById(R.id.back_home);
+        save = findViewById(R.id.save_button);
 
 
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
