@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.1" />
+        <entry key="..\:/Users/ricca/AndroidStudioProjects/progetto clone/programmazioneMobile/app/src/main/res/layout/activity_cronology.xml" value="0.22" />
+        <entry key="..\:/Users/ricca/AndroidStudioProjects/progetto clone/programmazioneMobile/app/src/main/res/layout/activity_detailed_view.xml" value="0.12" />
         <entry key="..\:/Users/ricca/daZero/app/src/main/res/drawable-v24/button_background_blue.xml" value="0.114" />
         <entry key="..\:/Users/ricca/daZero/app/src/main/res/drawable-v24/ic_home_black_24dp.xml" value="0.114" />
         <entry key="..\:/Users/ricca/daZero/app/src/main/res/font/amethysta.xml" value="0.1" />
@@ -20,10 +22,14 @@
         <entry key="app/src/main/res/layout/activity_detailed_view.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_home_page.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_list_adapter.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1875" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.1984375" />
+        <entry key="app/src/main/res/layout/activity_sing_in.xml" value="0.1984375" />
         <entry key="app/src/main/res/layout/cronology_card.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_home_page.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.1984375" />
         <entry key="app/src/main/res/layout/item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_xml.xml" value="0.33" />
       </map>

@@ -79,8 +79,12 @@ public class Cronology extends AppCompatActivity {
     }
 
     public void adatptList(ArrayList<Result> array){
-                ListAdapter listAdapter = new ListAdapter(getApplicationContext(),array);
-                listView.setAdapter(listAdapter);
+        if(array!=null) {
+            ListAdapter listAdapter = new ListAdapter(getApplicationContext(), array);
+            listView.setAdapter(listAdapter);
+        }else{
+            Toast.makeText(getApplicationContext(),"elements not present",Toast.LENGTH_LONG).show();
+        }
     }
 
     public ArrayList<Result> showAllResults(){
