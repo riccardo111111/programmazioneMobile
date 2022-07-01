@@ -1,15 +1,18 @@
 package com.example.dazero.Profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.dazero.R;
+import com.example.dazero.SingIn.SingInActivity;
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.Result;
 import com.example.dazero.db.User;
@@ -25,6 +28,7 @@ public class ProfileFragment extends Fragment {
     private TextView mail;
     private TextView password;
     private TextView searches;
+    private Button logout;
 
 
     @Override
@@ -62,6 +66,13 @@ public class ProfileFragment extends Fragment {
             searches.setText(results.size() + " searches");
         }
 
+        logout.setOnClickListener( l ->{
+            db.userDao().delete(this.user);
+
+            Intent i = new Intent(getContext(), SingInActivity.class);
+            getContext().startActivity(i);
+        });
+
 
         // Inflate the layout for this fragment
     }
@@ -70,6 +81,9 @@ public class ProfileFragment extends Fragment {
         mail = (TextView) view.findViewById(R.id.mail);
         password = (TextView) view.findViewById(R.id.password);
         searches = (TextView) view.findViewById(R.id.search);
+        logout = (Button) view.findViewById(R.id.log_out);
     }
+
+
 
 }
