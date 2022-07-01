@@ -4,13 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,12 +25,9 @@ import com.example.dazero.services.ResultService;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 
 public class MainActivity2 extends AppCompatActivity{
 
@@ -123,8 +117,8 @@ public class MainActivity2 extends AppCompatActivity{
                                 id,
                                 timeStamp,
                                 bitmap.BitMapToString(),
-                                String.valueOf(lista[0])
-                                ,null);
+                                r,
+                                null);
                     }
                 }).start();
 
@@ -206,10 +200,9 @@ public class MainActivity2 extends AppCompatActivity{
             String s = "";
             int[] lista = {maxPos, second, third};
 
-            this.r+=classes[maxPos]+","+ confidences[maxPos] * 100;
             for (int i = 0; i < 3; i++) {
                 s += String.format("%s: %.1f%%\n", classes[lista[i]], confidences[lista[i]] * 100);
-              //  this.r+=(classes[lista[i]]+","+ confidences[lista[i]] * 100+".");
+                this.r+=(classes[lista[i]]+","+ confidences[lista[i]] * 100+";");
             }
 
 

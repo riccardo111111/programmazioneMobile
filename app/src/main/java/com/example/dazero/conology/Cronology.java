@@ -1,21 +1,19 @@
 package com.example.dazero.conology;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.example.dazero.adapters.ListAdapter;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dazero.R;
-
 import com.example.dazero.db.Result;
 import com.example.dazero.services.ResultService;
 import com.google.android.material.textfield.TextInputLayout;
-
+import com.example.dazero.adapters.ListAdapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,13 +35,10 @@ public class Cronology extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cronology);
 
-
         textInputLayout= (TextInputLayout) findViewById(R.id.menu);
         autoCompleteTextView =(AutoCompleteTextView) findViewById(R.id.items);
         resultService=new ResultService(getApplicationContext());
         listView= findViewById(R.id.list_of_chronology_card);
-
-
 
 
         String [] items ={ "Month","Week","All"};
@@ -55,32 +50,22 @@ public class Cronology extends AppCompatActivity {
             listView.removeAllViewsInLayout();
             showResults((String) parent.getItemAtPosition(position));
         });
-
-
-
-
     }
 
-
-
     public void showResults(String filter){
-
         Log.d("inside click","yeaaa "+filter);
             if(filter=="All"){
                 if(showAllResults()==null){
                     Toast.makeText(getApplicationContext(), " take some photo first", Toast.LENGTH_LONG).show();
                 }else{
                     adatptList(showAllResults());
-
                 }
             }
-
             if(filter =="Week"){
                 if(showResultOfTheWeek()==null){
                     Toast.makeText(getApplicationContext(), " take some photo first", Toast.LENGTH_LONG).show();
                 }else{
                     adatptList(showResultOfTheWeek());
-
                 }
             }
 
@@ -89,38 +74,24 @@ public class Cronology extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), " take some photo first", Toast.LENGTH_LONG).show();
                 }else{
                     adatptList(showResultOfTheMonth());
-
                 }
             }
-
-
-
-
-
-
-
     }
 
     public void adatptList(ArrayList<Result> array){
-
                 ListAdapter listAdapter = new ListAdapter(getApplicationContext(),array);
                 listView.setAdapter(listAdapter);
-
-
     }
 
     public ArrayList<Result> showAllResults(){
         idUser= getIntent().getIntExtra("id",0);
-
         if(resultService.getResultByID(idUser)==null){
             return null;
         }
-
         return  resultService.getResultByID(idUser);
     }
 
     public ArrayList<Result> showResultOfTheMonth(){
-
         idUser= getIntent().getIntExtra("id",0);
         ArrayList<Result> array = resultService.getResultByID(idUser);
 
@@ -132,9 +103,6 @@ public class Cronology extends AppCompatActivity {
             return null;
         }else{
             for (int i=0;i<array.size();i++){
-
-
-
                 try {
                     if (!isWithinRange(
                             new SimpleDateFormat("yyyy-MM-dd").parse(array.get(i).date),
@@ -142,14 +110,12 @@ public class Cronology extends AppCompatActivity {
                             new Date())
                             ){
                         array.remove(i);
-
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
         }
-
         return  array;
     }
 
@@ -187,6 +153,4 @@ public class Cronology extends AppCompatActivity {
     boolean isWithinRange(Date testDate,Date startDate,Date endDate) {
         return !(testDate.before(startDate) || testDate.after(endDate));
     }
-
-
 }
