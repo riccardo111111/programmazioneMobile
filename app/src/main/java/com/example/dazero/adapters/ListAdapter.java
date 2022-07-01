@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,19 +18,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
 import com.example.dazero.R;
-
+import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.Result;
 import com.example.dazero.detailedView.DetailedView;
 import com.example.dazero.services.ResultService;
 
-import java.sql.Blob;
 import java.util.ArrayList;
 
 public class ListAdapter extends ArrayAdapter<Result> {
     ResultService resultService;
     String LOG= " debug";
+    public static AppDatabase db;
 
     public ListAdapter(@NonNull Context context, ArrayList<Result> results) {
         super(context, R.layout.cronology_card,results);
@@ -41,6 +39,8 @@ public class ListAdapter extends ArrayAdapter<Result> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        db = AppDatabase.getDbInstance(getContext());
+
         Result result;
         result=getItem(position);
 
@@ -63,9 +63,14 @@ public class ListAdapter extends ArrayAdapter<Result> {
         date.setText(result.date);
         description.setText(result.labels);
         resultService = new ResultService(getContext());
+
         deleteAction.setOnClickListener(v -> { resultService.deleteResultByID(result.idResult);
+            db.resultDao().deleteResult(result);
             Toast.makeText(getContext(),"Search canceled id:"+result.idResult,Toast.LENGTH_LONG).show();
+            remove(result);
+            notifyDataSetChanged();
         });
+
         viewAction.setOnClickListener(v -> {
             //resultService= new ResultService(getContext());
             Log.d(this.LOG, " pulsante premuto");
