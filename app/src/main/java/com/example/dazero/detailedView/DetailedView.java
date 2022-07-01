@@ -3,11 +3,13 @@ package com.example.dazero.detailedView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dazero.R;
 
@@ -24,7 +26,7 @@ public class DetailedView extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_view);
         instantiateElements();
         placeData();
-        Log.d(" detailed", " onCreate");
+        activateButtons();
 
 
     }
@@ -34,7 +36,6 @@ public class DetailedView extends AppCompatActivity {
         plantType.setText(i.getStringExtra("labels"));
         plantSickness.setText(i.getStringExtra("labels"));
         accuracy.setText("58.9%");
-        Log.d(" detailed", " placeData");
 
     }
 
@@ -43,8 +44,19 @@ public class DetailedView extends AppCompatActivity {
          plantSickness = findViewById(R.id.sickness);
         // plantImage = (ImageView) findViewById(R.id.image);
          accuracy = findViewById(R.id.accuracy);
-        Log.d(" detailed", " instantiateElements");
 
 
+    }
+
+    public void activateButtons(){
+        plantType.setOnClickListener(v -> {
+            String plantTypeText = (String) plantType.getText();
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?&q=" + plantTypeText)));
+        });
+
+        plantSickness.setOnClickListener(v -> {
+            String plantSicknessText = (String) plantSickness.getText();
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?&q=" + plantSicknessText)));
+        });
     }
 }

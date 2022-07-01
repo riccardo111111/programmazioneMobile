@@ -40,6 +40,7 @@
             android:id="@+id/imageView5"
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/log" />
 
         <Button
@@ -49,7 +50,7 @@
             android:layout_gravity="center"
 
             android:layout_marginStart="80dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="80dp"
             android:backgroundTint="#CC689F38"
             android:fontFamily="@font/news_cycle"
