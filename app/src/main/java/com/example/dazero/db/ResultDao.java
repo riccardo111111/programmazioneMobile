@@ -17,7 +17,7 @@ public interface ResultDao {
         Result findResultById(int id);
 
         @Insert
-        void insertResult(Result... results);
+        void insertResult(Result results);
 
 
         @Delete

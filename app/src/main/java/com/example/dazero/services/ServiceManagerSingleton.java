@@ -72,9 +72,11 @@ public class ServiceManagerSingleton {
         user.surname = surname;
         user.email = email;
         user.password = password;
-        Log.d("debuger", String.valueOf(db.userDao().findProfileById(user.uid)));
+       // Log.d("debuger", String.valueOf(db.userDao().findProfileById(user.uid)));
 
+        Log.d("LOG", "geragerag" + user.uid);
         if (db.userDao().findProfileById(user.uid) == null) {
+            Log.d("l", "entrato550");
             db.userDao().insertUser(user);
         }
         return user;

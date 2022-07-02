@@ -6,8 +6,9 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Result {
-    @PrimaryKey
     public int idResult;
+    @PrimaryKey(autoGenerate = true)
+    public int id;
 
     @ColumnInfo(name="result")
     public int idUser;

@@ -102,16 +102,12 @@ public class ResultService extends Service {
 
     public void createResult(Result result) {
         OkHttpClient client = new OkHttpClient();
-
-
         JSONObject jsonResult = new JSONObject();
         try {
-
             jsonResult.put("id_user", result.idUser);
             jsonResult.put("date", result.date);
             jsonResult.put("labels", result.labels);
             jsonResult.put("photo",result.bytes);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

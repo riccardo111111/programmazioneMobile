@@ -3,6 +3,7 @@ package com.example.dazero.SingIn;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class SingInActivity extends AppCompatActivity {
                     UserServices userServices = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserServices();
                     User user = userServices.getUserByMailAndPassword(binding.editTextEmail.getText().toString(),
                             binding.editTextPassword.getText().toString());
+                    Log.d("Log", "user: "+ user);
                     if (user == null) {
                         user = db.userDao().findProfile(binding.editTextEmail.getText().toString(),
                                 binding.editTextPassword.getText().toString());

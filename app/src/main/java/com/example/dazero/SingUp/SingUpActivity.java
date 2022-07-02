@@ -69,11 +69,12 @@ public class SingUpActivity extends AppCompatActivity {
         User user = new User();
         user.name = firstName;
         user.surname = surname;
-
         user.email = email;
         user.password = password;
-        db.userDao().insertUser(user);
         userServices.createUser(user);
+        User u=userServices.getUserByMailAndPassword(email, password);
+        Log.d("LOG", "bgdeat"+ u);
+        db.userDao().insertUser(u);
 
         finish();
         Intent intent = new Intent(this, SingInActivity.class);

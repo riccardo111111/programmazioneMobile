@@ -55,6 +55,8 @@ public class ProfileSettings extends AppCompatActivity {
                         user.surname = binding.editTextSurname.getText().toString();
                         user.password = binding.editTextPassword.getText().toString();
                         userServices.updateUser(user);
+                        db.userDao().updateUser(user);
+
                         Toast.makeText(ProfileSettings.this, "update User", Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(ProfileSettings.this, "riempire tutti i campi" , Toast.LENGTH_SHORT).show();
@@ -140,6 +142,7 @@ public class ProfileSettings extends AppCompatActivity {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                passwordValidate();
             }
 
             @SuppressLint("ResourceType")
