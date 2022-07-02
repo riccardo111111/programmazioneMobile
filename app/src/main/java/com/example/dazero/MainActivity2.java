@@ -71,14 +71,16 @@ public class MainActivity2 extends AppCompatActivity {
         imageView = findViewById(R.id.image_view);
         picture = findViewById(R.id.take_picture);
         save = findViewById(R.id.save_button);
-
-        Uri uri = getIntent().getParcelableExtra("foto");
+/*
+     //   Uri uri = Uri.parse(getIntent().getStringExtra("foto"));
         if (uri != null) {
             this.imageView.setImageURI(uri);
             BitmapDrawable drawable = (BitmapDrawable) this.imageView.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
             elaborazione(bitmap);
         }
+
+ */
 
 /*
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -108,7 +110,7 @@ public class MainActivity2 extends AppCompatActivity {
         save.setOnClickListener(v -> {
             new Thread(() -> {
                 ResultService resultService = ServiceManagerSingleton.getInstance(getApplicationContext()).getResultService();
-                id = getIntent().getIntExtra("id", 0);
+                id = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
 
                 BitmapConverter bitmap = new BitmapConverter(image);
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
@@ -134,8 +136,8 @@ public class MainActivity2 extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             elaborazione(bitmap);
-        }else if (requestCode==3){
-            Uri uri= data.getData();
+        } else if (requestCode == 3) {
+            Uri uri = data.getData();
             this.imageView.setImageURI(uri);
             BitmapDrawable drawable = (BitmapDrawable) this.imageView.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
@@ -236,7 +238,7 @@ public class MainActivity2 extends AppCompatActivity {
                 ExifInterface.ORIENTATION_UNDEFINED);
 
         Bitmap rotatedBitmap = null;
-        switch(orientation) {
+        switch (orientation) {
 
             case ExifInterface.ORIENTATION_ROTATE_90:
                 rotatedBitmap = rotateImage(bitmap, 90);
@@ -254,6 +256,6 @@ public class MainActivity2 extends AppCompatActivity {
             default:
                 rotatedBitmap = bitmap;
         }
-        return  rotatedBitmap;
+        return rotatedBitmap;
     }
 }

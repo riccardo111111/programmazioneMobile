@@ -49,13 +49,13 @@ public class SingInActivity extends AppCompatActivity {
                 dialog.show();
                 String email = binding.editTextEmail.getText().toString();
                 String password = binding.editTextPassword.getText().toString();
-                password = DigestUtils.sha384Hex(password);
-                Log.d("password",password);
                 if (email.isEmpty() || password.isEmpty()) {
                     dialog.dismiss();
                     Toast.makeText(SingInActivity.this, "Please fill up the fields",
                             Toast.LENGTH_SHORT).show();
                 } else {
+                    password = DigestUtils.sha384Hex(password);
+                    Log.d("password",password);
                     UserServices userServices = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserServices();
                     User user = userServices.getUserByMailAndPassword(binding.editTextEmail.getText().toString(),
                             binding.editTextPassword.getText().toString());
