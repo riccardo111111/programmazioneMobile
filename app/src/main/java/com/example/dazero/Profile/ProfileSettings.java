@@ -18,6 +18,7 @@ import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
 import com.example.dazero.services.ServiceManagerSingleton;
 import com.example.dazero.services.UserServices;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.digest.DigestUtils;
 
 
 public class ProfileSettings extends AppCompatActivity {
@@ -38,7 +39,7 @@ public class ProfileSettings extends AppCompatActivity {
         User user = db.userDao().findProfileById(Integer.parseInt(id));
         binding.editTextName.setText(user.name);
         binding.editTextSurname.setText(user.surname);
-        binding.editTextPassword.setText(user.password);
+
         binding.editTextEmail.setText(user.email);
         UserServices userServices = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserServices();
 
@@ -54,6 +55,7 @@ public class ProfileSettings extends AppCompatActivity {
                         user.email = binding.editTextEmail.getText().toString();
                         user.surname = binding.editTextSurname.getText().toString();
                         user.password = binding.editTextPassword.getText().toString();
+                        user.password= DigestUtils.sha384Hex(user.password);
                         userServices.updateUser(user);
                         db.userDao().updateUser(user);
 
