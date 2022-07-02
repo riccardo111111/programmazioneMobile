@@ -4,11 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -30,7 +29,9 @@ import com.example.dazero.services.ServiceManagerSingleton;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 
@@ -74,7 +75,7 @@ public class MainActivity2 extends AppCompatActivity {
         save = findViewById(R.id.save_button);
 
 
-        if(getIntent().getIntExtra("option",0)==0){
+        if (getIntent().getIntExtra("option", 0) == 0) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -84,12 +85,10 @@ public class MainActivity2 extends AppCompatActivity {
                 Toast.makeText(MainActivity2.this, "Not Permit", Toast.LENGTH_SHORT).show();
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
             }
-        }else if(getIntent().getIntExtra("option",0)==1){
-
-            Intent intent = new Intent(
-                    android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-            startActivityForResult(intent, 1);
+        } else if (getIntent().getIntExtra("option", 0) == 1) {
+            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+            i.setType("image/*");
+            startActivityForResult(Intent.createChooser(i, "pick"), 3);
         }
 
         picture.setOnClickListener(view -> {
@@ -112,7 +111,7 @@ public class MainActivity2 extends AppCompatActivity {
 
                 BitmapConverter bitmap = new BitmapConverter(this.image);
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
-                Log.d("string",bitmap.BitMapToString());
+                Log.d("string", bitmap.BitMapToString());
                 Result result = new Result(0,
                         id,
                         bitmap.BitMapToString(),
@@ -134,12 +133,18 @@ public class MainActivity2 extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             elaborazione(bitmap);
-        }else if(requestCode==3){
+        } else if (requestCode == 3) {
+            InputStream inputStream = null;
+            try {
+                inputStream = getContentResolver().openInputStream(data.getData());
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                elaborazione(bitmap);
 
-                Log.d("else if", "siiiiiiiiiiii22222222222");
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            elaborazione(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -235,7 +240,7 @@ public class MainActivity2 extends AppCompatActivity {
                 ExifInterface.ORIENTATION_UNDEFINED);
 
         Bitmap rotatedBitmap = null;
-        switch(orientation) {
+        switch (orientation) {
 
             case ExifInterface.ORIENTATION_ROTATE_90:
                 rotatedBitmap = rotateImage(bitmap, 90);
@@ -253,6 +258,6 @@ public class MainActivity2 extends AppCompatActivity {
             default:
                 rotatedBitmap = bitmap;
         }
-        return  rotatedBitmap;
+        return rotatedBitmap;
     }
 }

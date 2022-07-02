@@ -3,16 +3,13 @@ package com.example.dazero.HomePage;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,8 +22,6 @@ import com.example.dazero.adapters.ItemViewModel;
 import com.example.dazero.conology.Cronology;
 import com.example.dazero.services.ServiceManagerSingleton;
 
-import java.io.ByteArrayOutputStream;
-
 
 public class HomePageFragment extends Fragment {
 
@@ -37,7 +32,6 @@ public class HomePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home_page, container, false);
     }
@@ -94,7 +88,6 @@ public class HomePageFragment extends Fragment {
     public void dispatchGalleryIntent(){
         Intent intent=new Intent(getActivity(), MainActivity2.class);
         int id = ServiceManagerSingleton.getInstance(getContext()).getUserId();
-        Log.d("maioa", "piu"+ServiceManagerSingleton.getInstance(getContext()).getUserId());
         intent.putExtra("id", id);
         intent.putExtra("option",1);
         startActivity(intent);
