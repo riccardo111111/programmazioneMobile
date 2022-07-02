@@ -13,6 +13,7 @@ import com.example.dazero.R;
 import com.example.dazero.adapters.ListAdapter;
 import com.example.dazero.db.Result;
 import com.example.dazero.services.ResultService;
+import com.example.dazero.services.ServiceManagerSingleton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
@@ -37,7 +38,7 @@ public class Cronology extends AppCompatActivity {
 
         textInputLayout= (TextInputLayout) findViewById(R.id.menu);
         autoCompleteTextView =(AutoCompleteTextView) findViewById(R.id.items);
-        resultService=new ResultService(getApplicationContext());
+        resultService= ServiceManagerSingleton.getInstance(getApplicationContext()).getResultService();
         listView= findViewById(R.id.list_of_chronology_card);
 
         String [] items ={ "Month","Week","All"};

@@ -40,7 +40,7 @@ public class ProfileSettings extends AppCompatActivity {
         binding.editTextSurname.setText(user.surname);
         binding.editTextPassword.setText(user.password);
         binding.editTextEmail.setText(user.email);
-        UserServices userServices = new UserServices(getApplicationContext());
+        UserServices userServices = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserServices();
 
         inputChanged();
 

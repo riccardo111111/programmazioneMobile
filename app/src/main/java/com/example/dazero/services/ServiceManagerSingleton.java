@@ -19,6 +19,8 @@ public class ServiceManagerSingleton {
     private StrictMode.ThreadPolicy policy;
     private static Context mCtx;
     private OkHttpClient client;
+    private UserServices userServices;
+    private ResultService resultService;
 
     public static AppDatabase db;
 
@@ -42,6 +44,25 @@ public class ServiceManagerSingleton {
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
         return mRequestQueue;
+    }
+
+    public UserServices getUserServices() {
+        if (userServices == null) {
+            // getApplicationContext() is key, it keeps you from leaking the
+            // Activity or BroadcastReceiver if someone passes one in.
+            userServices = new UserServices(mCtx.getApplicationContext());
+        }
+        return userServices;
+    }
+
+
+    public ResultService getResultService() {
+        if (resultService == null) {
+            // getApplicationContext() is key, it keeps you from leaking the
+            // Activity or BroadcastReceiver if someone passes one in.
+            resultService = new ResultService(mCtx.getApplicationContext());
+        }
+        return resultService;
     }
 
     public User saveNewUser(int id, String firstName, String email, String surname, String password) {

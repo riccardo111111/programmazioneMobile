@@ -20,6 +20,7 @@ import com.example.dazero.db.Result;
 import com.example.dazero.ml.ModelTFLITE;
 import com.example.dazero.services.BitmapConverter;
 import com.example.dazero.services.ResultService;
+import com.example.dazero.services.ServiceManagerSingleton;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
@@ -93,7 +94,7 @@ public class MainActivity2 extends AppCompatActivity {
 
         save.setOnClickListener(v -> {
             new Thread(() -> {
-                ResultService resultService = new ResultService(getApplicationContext());
+                ResultService resultService = ServiceManagerSingleton.getInstance(getApplicationContext()).getResultService();
                 id = getIntent().getIntExtra("id", 0);
                 BitmapConverter bitmap = new BitmapConverter(image);
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());

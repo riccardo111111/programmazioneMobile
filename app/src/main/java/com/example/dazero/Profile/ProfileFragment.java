@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
             password.setText(this.user.password);
         }
 
-        ResultService resultService = new ResultService(getContext());
+        ResultService resultService = ServiceManagerSingleton.getInstance(getContext()).getResultService();
         ArrayList<Result> results = resultService.getResultByID(Integer.parseInt(id));
         if (results == null) {
             displayFragment(view);

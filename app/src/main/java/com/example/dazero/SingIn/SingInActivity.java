@@ -13,6 +13,7 @@ import com.example.dazero.Tabs;
 import com.example.dazero.databinding.ActivitySingInBinding;
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
+import com.example.dazero.services.ServiceManagerSingleton;
 import com.example.dazero.services.UserServices;
 
 
@@ -52,7 +53,7 @@ public class SingInActivity extends AppCompatActivity {
                     Toast.makeText(SingInActivity.this, "Please fill up the fields",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    UserServices userServices = new UserServices(getApplicationContext());
+                    UserServices userServices = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserServices();
                     User user = userServices.getUserByMailAndPassword(binding.editTextEmail.getText().toString(),
                             binding.editTextPassword.getText().toString());
                     if (user == null) {

@@ -25,6 +25,7 @@ import com.example.dazero.R;
 import com.example.dazero.db.Result;
 import com.example.dazero.detailedView.DetailedView;
 import com.example.dazero.services.ResultService;
+import com.example.dazero.services.ServiceManagerSingleton;
 
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class ListAdapter extends ArrayAdapter<Result> {
         title.setText(result.idResult+"");
         date.setText(result.date);
         description.setText(result.labels);
-        resultService = new ResultService(getContext());
+        resultService = ServiceManagerSingleton.getInstance(getContext()).getResultService();
 
         deleteAction.setOnClickListener(v -> {
             resultService.deleteResultByID(result.idResult);
