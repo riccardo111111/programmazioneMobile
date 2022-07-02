@@ -1,6 +1,10 @@
 package com.example.dazero.HomePage;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -12,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -19,6 +24,9 @@ import com.example.dazero.MainActivity2;
 import com.example.dazero.R;
 import com.example.dazero.adapters.ItemViewModel;
 import com.example.dazero.conology.Cronology;
+import com.example.dazero.services.ServiceManagerSingleton;
+
+import java.io.ByteArrayOutputStream;
 
 
 public class HomePageFragment extends Fragment {
