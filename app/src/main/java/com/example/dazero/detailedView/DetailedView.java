@@ -38,10 +38,8 @@ public class DetailedView extends AppCompatActivity {
         Intent i = getIntent();
         String [] parts=i.getStringExtra("labels").split(",");
         String [] numbers = i.getStringExtra("labels").split(";");
-
         Log.d("string", parts[0].replace("_", " "));
-        plantType.setText(parts[0].replace("_", " ")
-                + "\n accuracy: "+numbers[0].replaceAll("[^0-9]", "").substring(0,2)+"%");
+        plantType.setText(parts[0].replace("_", " "));
         plantResults.setText(parts[1].replaceAll("[^A-z]", " ").replace("_"," ")
                 + "\n accuracy: "+numbers[1].replaceAll("[^0-9]", "").substring(0,2)+"% \n"
                 +parts[2].replaceAll("[^A-z]", " ").replace("_"," ")
