@@ -1,83 +1,74 @@
-package com.example.dazero.SingUp;
+package com.example.dazero.Profile;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dazero.R;
 import com.example.dazero.SingIn.SingInActivity;
-import com.example.dazero.databinding.ActivitySignUpBinding;
+import com.example.dazero.databinding.ActivityProfileSettingsBinding;
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
+import com.example.dazero.services.ServiceManagerSingleton;
 import com.example.dazero.services.UserServices;
 
-public class SingUpActivity extends AppCompatActivity {
 
-    private ActivitySignUpBinding binding;
-    private ProgressDialog dialog;
-    private static final int RC_SIGN_IN = 45;
+public class ProfileSettings extends AppCompatActivity {
+    private ActivityProfileSettingsBinding binding;
     private boolean is8char = false, hasUpper = false, hasnum = false, hasSpecialSymbol = false, isSignupClickable = false;
 
+    private boolean n = false, s = false, e = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
+        binding = ActivityProfileSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-
-        dialog = new ProgressDialog(SingUpActivity.this);
-        dialog.setTitle("Creating Account");
-        dialog.setMessage("Creating your Account");
-
-        Log.d("Log", "SingUp1");
-        inputChanged();
-
-    }
-
-    public void set(View v) {
-        Log.i("testooo", binding.editTextEmail.getText().toString());
-        if (is8char && hasnum && hasSpecialSymbol && hasUpper) {
-            saveNewUser(binding.editTextName.getText().toString(), binding.editTextEmail.getText().toString(),
-                    binding.editTextSurname.getText().toString(),
-                    binding.editTextPassword.getText().toString());
-            Intent intent = new Intent(this, SingInActivity.class);
-            startActivity(intent);
-        } else {
-            Toast.makeText(this, "la password non rispetta i requisiti di sicurezza",
-                    Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-
-    private void saveNewUser(String firstName, String email, String surname, String password) {
-        AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
+        String id = getIntent().getStringExtra("id");
+        Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
+        Log.d("log", id);
+        AppDatabase db = ServiceManagerSingleton.getInstance(getApplicationContext()).db;
+        User user = db.userDao().findProfileById(Integer.parseInt(id));
+        binding.editTextName.setText(user.name);
+        binding.editTextSurname.setText(user.surname);
+        binding.editTextPassword.setText(user.password);
+        binding.editTextEmail.setText(user.email);
         UserServices userServices = new UserServices(getApplicationContext());
 
-        User user = new User();
-        user.name = firstName;
-        user.surname = surname;
+        inputChanged();
 
-        user.email = email;
-        user.password = password;
-        db.userDao().insertUser(user);
-        userServices.createUser(user);
+        binding.signUpButton.setOnClickListener(
+                v -> {
+                    if (!(is8char && hasnum && hasSpecialSymbol && hasUpper)) {
+                        Toast.makeText(this, "la password non rispetta i requisiti di sicurezza",
+                                Toast.LENGTH_LONG).show();
+                    } else if (n && s && e) {
+                        user.name = binding.editTextName.getText().toString();
+                        user.email = binding.editTextEmail.getText().toString();
+                        user.surname = binding.editTextSurname.getText().toString();
+                        user.password = binding.editTextPassword.getText().toString();
+                        userServices.updateUser(user);
+                        Toast.makeText(ProfileSettings.this, "update User", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(ProfileSettings.this, "riempire tutti i campi" , Toast.LENGTH_SHORT).show();
 
-        finish();
-        Intent intent = new Intent(this, SingInActivity.class);
-        startActivity(intent);
+                    }
+                });
 
+        binding.signUpButton2.setOnClickListener(
+                v -> {
+                    userServices.deleteUserByID(Integer.parseInt(id));
+                    Intent intent = new Intent(ProfileSettings.this, SingInActivity.class);
+                    startActivity(intent);
+                }
+        );
     }
 
     @SuppressLint("ResourceType")
@@ -89,12 +80,21 @@ public class SingUpActivity extends AppCompatActivity {
 
         if (name.isEmpty()) {
             binding.editTextName.setError("Please Enter Full name ");
+            n = false;
+        } else {
+            n = true;
         }
         if (email.isEmpty()) {
             binding.editTextEmail.setError("Please Enter Email ");
+            e = false;
+        } else {
+            n = true;
         }
         if (surname.isEmpty()) {
             binding.editTextSurname.setError("Please Enter Surname ");
+            s = false;
+        } else {
+            s = true;
         }
         // 8 character
         if (password.length() >= 8) {
@@ -160,4 +160,5 @@ public class SingUpActivity extends AppCompatActivity {
             }
         });
     }
+
 }

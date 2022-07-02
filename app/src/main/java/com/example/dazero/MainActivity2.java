@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
-
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Button;
@@ -16,6 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dazero.db.AppDatabase;
+import com.example.dazero.db.Result;
 import com.example.dazero.ml.ModelTFLITE;
 import com.example.dazero.services.BitmapConverter;
 import com.example.dazero.services.ResultService;
@@ -27,7 +28,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 
-public class MainActivity2 extends AppCompatActivity{
+public class MainActivity2 extends AppCompatActivity {
 
     TextView result, confidence;
     ImageView imageView;
@@ -52,6 +53,7 @@ public class MainActivity2 extends AppCompatActivity{
             "Tomato___Septoria_leaf_spot", "Tomato___Spider_mites Two-spotted_spider_mite",
             "Tomato___Target_Spot", "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
             "Tomato___Tomato_mosaic_virus", "Tomato___healthy"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,7 @@ public class MainActivity2 extends AppCompatActivity{
         picture = findViewById(R.id.take_picture);
         save = findViewById(R.id.save_button);
 
+        AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
 
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
@@ -90,23 +93,24 @@ public class MainActivity2 extends AppCompatActivity{
 
         save.setOnClickListener(v -> {
             new Thread(() -> {
-                ResultService resultService= new ResultService(getApplicationContext());
-                id = getIntent().getIntExtra("id",0);
-                BitmapConverter bitmap=new BitmapConverter(image);
+                ResultService resultService = new ResultService(getApplicationContext());
+                id = getIntent().getIntExtra("id", 0);
+                BitmapConverter bitmap = new BitmapConverter(image);
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
-
-                resultService.createResult(0,
+                Result result = new Result(0,
                         id,
-                        timeStamp,
                         bitmap.BitMapToString(),
                         r,
+                        timeStamp,
                         null);
+                db.resultDao().insertResult(result);
+                resultService.createResult(result);
             }).start();
-                Intent intent = new Intent(MainActivity2.this, Tabs.class);
+            Intent intent = new Intent(MainActivity2.this, Tabs.class);
             intent.putExtra("id", String.valueOf(id));
             startActivity(intent);
-                finish();
-            });
+            finish();
+        });
     }
 
     @Override
@@ -116,7 +120,7 @@ public class MainActivity2 extends AppCompatActivity{
             int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
 
             bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
-            this.image=bitmap;
+            this.image = bitmap;
 
             imageView.setImageBitmap(bitmap);
 
@@ -179,7 +183,7 @@ public class MainActivity2 extends AppCompatActivity{
 
             for (int i = 0; i < 3; i++) {
                 s += String.format("%s: %.1f%%\n", classes[lista[i]], confidences[lista[i]] * 100);
-                this.r+=(classes[lista[i]]+","+ confidences[lista[i]] * 100+";");
+                this.r += (classes[lista[i]] + "," + confidences[lista[i]] * 100 + ";");
             }
 
 

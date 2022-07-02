@@ -16,7 +16,12 @@ public class Result {
     public String date;
     public byte[] bytes;
 
-    public Result(){}
-
-
+    public Result(int idResult, int idUser, String photo, String labels, String date, byte[] bytes) {
+        this.idResult = idResult;
+        this.idUser = idUser;
+        this.photo = photo;
+        this.labels = labels;
+        this.date = date;
+        this.bytes = bytes;
+    }
 }

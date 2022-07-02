@@ -61,13 +61,13 @@ public class ServiceManagerSingleton {
 
     public Result saveNewResult(int idResult, int idUser, String date, byte[] bytes, String label, String photo ) {
 
-        Result result = new Result();
-        result.idResult=idResult;
-        result.idUser= idUser;
-        result.date=date;
-        result.bytes=bytes;
-        result.labels=label;
-        result.photo=photo;
+        Result result = new Result(idResult,
+                idUser,
+                photo,
+                label,
+                date,
+                bytes);
+
         if (db.resultDao().findResultById(result.idResult)== null) {
            db.resultDao().insertResult(result);
         }
