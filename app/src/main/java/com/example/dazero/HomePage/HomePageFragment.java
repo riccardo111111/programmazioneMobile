@@ -79,10 +79,6 @@ public class HomePageFragment extends Fragment {
         Log.d("chiama", " chiamaaaa");
         if (requestCode== 3 && resultCode == RESULT_OK && data!= null) {
             Uri uri= data.getData();
-/*
-            Log.d("chiama", " chiamaaaa1");
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
- */
             Intent intent = new Intent(getContext(), MainActivity2.class);
             intent.putExtra("foto", uri.toString());
             startActivity(intent);

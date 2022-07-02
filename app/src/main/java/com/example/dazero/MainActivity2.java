@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Button;
@@ -62,6 +64,7 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
 
         result = findViewById(R.id.result);
         confidence = findViewById(R.id.confidence);
@@ -69,8 +72,15 @@ public class MainActivity2 extends AppCompatActivity {
         picture = findViewById(R.id.take_picture);
         save = findViewById(R.id.save_button);
 
-        AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
+        Uri uri = getIntent().getParcelableExtra("foto");
+        if (uri != null) {
+            this.imageView.setImageURI(uri);
+            BitmapDrawable drawable = (BitmapDrawable) this.imageView.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            elaborazione(bitmap);
+        }
 
+/*
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -80,13 +90,14 @@ public class MainActivity2 extends AppCompatActivity {
             Toast.makeText(MainActivity2.this, "Not Permit", Toast.LENGTH_SHORT).show();
             requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
         }
+
+ */
         picture.setOnClickListener(view -> {
             // Launch camera if we have permission
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, 1);
-
             } else {
                 //Request camera permission if we don't have it.
                 Toast.makeText(MainActivity2.this, "Not Permit", Toast.LENGTH_SHORT).show();
@@ -123,17 +134,12 @@ public class MainActivity2 extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             elaborazione(bitmap);
-            /*
-            int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
-            bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
-
-            bitmap= rotateImage(bitmap,90);
-
-            this.image = bitmap;
-            imageView.setImageBitmap(bitmap);
-            bitmap = Bitmap.createScaledBitmap(bitmap, imageSize, imageSize, false);
-            classifyImage(bitmap);
-      */
+        }else if (requestCode==3){
+            Uri uri= data.getData();
+            this.imageView.setImageURI(uri);
+            BitmapDrawable drawable = (BitmapDrawable) this.imageView.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            elaborazione(bitmap);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
