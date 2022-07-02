@@ -101,8 +101,8 @@ public class MainActivity2 extends AppCompatActivity {
         save.setOnClickListener(v -> {
             new Thread(() -> {
                 ResultService resultService = ServiceManagerSingleton.getInstance(getApplicationContext()).getResultService();
-                id = getIntent().getIntExtra("id", 0);
-
+               Log.d("cane", "wow"+ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId());
+                int id = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
                 BitmapConverter bitmap = new BitmapConverter(image);
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
 
@@ -118,7 +118,7 @@ public class MainActivity2 extends AppCompatActivity {
             Intent intent = new Intent(MainActivity2.this, Tabs.class);
             intent.putExtra("id", String.valueOf(id));
             startActivity(intent);
-            finish();
+            //finish();
         });
     }
 

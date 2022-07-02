@@ -19,6 +19,7 @@ import com.example.dazero.MainActivity2;
 import com.example.dazero.R;
 import com.example.dazero.adapters.ItemViewModel;
 import com.example.dazero.conology.Cronology;
+import com.example.dazero.services.ServiceManagerSingleton;
 
 
 public class HomePageFragment extends Fragment {
@@ -33,6 +34,7 @@ public class HomePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home_page, container, false);
     }
@@ -58,8 +60,8 @@ public class HomePageFragment extends Fragment {
         Button cronologyButton = (Button) view.findViewById(R.id.chronology);
         cronologyButton.setOnClickListener(v ->{
             Intent i = new Intent(getContext(), Cronology.class);
-            int id = Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
-            Log.d("cronology",String.valueOf(id));
+            int id = ServiceManagerSingleton.getInstance(getContext()).getUserId();
+
             i.putExtra("id", id);
             startActivity(i);
         });
@@ -67,7 +69,9 @@ public class HomePageFragment extends Fragment {
 
     private void dispatchTakePictureIntent() {
         Intent intent=new Intent(getActivity(), MainActivity2.class);
-        int id = Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
+
+        int id = ServiceManagerSingleton.getInstance(getContext()).getUserId();
+        Log.d("maioa", "piu"+ServiceManagerSingleton.getInstance(getContext()).getUserId());
         intent.putExtra("id", id);
         startActivity(intent);
     }

@@ -75,6 +75,7 @@ public class SingInActivity extends AppCompatActivity {
                         }
                         dialog.dismiss();
                         Intent i = new Intent(getApplicationContext(), Tabs.class);
+                        ServiceManagerSingleton.getInstance(getApplicationContext()).setUserId(user.uid);
                         i.putExtra("id", String.valueOf(user.uid));
                         startActivity(i);
                         finish();
