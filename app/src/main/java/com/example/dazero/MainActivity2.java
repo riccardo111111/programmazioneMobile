@@ -11,6 +11,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -72,14 +73,20 @@ public class MainActivity2 extends AppCompatActivity {
         picture = findViewById(R.id.take_picture);
         save = findViewById(R.id.save_button);
 
-        Uri uri = getIntent().getParcelableExtra("foto");
-        if (uri != null) {
-            this.imageView.setImageURI(uri);
-            BitmapDrawable drawable = (BitmapDrawable) this.imageView.getDrawable();
-            Bitmap bitmap = drawable.getBitmap();
-            elaborazione(bitmap);
-        }
 
+        if(getIntent().getStringExtra("foto")!=null){
+
+            Uri uri = Uri.parse(getIntent().getStringExtra("foto"));
+
+            if (uri != null) {
+                this.imageView.setImageURI(uri);
+                BitmapDrawable drawable = (BitmapDrawable) this.imageView.getDrawable();
+                Bitmap bmp = drawable.getBitmap();
+                elaborazione(bmp);
+
+            }
+
+        }
 /*
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
@@ -108,11 +115,11 @@ public class MainActivity2 extends AppCompatActivity {
         save.setOnClickListener(v -> {
             new Thread(() -> {
                 ResultService resultService = ServiceManagerSingleton.getInstance(getApplicationContext()).getResultService();
-                id = getIntent().getIntExtra("id", 0);
+                id = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
 
-                BitmapConverter bitmap = new BitmapConverter(image);
+                BitmapConverter bitmap = new BitmapConverter(this.image);
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
-
+                Log.d("string",bitmap.BitMapToString());
                 Result result = new Result(0,
                         id,
                         bitmap.BitMapToString(),
@@ -125,20 +132,28 @@ public class MainActivity2 extends AppCompatActivity {
             Intent intent = new Intent(MainActivity2.this, Tabs.class);
             intent.putExtra("id", String.valueOf(id));
             startActivity(intent);
-            finish();
+            //finish();
         });
+
+        if(getIntent().getStringExtra("foto")!=null){
+
+            Uri uri = Uri.parse(getIntent().getStringExtra("foto"));
+
+            if (uri != null) {
+                this.imageView.setImageURI(uri);
+                BitmapDrawable drawable = (BitmapDrawable) this.imageView.getDrawable();
+                Bitmap bmp = drawable.getBitmap();
+                elaborazione(bmp);
+
+            }
+
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            elaborazione(bitmap);
-        }else if (requestCode==3){
-            Uri uri= data.getData();
-            this.imageView.setImageURI(uri);
-            BitmapDrawable drawable = (BitmapDrawable) this.imageView.getDrawable();
-            Bitmap bitmap = drawable.getBitmap();
             elaborazione(bitmap);
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -151,7 +166,7 @@ public class MainActivity2 extends AppCompatActivity {
         bitmap = rotateImage(bitmap, 90);
 
         this.image = bitmap;
-        imageView.setImageBitmap(bitmap);
+        this.imageView.setImageBitmap(bitmap);
         bitmap = Bitmap.createScaledBitmap(bitmap, imageSize, imageSize, false);
         classifyImage(bitmap);
     }

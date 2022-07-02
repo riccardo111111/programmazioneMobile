@@ -12,8 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,13 +29,10 @@ import java.io.ByteArrayOutputStream;
 
 
 public class HomePageFragment extends Fragment {
-    TextView result, confidence;
-    ImageView imageView;
-    Button picture;
-    int imageSize = 224;
+
 
     private ItemViewModel viewModel;
-    final int REQUEST_IMAGE_CAPTURE = 1;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,19 +81,7 @@ public class HomePageFragment extends Fragment {
         }
     }
 
-    public byte[] BitMapToString(Bitmap image) {
 
-        if (image == null) {
-            Log.d("image", "nulllll");
-        } else {
-            Log.d("image", "ci sta");
-        }
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        return b;
-    }
 
 
     private void dispatchTakePictureIntent() {

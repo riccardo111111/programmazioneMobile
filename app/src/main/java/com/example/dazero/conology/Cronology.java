@@ -93,7 +93,7 @@ public class Cronology extends AppCompatActivity {
 
 
     public ArrayList<Result> showAllResults(){
-        idUser= getIntent().getIntExtra("id",0);
+        idUser= ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
         Log.d("das","id user "+idUser);
         if(resultService.getResultByID(idUser)==null){
             return null;
@@ -102,7 +102,7 @@ public class Cronology extends AppCompatActivity {
     }
 
     public ArrayList<Result> showResultOfTheMonth(){
-        idUser= getIntent().getIntExtra("id",0);
+        idUser= ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
         ArrayList<Result> array = resultService.getResultByID(idUser);
 
         Calendar cal = Calendar.getInstance();
@@ -130,7 +130,7 @@ public class Cronology extends AppCompatActivity {
     }
 
     public ArrayList<Result> showResultOfTheWeek(){
-        idUser= getIntent().getIntExtra("id",0);
+        idUser=ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
         ArrayList<Result> array = resultService.getResultByID(idUser);
 
         Calendar cal = Calendar.getInstance();
