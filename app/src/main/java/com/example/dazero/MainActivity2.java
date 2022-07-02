@@ -1,10 +1,16 @@
 package com.example.dazero;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
+
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -25,6 +31,7 @@ import com.example.dazero.services.ServiceManagerSingleton;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 
@@ -122,6 +129,9 @@ public class MainActivity2 extends AppCompatActivity {
             int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
 
             bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
+
+            bitmap= rotateImage(bitmap,90);
+
             this.image = bitmap;
 
             imageView.setImageBitmap(bitmap);
@@ -196,5 +206,42 @@ public class MainActivity2 extends AppCompatActivity {
         } catch (IOException e) {
             // TODO Handle the exception
         }
+    }
+
+    private static Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
+    }
+
+
+    private static Bitmap rotateImageIfRequired(Bitmap bitmap, String selectedImage) throws IOException {
+
+        ExifInterface ei = new ExifInterface(selectedImage);
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
+
+        Bitmap rotatedBitmap = null;
+        switch(orientation) {
+
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                rotatedBitmap = rotateImage(bitmap, 90);
+                break;
+
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                rotatedBitmap = rotateImage(bitmap, 180);
+                break;
+
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                rotatedBitmap = rotateImage(bitmap, 270);
+                break;
+
+            case ExifInterface.ORIENTATION_NORMAL:
+            default:
+                rotatedBitmap = bitmap;
+        }
+        return  rotatedBitmap;
     }
 }
