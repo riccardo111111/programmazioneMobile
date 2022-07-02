@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,10 +22,8 @@ import com.example.dazero.ml.ModelTFLITE;
 import com.example.dazero.services.BitmapConverter;
 import com.example.dazero.services.ResultService;
 import com.example.dazero.services.ServiceManagerSingleton;
-
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
@@ -96,8 +95,10 @@ public class MainActivity2 extends AppCompatActivity {
             new Thread(() -> {
                 ResultService resultService = ServiceManagerSingleton.getInstance(getApplicationContext()).getResultService();
                 id = getIntent().getIntExtra("id", 0);
+
                 BitmapConverter bitmap = new BitmapConverter(image);
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
+
                 Result result = new Result(0,
                         id,
                         bitmap.BitMapToString(),

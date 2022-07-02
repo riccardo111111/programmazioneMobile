@@ -107,7 +107,7 @@ public class ResultService extends Service {
             jsonResult.put("id_user", result.idUser);
             jsonResult.put("date", result.date);
             jsonResult.put("labels", result.labels);
-            jsonResult.put("photo",result.bytes);
+            jsonResult.put("photo",result.photo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
