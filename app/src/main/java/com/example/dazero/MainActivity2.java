@@ -74,31 +74,24 @@ public class MainActivity2 extends AppCompatActivity {
         save = findViewById(R.id.save_button);
 
 
-        if(getIntent().getStringExtra("foto")!=null){
-
-            Uri uri = Uri.parse(getIntent().getStringExtra("foto"));
-
-            if (uri != null) {
-                this.imageView.setImageURI(uri);
-                BitmapDrawable drawable = (BitmapDrawable) this.imageView.getDrawable();
-                Bitmap bmp = drawable.getBitmap();
-                elaborazione(bmp);
-
+        if(getIntent().getIntExtra("option",0)==0){
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, 1);
+            } else {
+                //Request camera permission if we don't have it.
+                Toast.makeText(MainActivity2.this, "Not Permit", Toast.LENGTH_SHORT).show();
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
             }
+        }else if(getIntent().getIntExtra("option",0)==1){
 
-        }
-/*
-        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
-            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, 1);
-        } else {
-            //Request camera permission if we don't have it.
-            Toast.makeText(MainActivity2.this, "Not Permit", Toast.LENGTH_SHORT).show();
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
+            Intent intent = new Intent(
+                    android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            startActivityForResult(intent, 1);
         }
 
- */
         picture.setOnClickListener(view -> {
             // Launch camera if we have permission
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -139,6 +132,11 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            elaborazione(bitmap);
+        }else if(requestCode==3){
+
+                Log.d("else if", "siiiiiiiiiiii22222222222");
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             elaborazione(bitmap);
         }

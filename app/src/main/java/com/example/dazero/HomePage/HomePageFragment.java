@@ -54,9 +54,7 @@ public class HomePageFragment extends Fragment {
 
         Button searchPhotoButton = (Button) view.findViewById(R.id.searchPhoto);
         searchPhotoButton.setOnClickListener(v ->{
-            Intent i = new Intent(Intent.ACTION_PICK,
-                    MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-            startActivityForResult(i, 3);
+           dispatchGalleryIntent();
         });
 
         Button cronologyButton = (Button) view.findViewById(R.id.chronology);
@@ -84,12 +82,21 @@ public class HomePageFragment extends Fragment {
 
 
 
-    private void dispatchTakePictureIntent() {
+    public void dispatchTakePictureIntent() {
         Intent intent=new Intent(getActivity(), MainActivity2.class);
-
         int id = ServiceManagerSingleton.getInstance(getContext()).getUserId();
         Log.d("maioa", "piu"+ServiceManagerSingleton.getInstance(getContext()).getUserId());
         intent.putExtra("id", id);
+        intent.putExtra("option",0);
+        startActivity(intent);
+    }
+
+    public void dispatchGalleryIntent(){
+        Intent intent=new Intent(getActivity(), MainActivity2.class);
+        int id = ServiceManagerSingleton.getInstance(getContext()).getUserId();
+        Log.d("maioa", "piu"+ServiceManagerSingleton.getInstance(getContext()).getUserId());
+        intent.putExtra("id", id);
+        intent.putExtra("option",1);
         startActivity(intent);
     }
 
