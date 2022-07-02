@@ -132,22 +132,8 @@ public class MainActivity2 extends AppCompatActivity {
             Intent intent = new Intent(MainActivity2.this, Tabs.class);
             intent.putExtra("id", String.valueOf(id));
             startActivity(intent);
-            //finish();
+            finish();
         });
-
-        if(getIntent().getStringExtra("foto")!=null){
-
-            Uri uri = Uri.parse(getIntent().getStringExtra("foto"));
-
-            if (uri != null) {
-                this.imageView.setImageURI(uri);
-                BitmapDrawable drawable = (BitmapDrawable) this.imageView.getDrawable();
-                Bitmap bmp = drawable.getBitmap();
-                elaborazione(bmp);
-
-            }
-
-        }
     }
 
     @Override

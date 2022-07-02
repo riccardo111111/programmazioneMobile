@@ -22,7 +22,7 @@ public interface UserDao {
     User findProfileById(int id);
 
     @Insert
-    void insertUser(User users);
+    void insertUser(User... users);
 /*
     @Query("UPDATE user SET name = :user.name, surname = :user.surname, password = :user.password" +
             ",mail = :user.mail WHERE uid = :user.id")

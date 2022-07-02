@@ -50,9 +50,11 @@ public class SingUpActivity extends AppCompatActivity {
     public void set(View v) {
         Log.i("testooo", binding.editTextEmail.getText().toString());
         if (is8char && hasnum && hasSpecialSymbol && hasUpper) {
+            String password=DigestUtils.sha384Hex(binding.editTextPassword.getText().toString());
+            Log.d("logg", " password hash: "+ password);
             saveNewUser(binding.editTextName.getText().toString(), binding.editTextEmail.getText().toString(),
-                    binding.editTextSurname.getText().toString(),
-                    binding.editTextPassword.getText().toString());
+                    binding.editTextSurname.getText().toString(),password);
+                    DigestUtils.sha384Hex(binding.editTextPassword.getText().toString());
             Intent intent = new Intent(this, SingInActivity.class);
             startActivity(intent);
         } else {
