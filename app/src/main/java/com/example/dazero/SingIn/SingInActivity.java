@@ -57,12 +57,10 @@ public class SingInActivity extends AppCompatActivity {
                     password = DigestUtils.sha384Hex(password);
                     Log.d("password",password);
                     UserServices userServices = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserServices();
-                    User user = userServices.getUserByMailAndPassword(binding.editTextEmail.getText().toString(),
-                            binding.editTextPassword.getText().toString());
+                    User user = userServices.getUserByMailAndPassword(email, password);
                     Log.d("Log", "user: "+ user);
                     if (user == null) {
-                        user = db.userDao().findProfile(binding.editTextEmail.getText().toString(),
-                                binding.editTextPassword.getText().toString());
+                        user = db.userDao().findProfile(email, password);
                         if (user == null) {
                             dialog.dismiss();
                             Toast.makeText(SingInActivity.this, "account insesistente",
@@ -86,7 +84,6 @@ public class SingInActivity extends AppCompatActivity {
             }
     });
         binding.registerNow.setOnClickListener(new View.OnClickListener()
-
     {
         public void onClick (View v){
         Intent i = new Intent(SingInActivity.this, SingUpActivity.class);
