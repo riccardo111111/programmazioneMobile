@@ -1,5 +1,8 @@
 package com.example.dazero.conology;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -48,14 +51,21 @@ public class Cronology extends AppCompatActivity {
 
         Log.d("inside click","yeaasdasdasdasdaa before pos ");
 
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+            if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                //we are connected to a network
+                connected = true;
+            }
+            else
+                connected = false;
+
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
             listView.removeAllViewsInLayout();
-            showResults((String) parent.getItemAtPosition(position));
+                showResults((String) parent.getItemAtPosition(position));
         });
     }
-
-
-
     public void showResults(String filter){
         Log.d("inside click","yeaaa "+filter);
             if(filter=="All"){

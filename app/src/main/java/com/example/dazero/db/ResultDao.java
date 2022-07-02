@@ -15,10 +15,11 @@ public interface ResultDao {
 
         @Query("SELECT * FROM result WHERE idResult LIKE :id LIMIT 1")
         Result findResultById(int id);
+
 /*
-        @Query("SELECT * FROM result FOR SYSTEM_TIME BETWEEN '2021-01-01' AND '2021-12-31'"+
-                "ORDER BY DESC")
+        @Query("SELECT * FROM result WHERE date ('2022-07-02', INTERVAL 5 DAY) AS Result")
         Result showResultOfTheWeek();
+
 
  */
 
