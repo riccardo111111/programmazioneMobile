@@ -21,6 +21,7 @@ public class ServiceManagerSingleton {
     private OkHttpClient client;
     private UserServices userServices;
     private ResultService resultService;
+    private int idUser=0 ;
 
     public static AppDatabase db;
 
@@ -44,6 +45,14 @@ public class ServiceManagerSingleton {
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
         return mRequestQueue;
+    }
+
+    public int getUserId() {
+       return this.idUser;
+    }
+
+    public void setUserId(int number) {
+        this.idUser=number;
     }
 
     public UserServices getUserServices() {

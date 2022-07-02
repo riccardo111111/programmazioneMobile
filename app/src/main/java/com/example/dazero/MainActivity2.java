@@ -4,16 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,6 +41,7 @@ public class MainActivity2 extends AppCompatActivity {
     int id;
     Bitmap image;
 
+
     String[] classes = {"Apple___Apple_scab", "Apple___Black_rot", "Apple___Cedar_apple_rust",
             "Apple___healthy", "Blueberry___healthy", "Cherry_(including_sour)___Powdery_mildew",
             "Cherry_(including_sour)___healthy", "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
@@ -72,79 +68,54 @@ public class MainActivity2 extends AppCompatActivity {
         imageView = findViewById(R.id.image_view);
         picture = findViewById(R.id.take_picture);
         save = findViewById(R.id.save_button);
-        Uri uri = getIntent().getParcelableExtra("foto");
-        /*
-        Uri.parse(extras.getString("foto"));
-        Uri bitmap1 = getIntent().getData("foto"));
 
-
-         */
         AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
 
-        if (uri != null) {
-
-            Log.d("Log", "hbertherht");
-            ImageView imageView = null;
-            imageView.setImageURI(uri);
-            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-            Bitmap bitmap = drawable.getBitmap();
-            elaborazione(bitmap);
+        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, 1);
         } else {
-
+            //Request camera permission if we don't have it.
+            Toast.makeText(MainActivity2.this, "Not Permit", Toast.LENGTH_SHORT).show();
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
+        }
+        picture.setOnClickListener(view -> {
+            // Launch camera if we have permission
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, 1);
+
             } else {
                 //Request camera permission if we don't have it.
                 Toast.makeText(MainActivity2.this, "Not Permit", Toast.LENGTH_SHORT).show();
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
             }
-        }
-            picture.setOnClickListener(view -> {
-                // Launch camera if we have permission
-                if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(MainActivity2.this, "Permit", Toast.LENGTH_SHORT).show();
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, 1);
-                } else {
-                    //Request camera permission if we don't have it.
-                    Toast.makeText(MainActivity2.this, "Not Permit", Toast.LENGTH_SHORT).show();
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
-                }
-            });
+        });
 
-            save.setOnClickListener(v -> {
-                new Thread(() -> {
-                    ResultService resultService = ServiceManagerSingleton.getInstance(getApplicationContext()).getResultService();
-                    id = getIntent().getIntExtra("id", 0);
+        save.setOnClickListener(v -> {
+            new Thread(() -> {
+                ResultService resultService = ServiceManagerSingleton.getInstance(getApplicationContext()).getResultService();
+                id = getIntent().getIntExtra("id", 0);
 
-                    BitmapConverter bitmap = new BitmapConverter(image);
-                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
+                BitmapConverter bitmap = new BitmapConverter(image);
+                String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
 
-                    Result result = new Result(0,
-                            id,
-                            bitmap.BitMapToString(),
-                            r,
-                            timeStamp,
-                            null);
-                    db.resultDao().insertResult(result);
-                    resultService.createResult(result);
-                }).start();
-                Intent intent = new Intent(MainActivity2.this, Tabs.class);
-                intent.putExtra("id", String.valueOf(id));
-                startActivity(intent);
-                finish();
-            });
-
-    }
-    public static Bitmap convertStringToBitmap(byte[] bytes) {
-        if (bytes != null) {
-            bytes = Base64.decode(bytes, Base64.DEFAULT);
-
-            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        }
-        return null;
+                Result result = new Result(0,
+                        id,
+                        bitmap.BitMapToString(),
+                        r,
+                        timeStamp,
+                        null);
+                db.resultDao().insertResult(result);
+                resultService.createResult(result);
+            }).start();
+            Intent intent = new Intent(MainActivity2.this, Tabs.class);
+            intent.putExtra("id", String.valueOf(id));
+            startActivity(intent);
+            finish();
+        });
     }
 
     @Override
@@ -182,12 +153,17 @@ public class MainActivity2 extends AppCompatActivity {
     private void classifyImage(Bitmap bitmap) {
         try {
             ModelTFLITE model = ModelTFLITE.newInstance(MainActivity2.this);
+
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
+
             ByteBuffer byteBuffer = ByteBuffer.allocate(4 * imageSize * imageSize * 3);
             //byteBuffer.order(ByteOrder.nativeOrder());
+
             int[] intValues = new int[imageSize * imageSize];
+
             bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
             int pixel = 0;
             for (int i = 0; i < imageSize; i++) {
                 for (int j = 0; j < imageSize; j++) {
@@ -197,10 +173,13 @@ public class MainActivity2 extends AppCompatActivity {
                     byteBuffer.putFloat(((val & 0xFF)) * (1.f / 255.f));
                 }
             }
+
             inputFeature0.loadBuffer(byteBuffer);
+
             // Runs model inference and gets result.
             ModelTFLITE.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+
             float[] confidences = outputFeature0.getFloatArray();
             int maxPos = 0;
             float maxConfidences = 0;
@@ -215,14 +194,19 @@ public class MainActivity2 extends AppCompatActivity {
                     maxPos = i;
                 }
             }
+
             result.setText(classes[maxPos]);
             String s = "";
             int[] lista = {maxPos, second, third};
+
             for (int i = 0; i < 3; i++) {
                 s += String.format("%s: %.1f%%\n", classes[lista[i]], confidences[lista[i]] * 100);
                 this.r += (classes[lista[i]] + "," + confidences[lista[i]] * 100 + ";");
             }
+
+
             confidence.setText(s);
+
             // Releases model resources if no longer used.
             model.close();
         } catch (IOException e) {
@@ -246,7 +230,7 @@ public class MainActivity2 extends AppCompatActivity {
                 ExifInterface.ORIENTATION_UNDEFINED);
 
         Bitmap rotatedBitmap = null;
-        switch (orientation) {
+        switch(orientation) {
 
             case ExifInterface.ORIENTATION_ROTATE_90:
                 rotatedBitmap = rotateImage(bitmap, 90);
@@ -264,6 +248,6 @@ public class MainActivity2 extends AppCompatActivity {
             default:
                 rotatedBitmap = bitmap;
         }
-        return rotatedBitmap;
+        return  rotatedBitmap;
     }
 }

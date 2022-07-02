@@ -43,14 +43,18 @@ public class Cronology extends AppCompatActivity {
 
         String [] items ={ "Month","Week","All"};
         ArrayAdapter<String> itemAdapter= new ArrayAdapter<>(getApplicationContext(),R.layout.item,items);
-        autoCompleteTextView.setAdapter(itemAdapter);
         adatptList(showAllResults());
+        autoCompleteTextView.setAdapter(itemAdapter);
+
         Log.d("inside click","yeaasdasdasdasdaa before pos ");
+
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
             listView.removeAllViewsInLayout();
             showResults((String) parent.getItemAtPosition(position));
         });
     }
+
+
 
     public void showResults(String filter){
         Log.d("inside click","yeaaa "+filter);
@@ -90,6 +94,7 @@ public class Cronology extends AppCompatActivity {
 
     public ArrayList<Result> showAllResults(){
         idUser= getIntent().getIntExtra("id",0);
+        Log.d("das","id user "+idUser);
         if(resultService.getResultByID(idUser)==null){
             return null;
         }

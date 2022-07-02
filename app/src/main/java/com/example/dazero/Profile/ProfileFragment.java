@@ -44,12 +44,12 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstaceState) {
-        String id = getActivity().getIntent().getStringExtra("id");
+        int id = ServiceManagerSingleton.getInstance(getContext()).getUserId();
         // Log.d("profile frag",id);
         //Toast.makeText(getActivity(),,Toast.LENGTH_LONG).show();
         AppDatabase db = ServiceManagerSingleton.getInstance(getContext()).db;
-        if (id != null) {
-            this.user = db.userDao().findProfileById(Integer.parseInt(id));
+        if (id != 0) {
+            this.user = db.userDao().findProfileById(id);
         }
         if (user == null) {
             displayFragment(view);
@@ -61,7 +61,7 @@ public class ProfileFragment extends Fragment {
         }
 
         ResultService resultService = ServiceManagerSingleton.getInstance(getContext()).getResultService();
-        ArrayList<Result> results = resultService.getResultByID(Integer.parseInt(id));
+        ArrayList<Result> results = resultService.getResultByID(id);
         if (results == null) {
             displayFragment(view);
         } else {

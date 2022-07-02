@@ -1,10 +1,6 @@
 package com.example.dazero.HomePage;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -16,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -24,8 +19,6 @@ import com.example.dazero.MainActivity2;
 import com.example.dazero.R;
 import com.example.dazero.adapters.ItemViewModel;
 import com.example.dazero.conology.Cronology;
-
-import java.io.ByteArrayOutputStream;
 
 
 public class HomePageFragment extends Fragment {
@@ -40,6 +33,7 @@ public class HomePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home_page, container, false);
     }
@@ -50,22 +44,22 @@ public class HomePageFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
 
         Button takePhotoButton = (Button) view.findViewById(R.id.takePhoto);
-        takePhotoButton.setOnClickListener(v -> {
+        takePhotoButton.setOnClickListener(v ->{
             dispatchTakePictureIntent();
         });
 
         Button searchPhotoButton = (Button) view.findViewById(R.id.searchPhoto);
-        searchPhotoButton.setOnClickListener(v -> {
+        searchPhotoButton.setOnClickListener(v ->{
             Intent i = new Intent(Intent.ACTION_PICK,
                     MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             startActivityForResult(i, 3);
         });
 
         Button cronologyButton = (Button) view.findViewById(R.id.chronology);
-        cronologyButton.setOnClickListener(v -> {
+        cronologyButton.setOnClickListener(v ->{
             Intent i = new Intent(getContext(), Cronology.class);
-            int id = Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
-            Log.d("cronology", String.valueOf(id));
+            int id = ServiceManagerSingleton.getInstance(getContext()).getUserId();
+
             i.putExtra("id", id);
             startActivity(i);
         });
@@ -103,8 +97,10 @@ public class HomePageFragment extends Fragment {
 
 
     private void dispatchTakePictureIntent() {
-        Intent intent = new Intent(getActivity(), MainActivity2.class);
-        int id = Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
+        Intent intent=new Intent(getActivity(), MainActivity2.class);
+
+        int id = ServiceManagerSingleton.getInstance(getContext()).getUserId();
+        Log.d("maioa", "piu"+ServiceManagerSingleton.getInstance(getContext()).getUserId());
         intent.putExtra("id", id);
         startActivity(intent);
     }

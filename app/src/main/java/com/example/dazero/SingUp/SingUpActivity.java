@@ -20,6 +20,7 @@ import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
 import com.example.dazero.services.ServiceManagerSingleton;
 import com.example.dazero.services.UserServices;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.digest.DigestUtils;
 
 public class SingUpActivity extends AppCompatActivity {
 

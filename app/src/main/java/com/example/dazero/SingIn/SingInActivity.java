@@ -16,6 +16,7 @@ import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.User;
 import com.example.dazero.services.ServiceManagerSingleton;
 import com.example.dazero.services.UserServices;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.digest.DigestUtils;
 
 
 public class SingInActivity extends AppCompatActivity {
@@ -48,7 +49,8 @@ public class SingInActivity extends AppCompatActivity {
                 dialog.show();
                 String email = binding.editTextEmail.getText().toString();
                 String password = binding.editTextPassword.getText().toString();
-
+                password = DigestUtils.sha384Hex(password);
+                Log.d("password",password);
                 if (email.isEmpty() || password.isEmpty()) {
                     dialog.dismiss();
                     Toast.makeText(SingInActivity.this, "Please fill up the fields",
@@ -75,6 +77,7 @@ public class SingInActivity extends AppCompatActivity {
                         }
                         dialog.dismiss();
                         Intent i = new Intent(getApplicationContext(), Tabs.class);
+                        ServiceManagerSingleton.getInstance(getApplicationContext()).setUserId(user.uid);
                         i.putExtra("id", String.valueOf(user.uid));
                         startActivity(i);
                         finish();
