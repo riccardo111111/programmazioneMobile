@@ -1,6 +1,10 @@
 package com.example.dazero.HomePage;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -12,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -19,6 +24,8 @@ import com.example.dazero.MainActivity2;
 import com.example.dazero.R;
 import com.example.dazero.adapters.ItemViewModel;
 import com.example.dazero.conology.Cronology;
+
+import java.io.ByteArrayOutputStream;
 
 
 public class HomePageFragment extends Fragment {
@@ -43,30 +50,60 @@ public class HomePageFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
 
         Button takePhotoButton = (Button) view.findViewById(R.id.takePhoto);
-        takePhotoButton.setOnClickListener(v ->{
+        takePhotoButton.setOnClickListener(v -> {
             dispatchTakePictureIntent();
         });
 
         Button searchPhotoButton = (Button) view.findViewById(R.id.searchPhoto);
-        searchPhotoButton.setOnClickListener(v ->{
+        searchPhotoButton.setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_PICK,
                     MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-            final int ACTIVITY_SELECT_IMAGE = 1234;
-            startActivityForResult(i, 1);
+            startActivityForResult(i, 3);
         });
 
         Button cronologyButton = (Button) view.findViewById(R.id.chronology);
-        cronologyButton.setOnClickListener(v ->{
+        cronologyButton.setOnClickListener(v -> {
             Intent i = new Intent(getContext(), Cronology.class);
             int id = Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
-            Log.d("cronology",String.valueOf(id));
+            Log.d("cronology", String.valueOf(id));
             i.putExtra("id", id);
             startActivity(i);
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("chiama", " chiamaaaa");
+        if (requestCode== 3 && resultCode == RESULT_OK && data!= null) {
+            Uri uri= data.getData();
+/*
+            Log.d("chiama", " chiamaaaa1");
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+ */
+            Intent intent = new Intent(getContext(), MainActivity2.class);
+            intent.putExtra("foto", uri.toString());
+            startActivity(intent);
+        }
+    }
+
+    public byte[] BitMapToString(Bitmap image) {
+
+        if (image == null) {
+            Log.d("image", "nulllll");
+        } else {
+            Log.d("image", "ci sta");
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        return b;
+    }
+
+
     private void dispatchTakePictureIntent() {
-        Intent intent=new Intent(getActivity(), MainActivity2.class);
+        Intent intent = new Intent(getActivity(), MainActivity2.class);
         int id = Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
         intent.putExtra("id", id);
         startActivity(intent);

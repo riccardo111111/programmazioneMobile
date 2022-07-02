@@ -97,9 +97,6 @@ public class ResultService extends Service {
         }
     }
 
-
-
-
     public void createResult(Result result) {
         OkHttpClient client = new OkHttpClient();
         JSONObject jsonResult = new JSONObject();
