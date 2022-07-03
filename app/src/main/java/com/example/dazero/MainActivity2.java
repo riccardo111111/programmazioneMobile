@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -21,18 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dazero.db.AppDatabase;
 import com.example.dazero.db.Result;
-import com.example.dazero.ml.ModelTFLITE;
 import com.example.dazero.services.BitmapConverter;
+import com.example.dazero.services.MachineLearning.Elaborazione;
 import com.example.dazero.services.ResultService;
 import com.example.dazero.services.ServiceManagerSingleton;
 
-import org.tensorflow.lite.DataType;
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
-
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 
 public class MainActivity2 extends AppCompatActivity {
@@ -44,7 +36,9 @@ public class MainActivity2 extends AppCompatActivity {
     String r;
     int id;
     Bitmap image;
-
+    int[] risultato;
+    float[] accurateza;
+    Elaborazione elaborazione;
 
     String[] classes = {"Apple___Apple_scab", "Apple___Black_rot", "Apple___Cedar_apple_rust",
             "Apple___healthy", "Blueberry___healthy", "Cherry_(including_sour)___Powdery_mildew",
@@ -68,6 +62,7 @@ public class MainActivity2 extends AppCompatActivity {
 
         AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
 
+        elaborazione = new Elaborazione(getApplicationContext());
         result = findViewById(R.id.result);
         confidence = findViewById(R.id.confidence);
         imageView = findViewById(R.id.image_view);
@@ -111,7 +106,7 @@ public class MainActivity2 extends AppCompatActivity {
                 id = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
                 Log.d("p", "gherhea");
 
-                BitmapConverter bitmap = new BitmapConverter(this.image);
+                BitmapConverter bitmap = new BitmapConverter(elaborazione.getImage());
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
                 Log.d("string", bitmap.BitMapToString());
                 Result result = new Result(0,
@@ -120,7 +115,7 @@ public class MainActivity2 extends AppCompatActivity {
                         r,
                         timeStamp,
                         null);
-                Log.d("p", "result:  "+ result);
+                Log.d("p", "result:  " + result);
 
                 //db.resultDao().insertResult(result);
                 resultService.createResult(result);
@@ -138,130 +133,35 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            elaborazione(bitmap);
+            image = (Bitmap) data.getExtras().get("data");
+            elaborazione.elaborazione(image);
         } else if (requestCode == 3) {
             InputStream inputStream = null;
             try {
                 inputStream = getContentResolver().openInputStream(data.getData());
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                elaborazione(bitmap);
+                image = BitmapFactory.decodeStream(inputStream);
+                elaborazione.elaborazione(image);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+        viewResult();
     }
 
-    public void elaborazione(Bitmap bitmap) {
-        int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
-        bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
-        bitmap = rotateImage(bitmap, 90);
+    public void viewResult() {
+        this.imageView.setImageBitmap(elaborazione.getImage());
 
-        this.image = bitmap;
-        this.imageView.setImageBitmap(bitmap);
-        bitmap = Bitmap.createScaledBitmap(bitmap, imageSize, imageSize, false);
-        classifyImage(bitmap);
-    }
+        accurateza = elaborazione.getAccurateza();
+        risultato = elaborazione.getRisultato();
+        result.setText(classes[risultato[0]]);
+        String s = "";
 
-    private void classifyImage(Bitmap bitmap) {
-        try {
-            ModelTFLITE model = ModelTFLITE.newInstance(MainActivity2.this);
-
-            // Creates inputs for reference.
-            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
-
-            ByteBuffer byteBuffer = ByteBuffer.allocate(4 * imageSize * imageSize * 3);
-            //byteBuffer.order(ByteOrder.nativeOrder());
-
-            int[] intValues = new int[imageSize * imageSize];
-
-            bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-            int pixel = 0;
-            for (int i = 0; i < imageSize; i++) {
-                for (int j = 0; j < imageSize; j++) {
-                    int val = intValues[pixel++];
-                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f / 255.f));
-                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f / 255.f));
-                    byteBuffer.putFloat(((val & 0xFF)) * (1.f / 255.f));
-                }
-            }
-
-            inputFeature0.loadBuffer(byteBuffer);
-
-            // Runs model inference and gets result.
-            ModelTFLITE.Outputs outputs = model.process(inputFeature0);
-            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-
-            float[] confidences = outputFeature0.getFloatArray();
-            int maxPos = 0;
-            float maxConfidences = 0;
-            int second = 0;
-            int third = 0;
-            for (int i = 0; i < confidences.length; i++) {
-                if (confidences[i] > maxConfidences) {
-                    maxConfidences = confidences[i];
-
-                    third = second;
-                    second = maxPos;
-                    maxPos = i;
-                }
-            }
-
-            result.setText(classes[maxPos]);
-            String s = "";
-            int[] lista = {maxPos, second, third};
-
-            for (int i = 0; i < 3; i++) {
-                s += String.format("%s: %.1f%%\n", classes[lista[i]], confidences[lista[i]] * 100);
-                this.r += (classes[lista[i]] + "," + confidences[lista[i]] * 100 + ";");
-            }
-
-
-            confidence.setText(s);
-
-            // Releases model resources if no longer used.
-            model.close();
-        } catch (IOException e) {
-            // TODO Handle the exception
+        for (int i = 0; i < 3; i++) {
+            s += String.format("%s: %.1f%%\n", classes[risultato[i]], accurateza[i]);
+            this.r += (classes[risultato[i]] + "," + accurateza[i] + ";");
         }
-    }
+        confidence.setText(s);
 
-    private static Bitmap rotateImage(Bitmap img, int degree) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degree);
-        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
-        img.recycle();
-        return rotatedImg;
-    }
-
-
-    private static Bitmap rotateImageIfRequired(Bitmap bitmap, String selectedImage) throws IOException {
-
-        ExifInterface ei = new ExifInterface(selectedImage);
-        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED);
-
-        Bitmap rotatedBitmap = null;
-        switch (orientation) {
-
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                rotatedBitmap = rotateImage(bitmap, 90);
-                break;
-
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                rotatedBitmap = rotateImage(bitmap, 180);
-                break;
-
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                rotatedBitmap = rotateImage(bitmap, 270);
-                break;
-
-            case ExifInterface.ORIENTATION_NORMAL:
-            default:
-                rotatedBitmap = bitmap;
-        }
-        return rotatedBitmap;
     }
 }

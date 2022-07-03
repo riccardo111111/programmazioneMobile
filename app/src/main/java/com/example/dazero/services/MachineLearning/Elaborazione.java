@@ -1,11 +1,13 @@
-package com.example.dazero.MachineLearning;
+package com.example.dazero.services.MachineLearning;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.media.ThumbnailUtils;
 import android.os.IBinder;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,18 +19,19 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 public class Elaborazione extends Service {
-    ImageView imageView;
-    Button picture;
     int imageSize = 224;
-
+    int[] risultato;
+    float[] accurateza= new float[3];
+    Context applicationContext;
+    Bitmap image;
     @Override
     public void onCreate() {
         super.onCreate();
 
     }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -42,16 +45,41 @@ public class Elaborazione extends Service {
 
     }
 
+    public Elaborazione(Context applicationContext) {
+        this.applicationContext=applicationContext;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void elaborazione(Bitmap bitmap) {
+        int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
+        bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
+        bitmap = rotateImage(bitmap, 90);
+        image=bitmap;
+
+        bitmap = Bitmap.createScaledBitmap(bitmap, imageSize, imageSize, false);
+        classifyImage(bitmap);
+    }
+
+    public int[] getRisultato() {
+        return risultato;
+    }
+
+    public float[] getAccurateza() {
+        return accurateza;
+    }
 
     private void classifyImage(Bitmap bitmap) {
         try {
-            ModelTFLITE model = ModelTFLITE.newInstance(getApplicationContext());
+            ModelTFLITE model = ModelTFLITE.newInstance(applicationContext);
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(4 * imageSize * imageSize * 3);
-            byteBuffer.order(ByteOrder.nativeOrder());
+            //byteBuffer.order(ByteOrder.nativeOrder());
 
             int[] intValues = new int[imageSize * imageSize];
 
@@ -68,10 +96,10 @@ public class Elaborazione extends Service {
             }
 
             inputFeature0.loadBuffer(byteBuffer);
+
             // Runs model inference and gets result.
             ModelTFLITE.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-
 
             float[] confidences = outputFeature0.getFloatArray();
             int maxPos = 0;
@@ -87,51 +115,56 @@ public class Elaborazione extends Service {
                     maxPos = i;
                 }
             }
-            String[] classes = {"Apple___Apple_scab", "Apple___Black_rot", "Apple___Cedar_apple_rust",
-                    "Apple___healthy", "Blueberry___healthy", "Cherry_(including_sour)___Powdery_mildew",
-                    "Cherry_(including_sour)___healthy", "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
-                    "Corn_(maize)___Common_rust_", "Corn_(maize)___Northern_Leaf_Blight", "Corn_(maize)___healthy",
-                    "Grape___Black_rot", "Grape___Esca_(Black_Measles)", "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)",
-                    "Grape___healthy", "Orange___Haunglongbing_(Citrus_greening)", "Peach___Bacterial_spot",
-                    "Peach___healthy", "Pepper,_bell___Bacterial_spot", "Pepper,_bell___healthy",
-                    "Potato___Early_blight", "Potato___Late_blight", "Potato___healthy",
-                    "Raspberry___healthy", "Soybean___healthy", "Squash___Powdery_mildew",
-                    "Strawberry___Leaf_scorch", "Strawberry___healthy", "Tomato___Bacterial_spot",
-                    "Tomato___Early_blight", "Tomato___Late_blight", "Tomato___Leaf_Mold",
-                    "Tomato___Septoria_leaf_spot", "Tomato___Spider_mites Two-spotted_spider_mite",
-                    "Tomato___Target_Spot", "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
-                    "Tomato___Tomato_mosaic_virus", "Tomato___healthy"};
 
-            //result.setText(classes[maxPos]);
-
-            String s = "";
-            int[] lista = {maxPos, second, third};
+            risultato=new int[]{maxPos, second, third};
 
             for (int i = 0; i < 3; i++) {
-                s += String.format("%s: %.1f%%\n", classes[lista[i]], confidences[lista[i]] * 100);
+                accurateza[i] = (confidences[risultato[i]] * 100);
             }
-
-            //confidence.setText(s);
-
             // Releases model resources if no longer used.
             model.close();
+
         } catch (IOException e) {
             // TODO Handle the exception
         }
     }
-/*
-    Bundle bitmap = getIntent().getExtras();
-        if(bitmap !=null)
 
-    {
-        int resid = bitmap.getInt("resId");
-        imageView.setImageBitmap(resid);
+    private static Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
     }
 
- */
 
+    private static Bitmap rotateImageIfRequired(Bitmap bitmap, String selectedImage) throws IOException {
 
+        ExifInterface ei = new ExifInterface(selectedImage);
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
 
+        Bitmap rotatedBitmap = null;
+        switch (orientation) {
+
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                rotatedBitmap = rotateImage(bitmap, 90);
+                break;
+
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                rotatedBitmap = rotateImage(bitmap, 180);
+                break;
+
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                rotatedBitmap = rotateImage(bitmap, 270);
+                break;
+
+            case ExifInterface.ORIENTATION_NORMAL:
+            default:
+                rotatedBitmap = bitmap;
+        }
+        return rotatedBitmap;
+    }
 
 
     @Override

@@ -57,7 +57,7 @@
             android:enabled="true"
             android:exported="true"></service>
         <service
-            android:name=".MachineLearning.Elaborazione"
+            android:name=".services.MachineLearning.Elaborazione"
             android:exported="false" />
     </application>
 
