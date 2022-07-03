@@ -36,17 +36,40 @@ public class DetailedView extends AppCompatActivity {
 
     public void placeData(){
         Intent i = getIntent();
+
         String [] parts=i.getStringExtra("labels").split(",");
         String [] numbers = i.getStringExtra("labels").split(";");
-        Log.d("string", parts[0].replace("_", " "));
-        plantType.setText(parts[0].replace("_", " "));
-        plantResults.setText(parts[1].replaceAll("[^A-z]", " ").replace("_"," ")
-                + "\n accuracy: "+numbers[1].replaceAll("[^0-9]", "").substring(0,2)+"% \n"
-                +parts[2].replaceAll("[^A-z]", " ").replace("_"," ")
-                        + "\n accuracy: "+numbers[2].replaceAll("[^0-9]", "").substring(0,2)+"%");
-        plantImage.setImageBitmap((Bitmap) i.getParcelableExtra("image"));
-        accuracy.setText(numbers[0].replaceAll("[^0-9]", "").substring(0,2)+"%");
 
+        if(checkInvalidData(i.getStringExtra("labels").split(","))){
+           plantType.setText("undefined");
+           plantResults.setText("undefined");
+            plantImage.setImageBitmap((Bitmap) i.getParcelableExtra("image"));
+            accuracy.setText("0.0%");
+        }else{
+            plantType.setText(parts[0].replace("_", " ").substring(4,parts[0].length()));
+            plantResults.setText(parts[1].replaceAll("[^A-z]", " ").replace("_"," ")
+                    + "\n accuracy: "+numbers[1].replaceAll("[^0-9]", "").substring(0,2)+"% \n"
+                    +parts[2].replaceAll("[^A-z]", " ").replace("_"," ")
+                    + "\n accuracy: "+numbers[2].replaceAll("[^0-9]", "").substring(0,2)+"%");
+            plantImage.setImageBitmap((Bitmap) i.getParcelableExtra("image"));
+            accuracy.setText(numbers[0].replaceAll("[^0-9]", "").substring(0,2)+"%");
+        }
+
+
+
+    }
+
+    public boolean checkInvalidData(String [] text){
+
+        for (String part:text) {
+
+            if(part.contains("NaN")){
+                Log.d("datail",part);
+                return true;
+            }
+
+        }
+        return false;
     }
 
 
