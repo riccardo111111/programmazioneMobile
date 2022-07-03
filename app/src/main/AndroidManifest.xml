@@ -35,9 +35,6 @@
             android:name=".SingUp.SingUpActivity"
             android:exported="false" />
         <activity
-            android:name=".SingIn.SingInActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity2"
             android:exported="false" />
         <activity
@@ -45,11 +42,10 @@
             android:exported="false"
             android:label="@string/title_activity_home_page" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SingIn.SingInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

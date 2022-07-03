@@ -1,6 +1,12 @@
 package com.example.dazero.services;
 
+
+
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.StrictMode;
 import android.util.Log;
 

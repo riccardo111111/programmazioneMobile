@@ -106,8 +106,10 @@ public class MainActivity2 extends AppCompatActivity {
 
         save.setOnClickListener(v -> {
             new Thread(() -> {
+                Log.d("p", "gherhea");
                 ResultService resultService = ServiceManagerSingleton.getInstance(getApplicationContext()).getResultService();
                 id = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
+                Log.d("p", "gherhea");
 
                 BitmapConverter bitmap = new BitmapConverter(this.image);
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
@@ -118,9 +120,14 @@ public class MainActivity2 extends AppCompatActivity {
                         r,
                         timeStamp,
                         null);
-                db.resultDao().insertResult(result);
+                Log.d("p", "result:  "+ result);
+
+                //db.resultDao().insertResult(result);
                 resultService.createResult(result);
+                Log.d("p", "gherhea2");
             }).start();
+            Log.d("p", "gherhea3");
+
             Intent intent = new Intent(MainActivity2.this, Tabs.class);
             intent.putExtra("id", String.valueOf(id));
             startActivity(intent);
@@ -139,15 +146,12 @@ public class MainActivity2 extends AppCompatActivity {
                 inputStream = getContentResolver().openInputStream(data.getData());
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 elaborazione(bitmap);
-
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 
     public void elaborazione(Bitmap bitmap) {
         int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
