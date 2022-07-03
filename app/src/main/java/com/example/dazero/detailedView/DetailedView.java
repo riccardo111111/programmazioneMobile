@@ -1,7 +1,5 @@
 package com.example.dazero.detailedView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dazero.R;
 
@@ -46,7 +45,7 @@ public class DetailedView extends AppCompatActivity {
             plantImage.setImageBitmap((Bitmap) i.getParcelableExtra("image"));
             accuracy.setText("0.0%");
         }else{
-            plantType.setText(parts[0].replace("_", " ").substring(4,parts[0].length()));
+            plantType.setText(parts[0].replace("_", " ").substring(5,parts[0].length()));
             plantResults.setText(parts[1].replaceAll("[^A-z]", " ").replace("_"," ")
                     + "\n accuracy: "+numbers[1].replaceAll("[^0-9]", "").substring(0,2)+"% \n"
                     +parts[2].replaceAll("[^A-z]", " ").replace("_"," ")

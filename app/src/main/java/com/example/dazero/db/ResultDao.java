@@ -19,8 +19,6 @@ public interface ResultDao {
 /*
         @Query("SELECT * FROM result WHERE date ('2022-07-02', INTERVAL 5 DAY) AS Result")
         Result showResultOfTheWeek();
-
-
  */
 
         @Insert

@@ -28,7 +28,7 @@ public class UserServices extends Service {
 
     OkHttpClient client;
     //String host = "10.0.2.2";
-    String host= "192.168.43.157";
+    String host= "192.168.1.178";
     String port = "8080";
     String getAllUsers = "http://" + host + ":" + port + "/serverMobile/rest/users/all";
     String getUserById = "http://" + host + ":" + port + "/serverMobile/rest/users/";

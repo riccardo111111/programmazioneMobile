@@ -1,8 +1,5 @@
 package com.example.dazero.conology;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -15,15 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.dazero.R;
 import com.example.dazero.adapters.ListAdapter;
 import com.example.dazero.db.Result;
+import com.example.dazero.services.CronologyService;
 import com.example.dazero.services.ResultService;
 import com.example.dazero.services.ServiceManagerSingleton;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Cronology extends AppCompatActivity {
     TextInputLayout textInputLayout;
@@ -31,7 +25,7 @@ public class Cronology extends AppCompatActivity {
     ResultService resultService;
     ListView listView;
 
-
+    CronologyService cronologyService;
     int idUser;
 
     @Override
@@ -43,23 +37,14 @@ public class Cronology extends AppCompatActivity {
         autoCompleteTextView =(AutoCompleteTextView) findViewById(R.id.items);
         resultService= ServiceManagerSingleton.getInstance(getApplicationContext()).getResultService();
         listView= findViewById(R.id.list_of_chronology_card);
+         idUser = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
+
+        cronologyService=new CronologyService(resultService, idUser);
 
         String [] items ={ "Month","Week","All"};
         ArrayAdapter<String> itemAdapter= new ArrayAdapter<>(getApplicationContext(),R.layout.item,items);
-        adatptList(showAllResults());
+        adatptList(cronologyService.showAllResults());
         autoCompleteTextView.setAdapter(itemAdapter);
-
-        Log.d("inside click","yeaasdasdasdasdaa before pos ");
-
-        boolean connected = false;
-        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-            if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-                //we are connected to a network
-                connected = true;
-            }
-            else
-                connected = false;
 
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
             listView.removeAllViewsInLayout();
@@ -69,25 +54,25 @@ public class Cronology extends AppCompatActivity {
     public void showResults(String filter){
         Log.d("inside click","yeaaa "+filter);
             if(filter=="All"){
-                if(showAllResults()==null){
+                if(cronologyService.showAllResults()==null){
                     Toast.makeText(getApplicationContext(), " take some photo first", Toast.LENGTH_LONG).show();
                 }else{
-                    adatptList(showAllResults());
+                    adatptList(cronologyService.showAllResults());
                 }
             }
             if(filter =="Week"){
-                if(showResultOfTheWeek()==null){
+                if(cronologyService.showResultOfTheWeek()==null){
                     Toast.makeText(getApplicationContext(), " take some photo first", Toast.LENGTH_LONG).show();
                 }else{
-                    adatptList(showResultOfTheWeek());
+                    adatptList(cronologyService.showResultOfTheWeek());
                 }
             }
 
             if(filter =="Month"){
-                if(showResultOfTheMonth()==null){
+                if(cronologyService.showResultOfTheMonth()==null){
                     Toast.makeText(getApplicationContext(), " take some photo first", Toast.LENGTH_LONG).show();
                 }else{
-                    adatptList(showResultOfTheMonth());
+                    adatptList(cronologyService.showResultOfTheMonth());
                 }
             }
     }
@@ -102,75 +87,4 @@ public class Cronology extends AppCompatActivity {
     }
 
 
-    public ArrayList<Result> showAllResults(){
-        idUser= ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
-        Log.d("das","id user "+idUser);
-        if(resultService.getResultByID(idUser)==null){
-            return null;
-        }
-        return  resultService.getResultByID(idUser);
-    }
-
-    public ArrayList<Result> showResultOfTheMonth(){
-        idUser= ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
-        ArrayList<Result> array = resultService.getResultByID(idUser);
-
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -1);
-        Date result = cal.getTime();
-
-        if(array==null){
-            return null;
-        }else{
-            for (int i=0;i<array.size();i++){
-                try {
-                    if (!isWithinRange(
-                            new SimpleDateFormat("yyyy-MM-dd").parse(array.get(i).date),
-                            result,
-                            new Date())
-                            ){
-                        array.remove(i);
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return  array;
-    }
-
-    public ArrayList<Result> showResultOfTheWeek(){
-        idUser=ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
-        ArrayList<Result> array = resultService.getResultByID(idUser);
-
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.WEEK_OF_MONTH, -1);
-        Date result = cal.getTime();
-
-        if(array==null){
-            return null;
-        }else{
-            for (int i=0;i<array.size();i++){
-
-                try {
-                    if (!isWithinRange(
-                            new SimpleDateFormat("yyyy-MM-dd").parse(array.get(i).date),
-                            result,
-                            new Date())
-                    ){
-                        array.remove(i);
-
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return  array;
-    }
-
-    boolean isWithinRange(Date testDate,Date startDate,Date endDate) {
-        return !(testDate.before(startDate) || testDate.after(endDate));
-    }
 }
