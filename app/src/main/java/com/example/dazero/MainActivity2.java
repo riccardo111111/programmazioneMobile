@@ -28,7 +28,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 
 public class MainActivity2 extends AppCompatActivity {
-
     TextView result, confidence;
     ImageView imageView;
     Button picture, save;

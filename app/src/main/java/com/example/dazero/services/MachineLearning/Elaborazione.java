@@ -20,30 +20,12 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class Elaborazione extends Service {
+public class Elaborazione{
     int imageSize = 224;
     int[] risultato;
     float[] accurateza= new float[3];
     Context applicationContext;
     Bitmap image;
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "entrato", Toast.LENGTH_LONG).show();
-        return START_STICKY;
-
-    }
 
     public Elaborazione(Context applicationContext) {
         this.applicationContext=applicationContext;
@@ -164,11 +146,5 @@ public class Elaborazione extends Service {
                 rotatedBitmap = bitmap;
         }
         return rotatedBitmap;
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 }
