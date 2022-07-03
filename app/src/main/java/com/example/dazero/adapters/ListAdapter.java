@@ -33,10 +33,12 @@ import java.util.ArrayList;
 public class ListAdapter extends ArrayAdapter<Result> {
     ResultService resultService;
     String LOG= " debug";
+    private Context context;
 
     public ListAdapter(@NonNull Context context, ArrayList<Result> results) {
-        super(context, R.layout.cronology_card,results);
 
+        super(context, R.layout.cronology_card,results);
+        this.context=context;
     }
 
     @NonNull
@@ -84,7 +86,8 @@ public class ListAdapter extends ArrayAdapter<Result> {
             i.putExtra("idUser", result.idUser);
             i.putExtra("date", result.date);
             i.putExtra("image",convertStringToBitmap(result.bytes));
-            getContext().startActivity(i);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            this.context.startActivity(i);
             Log.d(this.LOG, " pulsante premuto3");
 
         });
