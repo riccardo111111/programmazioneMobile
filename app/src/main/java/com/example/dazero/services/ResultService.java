@@ -27,8 +27,8 @@ public class ResultService extends Service {
             = MediaType.parse("application/json; charset=utf-8");
 
     OkHttpClient client;
-    String host= "192.168.1.178";
-    //String host = "10.0.2.2";
+    //String host= "192.168.1.178";
+    String host = "10.0.2.2";
     String port = "8080";
     String getAllResults = "http://" + host + ":" + port + "/serverMobile/rest/results/all";
     String getResultById = "http://" + host + ":" + port + "/serverMobile/rest/results/";
@@ -108,8 +108,8 @@ public class ResultService extends Service {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
+        Log.d("er", "aerheee");
+        Log.d("bd", "risultato json: "+ jsonResult);
         RequestBody formBody = RequestBody.create(jsonResult.toString(), JSON);
 
         Request request = new Request.Builder()
@@ -119,7 +119,7 @@ public class ResultService extends Service {
 
         try {
             Response response = client.newCall(request).execute();
-            //Log.d("create user ", response.toString());
+            Log.d("create user ", response.toString());
             // Do something with the response.
         } catch (IOException e) {
             e.printStackTrace();

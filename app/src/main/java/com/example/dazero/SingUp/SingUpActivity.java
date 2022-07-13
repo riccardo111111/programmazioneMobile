@@ -22,6 +22,9 @@ import com.example.dazero.services.ServiceManagerSingleton;
 import com.example.dazero.services.UserServices;
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.digest.DigestUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SingUpActivity extends AppCompatActivity {
 
     private ActivitySignUpBinding binding;
@@ -48,18 +51,25 @@ public class SingUpActivity extends AppCompatActivity {
     }
 
     public void set(View v) {
-        Log.i("testooo", binding.editTextEmail.getText().toString());
-        if (is8char && hasnum && hasSpecialSymbol && hasUpper) {
-            String password=DigestUtils.sha384Hex(binding.editTextPassword.getText().toString());
-            Log.d("logg", " password hash: "+ password);
-            saveNewUser(binding.editTextName.getText().toString(), binding.editTextEmail.getText().toString(),
-                    binding.editTextSurname.getText().toString(),password);
-                    DigestUtils.sha384Hex(binding.editTextPassword.getText().toString());
-            Intent intent = new Intent(this, SingInActivity.class);
-            startActivity(intent);
-        } else {
-            Toast.makeText(this, "la password non rispetta i requisiti di sicurezza",
+        Log.i("testooo11", binding.editTextEmail.getText().toString());
+        Log.i("testooo", String.valueOf(mailSyntaxCheck(binding.editTextEmail.getText().toString())));
+
+        if  (!(mailSyntaxCheck(binding.editTextEmail.getText().toString()))) {
+            Toast.makeText(this, "email non valida",
                     Toast.LENGTH_LONG).show();
+        } else {
+            if (is8char && hasnum && hasSpecialSymbol && hasUpper) {
+                String password = DigestUtils.sha384Hex(binding.editTextPassword.getText().toString());
+                Log.d("logg", " password hash: " + password);
+                saveNewUser(binding.editTextName.getText().toString(), binding.editTextEmail.getText().toString(),
+                        binding.editTextSurname.getText().toString(), password);
+                DigestUtils.sha384Hex(binding.editTextPassword.getText().toString());
+                Intent intent = new Intent(this, SingInActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "la password non rispetta i requisiti di sicurezza",
+                        Toast.LENGTH_LONG).show();
+            }
         }
 
     }
@@ -75,14 +85,25 @@ public class SingUpActivity extends AppCompatActivity {
         user.email = email;
         user.password = password;
         userServices.createUser(user);
-        User u=userServices.getUserByMailAndPassword(email, password);
-        Log.d("LOG", "bgdeat"+ u);
+        User u = userServices.getUserByMailAndPassword(email, password);
+        Log.d("LOG", "bgdeat" + u);
         db.userDao().insertUser(u);
 
         finish();
         Intent intent = new Intent(this, SingInActivity.class);
         startActivity(intent);
 
+    }
+
+    private boolean mailSyntaxCheck(String email) {
+        // Create the Pattern using the regex
+        String emailRegex = ".+@.+\\.[a-z]+";
+        Pattern emailPat = Pattern.compile(emailRegex, Pattern.CASE_INSENSITIVE);
+
+        // Match the given string with the pattern
+        Matcher m = emailPat.matcher(email);
+
+        return m.find();
     }
 
     @SuppressLint("ResourceType")

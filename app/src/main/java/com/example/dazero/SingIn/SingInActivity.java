@@ -55,41 +55,32 @@ public class SingInActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 } else {
                     password = DigestUtils.sha384Hex(password);
-                    Log.d("password",password);
+                    Log.d("password", password);
                     UserServices userServices = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserServices();
-                    User user = userServices.getUserByMailAndPassword(email, password);
-                    Log.d("Log", "user: "+ user);
-                    if (user == null) {
-                        user = db.userDao().findProfile(email, password);
-                        if (user == null) {
-                            dialog.dismiss();
-                            Toast.makeText(SingInActivity.this, "account insesistente",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            userServices.createUser(user);
-                        }
-                    }
-                    if (user != null) {
-                        if (db.userDao().findProfileById(user.uid) == null) {
-                            db.userDao().insertUser(user);
-                        }
+                    User userRemoto = userServices.getUserByMailAndPassword(email, password);
+                    User userLocale = db.userDao().findProfile(email, password);
+                    if (userLocale == null && userRemoto == null) {
                         dialog.dismiss();
-                        Intent i = new Intent(getApplicationContext(), Tabs.class);
-                        ServiceManagerSingleton.getInstance(getApplicationContext()).setUserId(user.uid);
-                        i.putExtra("id", String.valueOf(user.uid));
-                        startActivity(i);
-                        finish();
+                        Toast.makeText(SingInActivity.this, "account insesistente",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (userLocale == null && userRemoto != null) {
+                        db.userDao().insertUser(userRemoto);
                     }
+                    dialog.dismiss();
+                    Intent i = new Intent(getApplicationContext(), Tabs.class);
+                    ServiceManagerSingleton.getInstance(getApplicationContext()).setUserId(userLocale.uid);
+                    i.putExtra("id", String.valueOf(userLocale.uid));
+                    startActivity(i);
+                    finish();
                 }
             }
-    });
-        binding.registerNow.setOnClickListener(new View.OnClickListener()
-    {
-        public void onClick (View v){
-        Intent i = new Intent(SingInActivity.this, SingUpActivity.class);
-        startActivity(i);
-        finish();
+        });
+        binding.registerNow.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(SingInActivity.this, SingUpActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
-    });
-}
 }

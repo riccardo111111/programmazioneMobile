@@ -42,6 +42,7 @@ public class BitmapConverter implements Runnable {
         }else{
             Log.d("image","ci sta");
         }
+        Log.d("tipo ", image.getClass().getSimpleName());
 
             ByteArrayOutputStream baos=new  ByteArrayOutputStream();
             this.image.compress(Bitmap.CompressFormat.PNG,100, baos);
@@ -52,7 +53,7 @@ public class BitmapConverter implements Runnable {
                 temp+=byteToHex(b[i]);
             }
 
-            Log.d("image",temp);
+            Log.d("image temp",temp);
        return temp;
     }
 

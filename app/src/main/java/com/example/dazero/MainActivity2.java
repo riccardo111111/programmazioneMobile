@@ -102,19 +102,31 @@ public class MainActivity2 extends AppCompatActivity {
             new Thread(() -> {
                 Log.d("p", "gherhea");
                 ResultService resultService = ServiceManagerSingleton.getInstance(getApplicationContext()).getResultService();
+                Log.d("ServiceManagerSingleton", String.valueOf(resultService));
                 id = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserId();
-                Log.d("p", "gherhea");
-
+                Log.d("id:", "idddddddddddddd"+  id);
+                Log.d("tipo im", elaborazione.getImage().getClass().getSimpleName());
                 BitmapConverter bitmap = new BitmapConverter(elaborazione.getImage());
+                Log.d("tipo i2", bitmap.getClass().getSimpleName());
+               // Log.d("tipo i3", bitmap.BitMapToString());
+                Log.d("tipo i14", String.valueOf(elaborazione.getImage()));
+
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());
-                Log.d("string", bitmap.BitMapToString());
+                Log.d("idUser save", String.valueOf(id));
+                Log.d("labels save", r);
+                Log.d("date save", timeStamp);
+                Log.d("photo save", bitmap.BitMapToString());
+
                 Result result = new Result(0,
                         id,
                         bitmap.BitMapToString(),
-                        r,
+                        this.r,
                         timeStamp,
                         null);
-                Log.d("p", "result:  " + result);
+                Log.d("p", "result data: " + result.date + " id: " + result.idUser + "LABELS: " + result.labels
+                        + " foto: " +
+                        result.photo);
+
 
                 //db.resultDao().insertResult(result);
                 resultService.createResult(result);
@@ -159,6 +171,7 @@ public class MainActivity2 extends AppCompatActivity {
         for (int i = 0; i < 3; i++) {
             s += String.format("%s: %.1f%%\n", classes[risultato[i]], accurateza[i]);
             this.r += (classes[risultato[i]] + "," + accurateza[i] + ";");
+            Log.d("rrr", "R: "+r);
         }
         confidence.setText(s);
 

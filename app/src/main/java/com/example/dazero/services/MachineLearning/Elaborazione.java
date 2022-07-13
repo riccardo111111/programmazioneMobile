@@ -1,18 +1,12 @@
 package com.example.dazero.services.MachineLearning;
 
-import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
-import android.os.IBinder;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-
-import com.example.dazero.ml.ModelTFLITE;
+import com.example.dazero.ml.Model;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
@@ -55,7 +49,7 @@ public class Elaborazione{
 
     private void classifyImage(Bitmap bitmap) {
         try {
-            ModelTFLITE model = ModelTFLITE.newInstance(applicationContext);
+            Model model = Model.newInstance(applicationContext);
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
@@ -80,7 +74,7 @@ public class Elaborazione{
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            ModelTFLITE.Outputs outputs = model.process(inputFeature0);
+            Model.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();

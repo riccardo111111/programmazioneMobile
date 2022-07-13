@@ -61,8 +61,8 @@ public class ProfileSettings extends AppCompatActivity {
 
                         Toast.makeText(ProfileSettings.this, "update User", Toast.LENGTH_SHORT).show();
                     }else {
+                        Log.d("if", "n: "+ n +" s: " +s+" e: "+ e+ " is8char: "+is8char);
                         Toast.makeText(ProfileSettings.this, "riempire tutti i campi" , Toast.LENGTH_SHORT).show();
-
                     }
                 });
 
@@ -92,7 +92,7 @@ public class ProfileSettings extends AppCompatActivity {
             binding.editTextEmail.setError("Please Enter Email ");
             e = false;
         } else {
-            n = true;
+            e = true;
         }
         if (surname.isEmpty()) {
             binding.editTextSurname.setError("Please Enter Surname ");

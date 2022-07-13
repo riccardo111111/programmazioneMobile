@@ -24,10 +24,7 @@ import com.example.dazero.services.ServiceManagerSingleton;
 
 
 public class HomePageFragment extends Fragment {
-
-
     private ItemViewModel viewModel;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
