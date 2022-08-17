@@ -60,6 +60,7 @@ public class ProfileSettings extends AppCompatActivity {
                         db.userDao().updateUser(user);
 
                         Toast.makeText(ProfileSettings.this, "update User", Toast.LENGTH_SHORT).show();
+
                     }else {
                         Log.d("if", "n: "+ n +" s: " +s+" e: "+ e+ " is8char: "+is8char);
                         Toast.makeText(ProfileSettings.this, "riempire tutti i campi" , Toast.LENGTH_SHORT).show();

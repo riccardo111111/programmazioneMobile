@@ -22,16 +22,13 @@ import com.example.dazero.services.ServiceManagerSingleton;
 
 import java.util.ArrayList;
 
-
 public class ProfileFragment extends Fragment {
-
     private User user;
     private TextView mail;
     private TextView password;
     private TextView searches;
     private Button logout;
     private Button button;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,8 +81,6 @@ public class ProfileFragment extends Fragment {
             Intent i = new Intent(getContext(), SingInActivity.class);
             getContext().startActivity(i);
         });
-
-
         // Inflate the layout for this fragment
     }
 
@@ -96,7 +91,5 @@ public class ProfileFragment extends Fragment {
         logout = (Button) view.findViewById(R.id.log_out);
         button=(Button) view.findViewById(R.id.button);
     }
-
-
 }
 

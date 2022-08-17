@@ -43,11 +43,12 @@ public class HomePageFragment extends Fragment {
             dispatchTakePictureIntent();
         });
 
+        /*
         Button searchPhotoButton = (Button) view.findViewById(R.id.searchPhoto);
         searchPhotoButton.setOnClickListener(v ->{
            dispatchGalleryIntent();
         });
-
+*/
         Button cronologyButton = (Button) view.findViewById(R.id.chronology);
         cronologyButton.setOnClickListener(v ->{
             Intent i = new Intent(getContext(), Cronology.class);
@@ -70,9 +71,6 @@ public class HomePageFragment extends Fragment {
         }
     }
 
-
-
-
     public void dispatchTakePictureIntent() {
         Intent intent=new Intent(getActivity(), MainActivity2.class);
         int id = ServiceManagerSingleton.getInstance(getContext()).getUserId();
@@ -89,6 +87,5 @@ public class HomePageFragment extends Fragment {
         intent.putExtra("option",1);
         startActivity(intent);
     }
-
 }
 
