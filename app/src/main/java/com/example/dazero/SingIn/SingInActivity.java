@@ -63,8 +63,12 @@ public class SingInActivity extends AppCompatActivity {
                         dialog.dismiss();
                         Toast.makeText(SingInActivity.this, "account insesistente",
                                 Toast.LENGTH_SHORT).show();
-                    } else if (userLocale == null && userRemoto != null) {
+                    } else if (userRemoto != null) {
                         db.userDao().insertUser(userRemoto);
+                        userLocale=userRemoto;
+                    }else if (userLocale!=null){
+                        userServices.createUser(userLocale);
+                        userRemoto=userLocale;
                     }
                     dialog.dismiss();
                     Intent i = new Intent(getApplicationContext(), Tabs.class);

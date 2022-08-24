@@ -38,9 +38,16 @@ public class ProfileSettings extends AppCompatActivity {
         AppDatabase db = ServiceManagerSingleton.getInstance(getApplicationContext()).db;
         User user = db.userDao().findProfileById(Integer.parseInt(id));
         binding.editTextName.setText(user.name);
-        binding.editTextSurname.setText(user.surname);
 
+        //controllare
+  /*
+        binding.editTextSurname.setText(user.email);
+        binding.editTextEmail.setText(user.surname);
+       */
+        binding.editTextSurname.setText(user.surname);
         binding.editTextEmail.setText(user.email);
+
+
         UserServices userServices = ServiceManagerSingleton.getInstance(getApplicationContext()).getUserServices();
 
         inputChanged();

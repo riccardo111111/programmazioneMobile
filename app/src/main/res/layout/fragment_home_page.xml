@@ -12,7 +12,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="4dp"
         android:background="#CC689F38"
 
         android:fontFamily="@font/almendra"
@@ -24,6 +24,7 @@
         android:textDirection="inherit"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -40,14 +40,12 @@ public class SingUpActivity extends AppCompatActivity {
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         dialog = new ProgressDialog(SingUpActivity.this);
         dialog.setTitle("Creating Account");
         dialog.setMessage("Creating your Account");
 
         Log.d("Log", "SingUp1");
         inputChanged();
-
     }
 
     public void set(View v) {
@@ -58,7 +56,7 @@ public class SingUpActivity extends AppCompatActivity {
             Toast.makeText(this, "email non valida",
                     Toast.LENGTH_LONG).show();
         } else {
-            if (is8char && hasnum && hasSpecialSymbol && hasUpper) {
+                if (is8char && hasnum && hasSpecialSymbol && hasUpper) {
                 String password = DigestUtils.sha384Hex(binding.editTextPassword.getText().toString());
                 Log.d("logg", " password hash: " + password);
                 saveNewUser(binding.editTextName.getText().toString(), binding.editTextEmail.getText().toString(),
@@ -71,7 +69,6 @@ public class SingUpActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         }
-
     }
 
 
@@ -92,7 +89,6 @@ public class SingUpActivity extends AppCompatActivity {
         finish();
         Intent intent = new Intent(this, SingInActivity.class);
         startActivity(intent);
-
     }
 
     private boolean mailSyntaxCheck(String email) {

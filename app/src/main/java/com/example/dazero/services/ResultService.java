@@ -28,7 +28,9 @@ public class ResultService extends Service {
 
     OkHttpClient client;
     //String host= "192.168.1.24";
-    String host = "10.0.2.2";
+    String host= "192.168.1.175";
+
+    //String host = "10.0.2.2";
     String port = "8080";
     String getAllResults = "http://" + host + ":" + port + "/serverMobile/rest/results/all";
     String getResultById = "http://" + host + ":" + port + "/serverMobile/rest/results/";

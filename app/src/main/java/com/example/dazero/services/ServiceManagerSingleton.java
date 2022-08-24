@@ -1,12 +1,7 @@
 package com.example.dazero.services;
 
 
-
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.StrictMode;
 import android.util.Log;
 
@@ -80,7 +75,8 @@ public class ServiceManagerSingleton {
         return resultService;
     }
 
-    public User saveNewUser(int id, String firstName, String email, String surname, String password) {
+
+    public User saveNewUser(int id, String firstName,  String surname,String email, String password) {
         User user = new User();
         user.uid = id;
         user.name = firstName;

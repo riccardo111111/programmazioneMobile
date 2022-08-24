@@ -32,7 +32,7 @@ public class Elaborazione{
     public void elaborazione(Bitmap bitmap) {
         int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
         bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
-        bitmap = rotateImage(bitmap, 90);
+        //bitmap = rotateImage(bitmap, 90);
         image=bitmap;
 
         bitmap = Bitmap.createScaledBitmap(bitmap, imageSize, imageSize, false);

@@ -27,8 +27,8 @@ public class UserServices extends Service {
             = MediaType.parse("application/json; charset=utf-8");
 
     OkHttpClient client;
-    String host = "10.0.2.2";
-    //String host= "192.168.1.178";
+    //String host = "10.0.2.2";
+    String host= "192.168.1.175";
 
     String port = "8080";
     String getAllUsers = "http://" + host + ":" + port + "/serverMobile/rest/users/all";
@@ -159,15 +159,13 @@ public class UserServices extends Service {
 
     public void createUser(User user) {
         OkHttpClient client = new OkHttpClient();
-
-
         JSONObject jsonUser = new JSONObject();
         try {
             jsonUser.put("id", 0);
             jsonUser.put("name", user.name);
             jsonUser.put("surname", user.surname);
-            jsonUser.put("password", user.password);
             jsonUser.put("mail", user.email);
+            jsonUser.put("password", user.password);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -188,7 +186,6 @@ public class UserServices extends Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public User convertJsonObjectToUser(JSONObject obj) throws JSONException {

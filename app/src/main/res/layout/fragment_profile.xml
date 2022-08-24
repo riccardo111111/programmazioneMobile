@@ -11,7 +11,7 @@
         android:id="@+id/materialToolbar2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="4dp"
         android:background="#CC689F38"
         android:gravity="center"
         android:minHeight="100dp"
